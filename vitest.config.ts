@@ -8,7 +8,12 @@ export default defineConfig({
       // Rastrea solo tus componentes, servicios y lógica de Angular
       include: ['src/app/**/*.ts'],
       // Excluye archivos que no contienen lógica ejecutable
-      exclude: ['src/app/**/*.dto.ts', 'src/app/**/*.model.ts', 'src/main.ts'],
+      exclude: [
+        'src/app/**/*.dto.ts',
+        'src/app/**/*.routes.ts',
+        'src/app/**/*.model.ts',
+        'src/main.ts',
+      ],
     },
   },
 });
