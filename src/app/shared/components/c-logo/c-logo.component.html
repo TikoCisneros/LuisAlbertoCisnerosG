@@ -1,0 +1,12 @@
+@if (src() && !imageError()) {
+  <img
+    [src]="src()"
+    alt="logo"
+    class="c-logo__img"
+    (error)="onImgError()"
+  />
+} @else {
+  <span class="c-logo__fallback">
+    {{ initials() }}
+  </span>
+}

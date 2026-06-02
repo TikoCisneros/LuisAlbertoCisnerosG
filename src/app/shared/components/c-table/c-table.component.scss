@@ -1,0 +1,57 @@
+@use 'design-system' as ds;
+
+.c-table-container {
+  width: 100%;
+  overflow-x: auto;
+  background: ds.$bg-surface;
+  border-radius: ds.$radius-md;
+  box-shadow: ds.$shadow-sm;
+  border: 1px solid ds.$border-color;
+  -webkit-overflow-scrolling: touch;
+}
+
+.c-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  min-width: 600px;
+
+  &__row {
+    border-bottom: 1px solid ds.$border-color;
+
+    &--header {
+      background-color: ds.$clr-slate-50;
+      border-bottom: 2px solid ds.$border-color;
+    }
+  }
+
+  &__cell {
+    padding: 1.2rem 1rem;
+    font-size: 0.9rem;
+    color: ds.$text-body-gray;
+    vertical-align: middle;
+
+    &--header {
+      font-weight: bold;
+      color: ds.$theme-secondary;
+      white-space: nowrap;
+    }
+
+    &--bold {
+      font-weight: 600;
+      color: ds.$text-main;
+    }
+
+    &--actions {
+      position: relative;
+      text-align: center;
+      width: 50px;
+    }
+
+    &--empty {
+      text-align: center;
+      padding: 3rem;
+      color: ds.$text-muted;
+    }
+  }
+}

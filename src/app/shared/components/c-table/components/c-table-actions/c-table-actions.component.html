@@ -1,0 +1,15 @@
+<button class="c-table-action-btn" (click)="toggleDropdown($event)" aria-label="Acciones">
+  <ng-icon name="matMoreVert" />
+</button>
+
+@if (isOpen()) {
+  <div class="c-table-dropdown">
+    <button class="c-table-dropdown__item" (click)="onEditHandler()">Editar</button>
+    <button
+      class="c-table-dropdown__item c-table-dropdown__item--danger"
+      (click)="onDeleteHandler()"
+    >
+      Eliminar
+    </button>
+  </div>
+}

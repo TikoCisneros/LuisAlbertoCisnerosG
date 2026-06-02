@@ -1,0 +1,26 @@
+@use 'design-system' as ds;
+
+:host {
+  display: flex;
+  width: 36px;
+  height: 36px;
+  border-radius: ds.$radius-full;
+  background-color: ds.$border-color;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.c-logo {
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__fallback {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: ds.$text-body-gray;
+  }
+}

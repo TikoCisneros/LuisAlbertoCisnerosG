@@ -1,0 +1,61 @@
+@use 'design-system' as ds;
+
+:host {
+  display: inline-block;
+  position: relative;
+}
+
+// ACTION BUTTON & INTERACTION
+.c-table-action-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: ds.$text-muted;
+  transition: ds.$transition-base;
+  margin: 0;
+  padding: 0;
+
+  &:hover {
+    background-color: ds.$clr-slate-50;
+    color: ds.$text-main;
+  }
+}
+
+// ACTION DROPDOWN MENU (FLOATING)
+.c-table-dropdown {
+  position: absolute;
+  right: 0;
+  top: 32px;
+  background: ds.$bg-surface;
+  border: 1px solid ds.$border-color;
+  border-radius: ds.$radius-lg;
+  box-shadow: ds.$shadow-md;
+  z-index: ds.$z-index-dropdown;
+  min-width: 110px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  &__item {
+    background: none;
+    border: none;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    text-align: left;
+    cursor: pointer;
+    color: ds.$text-body-gray;
+    width: 100%;
+    transition: ds.$transition-base;
+    &:hover {
+      background-color: ds.$clr-slate-50;
+    }
+
+    &--danger {
+      color: ds.$clr-red-600;
+      &:hover {
+        background-color: ds.$clr-red-50;
+      }
+    }
+  }
+}
