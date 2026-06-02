@@ -1,0 +1,61 @@
+@use 'design-system' as ds;
+
+:host {
+  display: block;
+}
+
+.c-button {
+  display: inline-flex;
+  padding: ds.$spacing-sm ds.$spacing-lg;
+  border: 1px solid transparent;
+  border-radius: ds.$radius-md;
+  font-size: 0.9rem;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  min-width: 9rem;
+  width: auto;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &--primary {
+    background-color: ds.$theme-primary;
+    color: ds.$text-on-primary;
+    border-color: ds.$theme-primary;
+    &:hover:not(:disabled) {
+      background-color: ds.$theme-primary-hover;
+      border-color: ds.$theme-primary-hover;
+    }
+  }
+
+  &--secondary {
+    background-color: ds.$bg-button-secondary;
+    color: ds.$text-button-secondary;
+    border-color: ds.$bg-button-secondary;
+    &:hover:not(:disabled) {
+      background-color: ds.$bg-button-secondary-hover;
+    }
+  }
+
+  &__spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-bottom-color: transparent;
+    border-radius: ds.$radius-full;
+    display: inline-block;
+    animation: rotation 1s linear infinite;
+  }
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

@@ -2,6 +2,261 @@
     "pipes": [],
     "interfaces": [
         {
+            "name": "Product",
+            "id": "interface-Product-b5faa6669045d26cf02d10f624e28616c2587ed5d212897f7dc11b3386bef6001f4a4663bbbb3f8402865f688a861052700eb28f756d45a3eec8a1132583c55d",
+            "file": "src/app/domains/products/bussiness/models/product-model.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface Product {\n  readonly id: string;\n  readonly name: string;\n  readonly description: string;\n  readonly logoURL: string;\n  readonly releaseDate: Date;\n  readonly revisionDate: Date;\n}\n",
+            "properties": [
+                {
+                    "name": "description",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 4,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "id",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 2,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "logoURL",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 5,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "name",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 3,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "releaseDate",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Date",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 6,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "revisionDate",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Date",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 7,
+                    "modifierKind": [
+                        148
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "methods": [],
+            "extends": []
+        },
+        {
+            "name": "ProductDTO",
+            "id": "interface-ProductDTO-f11e519360511cc2516d5872b3d94760f55ae7905e9e3a6d9b150c1b3f381e3b929698e1dadd5d90b3fd5852fed5bfa048b8eca923ac22e218a6fc579a10a490",
+            "file": "src/app/domains/products/data-access/dtos/product.dto.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface ProductDTO {\n  readonly id: string;\n  readonly name: string;\n  readonly description: string;\n  readonly logo: string;\n  readonly release_date: string;\n  readonly revision_date: string;\n}\n\nexport interface ProductsApiResponseDTO {\n  readonly data: ProductDTO[];\n}\n\nexport interface ProductsApiErrorsDTO {\n  readonly name: string;\n  readonly message: string;\n}\n",
+            "properties": [
+                {
+                    "name": "description",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 4,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "id",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 2,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "logo",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 5,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "name",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 3,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "release_date",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 6,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "revision_date",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 7,
+                    "modifierKind": [
+                        148
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "methods": [],
+            "extends": []
+        },
+        {
+            "name": "ProductsApiErrorsDTO",
+            "id": "interface-ProductsApiErrorsDTO-f11e519360511cc2516d5872b3d94760f55ae7905e9e3a6d9b150c1b3f381e3b929698e1dadd5d90b3fd5852fed5bfa048b8eca923ac22e218a6fc579a10a490",
+            "file": "src/app/domains/products/data-access/dtos/product.dto.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface ProductDTO {\n  readonly id: string;\n  readonly name: string;\n  readonly description: string;\n  readonly logo: string;\n  readonly release_date: string;\n  readonly revision_date: string;\n}\n\nexport interface ProductsApiResponseDTO {\n  readonly data: ProductDTO[];\n}\n\nexport interface ProductsApiErrorsDTO {\n  readonly name: string;\n  readonly message: string;\n}\n",
+            "properties": [
+                {
+                    "name": "message",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 16,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "name",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 15,
+                    "modifierKind": [
+                        148
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "methods": [],
+            "extends": []
+        },
+        {
+            "name": "ProductsApiResponseDTO",
+            "id": "interface-ProductsApiResponseDTO-f11e519360511cc2516d5872b3d94760f55ae7905e9e3a6d9b150c1b3f381e3b929698e1dadd5d90b3fd5852fed5bfa048b8eca923ac22e218a6fc579a10a490",
+            "file": "src/app/domains/products/data-access/dtos/product.dto.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface ProductDTO {\n  readonly id: string;\n  readonly name: string;\n  readonly description: string;\n  readonly logo: string;\n  readonly release_date: string;\n  readonly revision_date: string;\n}\n\nexport interface ProductsApiResponseDTO {\n  readonly data: ProductDTO[];\n}\n\nexport interface ProductsApiErrorsDTO {\n  readonly name: string;\n  readonly message: string;\n}\n",
+            "properties": [
+                {
+                    "name": "data",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ProductDTO[]",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 11,
+                    "modifierKind": [
+                        148
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "methods": [],
+            "extends": []
+        },
+        {
             "name": "User",
             "id": "interface-User-d4821beac0e4a852e513391b7470981c4353fdd95a18628bb68136c8695b489ee15b926e2e5031bc26cf30e1508e0a362c3ee13a06734702b4d15af140e485d5",
             "file": "src/stories/user.ts",
@@ -30,7 +285,96 @@
     "injectables": [],
     "guards": [],
     "interceptors": [],
-    "classes": [],
+    "classes": [
+        {
+            "name": "ProductMapper",
+            "id": "class-ProductMapper-c4665c94910420aaa4bf69f494d5b76fdb7d602a4e7dc5f5aa042385aad2b60361cf76bc99293de25628c9026c8c8ce7faa72ee015de6abe906d7d637de1e75a",
+            "file": "src/app/domains/products/bussiness/mappers/product.mapper.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "class",
+            "sourceCode": "import { Product } from './../models/product-model';\nimport { ProductDTO } from '../../data-access/dtos/product.dto';\nimport { parseDate, formatDate } from '../../../../shared/utils/date.utils';\n\nexport class ProductMapper {\n  static dtoToDomain({\n    id,\n    logo,\n    description,\n    name,\n    release_date,\n    revision_date,\n  }: ProductDTO): Product {\n    return {\n      id,\n      name,\n      description,\n      logoURL: logo,\n      releaseDate: parseDate(release_date),\n      revisionDate: parseDate(revision_date),\n    };\n  }\n\n  static domainToDto({\n    id,\n    logoURL,\n    description,\n    name,\n    releaseDate,\n    revisionDate,\n  }: Product): ProductDTO {\n    return {\n      id,\n      name,\n      description,\n      logo: logoURL,\n      release_date: formatDate(releaseDate),\n      revision_date: formatDate(revisionDate),\n    };\n  }\n}\n",
+            "inputsClass": [],
+            "outputsClass": [],
+            "properties": [],
+            "methods": [
+                {
+                    "name": "domainToDto",
+                    "args": [
+                        {
+                            "name": "",
+                            "type": "Product",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "ProductDTO",
+                    "typeParameters": [],
+                    "line": 24,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        126
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "",
+                            "type": "Product",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "dtoToDomain",
+                    "args": [
+                        {
+                            "name": "",
+                            "type": "ProductDTO",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Product",
+                    "typeParameters": [],
+                    "line": 6,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        126
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "",
+                            "type": "ProductDTO",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "extends": [],
+            "hostBindings": [],
+            "hostListeners": []
+        }
+    ],
     "directives": [],
     "components": [
         {
@@ -224,6 +568,45 @@
                     }
                 }
             }
+        },
+        {
+            "name": "CButtonComponent",
+            "id": "component-CButtonComponent-38e90b5608bf74024df3ab7425c962caf049cf8d1d9e999c20399ebee5f5e699e7a62c5cc7ddf004acff60b75f1764e04f8bc6697144589df1734dfd24f5a48e",
+            "file": "src/app/shared/components/c-button/c-button.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "c-button",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./c-button.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { ChangeDetectionStrategy, Component } from '@angular/core';\n\n@Component({\n  selector: 'c-button',\n  standalone: true,\n  templateUrl: './c-button.component.html',\n  styleUrl: './c-button.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class CButtonComponent {}\n",
+            "styleUrl": "./c-button.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<p>cbutton works!</p>,\n"
         },
         {
             "name": "HeaderComponent",
@@ -420,6 +803,26 @@
                 "defaultValue": "{\n  providers: [\n    provideBrowserGlobalErrorListeners(),\n    provideRouter(routes)\n  ]\n}"
             },
             {
+                "name": "environment",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/environments/environment.development.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  BASE_URL: '/api',\n  production: false,\n}"
+            },
+            {
+                "name": "environment",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/environments/environment.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  BASE_URL: '/api',\n  production: true,\n}"
+            },
+            {
                 "name": "routes",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -430,7 +833,120 @@
                 "defaultValue": "[]"
             }
         ],
-        "functions": [],
+        "functions": [
+            {
+                "name": "formatDate",
+                "file": "src/app/shared/utils/date.utils.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "<p>Convierte una fecha a formato YYYY-MM-DD</p>\n",
+                "args": [
+                    {
+                        "name": "date",
+                        "type": "Date",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "returnType": "string",
+                "jsdoctags": [
+                    {
+                        "name": {
+                            "pos": 247,
+                            "end": 251,
+                            "kind": 80,
+                            "id": 0,
+                            "flags": 16777216,
+                            "transformFlags": 0,
+                            "escapedText": "date"
+                        },
+                        "type": "Date",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "pos": 241,
+                            "end": 246,
+                            "kind": 80,
+                            "id": 0,
+                            "flags": 16777216,
+                            "transformFlags": 0,
+                            "escapedText": "param"
+                        },
+                        "comment": ""
+                    },
+                    {
+                        "tagName": {
+                            "pos": 256,
+                            "end": 263,
+                            "kind": 80,
+                            "id": 0,
+                            "flags": 16777216,
+                            "transformFlags": 0,
+                            "escapedText": "returns"
+                        },
+                        "comment": "<p>YYYY-MM-DD string</p>\n"
+                    }
+                ]
+            },
+            {
+                "name": "parseDate",
+                "file": "src/app/shared/utils/date.utils.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "<p>Convierte un string de fecha a un objeto fecha</p>\n",
+                "args": [
+                    {
+                        "name": "date",
+                        "type": "string",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "returnType": "Date",
+                "jsdoctags": [
+                    {
+                        "name": {
+                            "pos": 64,
+                            "end": 68,
+                            "kind": 80,
+                            "id": 0,
+                            "flags": 16777216,
+                            "transformFlags": 0,
+                            "escapedText": "date"
+                        },
+                        "type": "string",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "pos": 58,
+                            "end": 63,
+                            "kind": 80,
+                            "id": 0,
+                            "flags": 16777216,
+                            "transformFlags": 0,
+                            "escapedText": "param"
+                        },
+                        "comment": ""
+                    },
+                    {
+                        "tagName": {
+                            "pos": 73,
+                            "end": 80,
+                            "kind": 80,
+                            "id": 0,
+                            "flags": 16777216,
+                            "transformFlags": 0,
+                            "escapedText": "returns"
+                        },
+                        "comment": "<p>objeto de fecha</p>\n"
+                    }
+                ]
+            }
+        ],
         "typealiases": [],
         "enumerations": [],
         "groupedVariables": {
@@ -446,6 +962,30 @@
                     "defaultValue": "{\n  providers: [\n    provideBrowserGlobalErrorListeners(),\n    provideRouter(routes)\n  ]\n}"
                 }
             ],
+            "src/environments/environment.development.ts": [
+                {
+                    "name": "environment",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/environments/environment.development.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  BASE_URL: '/api',\n  production: false,\n}"
+                }
+            ],
+            "src/environments/environment.ts": [
+                {
+                    "name": "environment",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/environments/environment.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  BASE_URL: '/api',\n  production: true,\n}"
+                }
+            ],
             "src/app/app.routes.ts": [
                 {
                     "name": "routes",
@@ -459,7 +999,122 @@
                 }
             ]
         },
-        "groupedFunctions": {},
+        "groupedFunctions": {
+            "src/app/shared/utils/date.utils.ts": [
+                {
+                    "name": "formatDate",
+                    "file": "src/app/shared/utils/date.utils.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "<p>Convierte una fecha a formato YYYY-MM-DD</p>\n",
+                    "args": [
+                        {
+                            "name": "date",
+                            "type": "Date",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "returnType": "string",
+                    "jsdoctags": [
+                        {
+                            "name": {
+                                "pos": 247,
+                                "end": 251,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16777216,
+                                "transformFlags": 0,
+                                "escapedText": "date"
+                            },
+                            "type": "Date",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "pos": 241,
+                                "end": 246,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16777216,
+                                "transformFlags": 0,
+                                "escapedText": "param"
+                            },
+                            "comment": ""
+                        },
+                        {
+                            "tagName": {
+                                "pos": 256,
+                                "end": 263,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16777216,
+                                "transformFlags": 0,
+                                "escapedText": "returns"
+                            },
+                            "comment": "<p>YYYY-MM-DD string</p>\n"
+                        }
+                    ]
+                },
+                {
+                    "name": "parseDate",
+                    "file": "src/app/shared/utils/date.utils.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "<p>Convierte un string de fecha a un objeto fecha</p>\n",
+                    "args": [
+                        {
+                            "name": "date",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "returnType": "Date",
+                    "jsdoctags": [
+                        {
+                            "name": {
+                                "pos": 64,
+                                "end": 68,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16777216,
+                                "transformFlags": 0,
+                                "escapedText": "date"
+                            },
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "pos": 58,
+                                "end": 63,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16777216,
+                                "transformFlags": 0,
+                                "escapedText": "param"
+                            },
+                            "comment": ""
+                        },
+                        {
+                            "tagName": {
+                                "pos": 73,
+                                "end": 80,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16777216,
+                                "transformFlags": 0,
+                                "escapedText": "returns"
+                            },
+                            "comment": "<p>objeto de fecha</p>\n"
+                        }
+                    ]
+                }
+            ]
+        },
         "groupedEnumerations": {},
         "groupedTypeAliases": {}
     },
@@ -469,7 +1124,7 @@
         "children": []
     },
     "coverage": {
-        "count": 11,
+        "count": 16,
         "status": "low",
         "files": [
             {
@@ -499,6 +1154,100 @@
                 "name": "App",
                 "coveragePercent": 0,
                 "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/domains/products/bussiness/mappers/product.mapper.ts",
+                "type": "class",
+                "linktype": "classe",
+                "name": "ProductMapper",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/domains/products/bussiness/models/product-model.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "Product",
+                "coveragePercent": 0,
+                "coverageCount": "0/7",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/domains/products/data-access/dtos/product.dto.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "ProductDTO",
+                "coveragePercent": 0,
+                "coverageCount": "0/7",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/domains/products/data-access/dtos/product.dto.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "ProductsApiErrorsDTO",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/domains/products/data-access/dtos/product.dto.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "ProductsApiResponseDTO",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/shared/components/c-button/c-button.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "CButtonComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/shared/utils/date.utils.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
+                "name": "formatDate",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "src/app/shared/utils/date.utils.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
+                "name": "parseDate",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "src/environments/environment.development.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "environment",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/environments/environment.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "environment",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {

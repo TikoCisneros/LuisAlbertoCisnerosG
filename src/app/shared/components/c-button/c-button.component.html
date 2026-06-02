@@ -1,0 +1,11 @@
+<button
+  [class]="'c-button c-button--' + variant()"
+  [disabled]="isDisabled()"
+  (click)="clickHandler($event)"
+>
+  @if (isLoading()) {
+    <span class="c-button__spinner"></span>
+  } @else {
+    <ng-content></ng-content>
+  }
+</button>
