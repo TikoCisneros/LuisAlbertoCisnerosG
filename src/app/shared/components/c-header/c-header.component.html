@@ -1,0 +1,13 @@
+<header class="c-header">
+  <div class="c-header__container">
+    @if (backUrl()) {
+      <a class="c-header__back-btn" [routerLink]="backUrl()" aria-label="Volver">
+        <ng-icon name="matArrowBack" class="c-header__back-icon" />
+      </a>
+    }
+    <div class="c-header__logo">
+      <ng-icon name="matPayments" class="c-header__icon" />
+      <span class="c-header__text">BANCO</span>
+    </div>
+  </div>
+</header>

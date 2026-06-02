@@ -1,0 +1,61 @@
+@use 'design-system' as ds;
+
+.c-header {
+  background-color: ds.$bg-surface;
+  border-bottom: 2px solid ds.$border-color;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  &__container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 ds.$spacing-lg;
+    display: flex;
+    align-items: center;
+    position: relative;
+    justify-content: center;
+  }
+
+  &__back-btn {
+    position: absolute;
+    left: ds.$spacing-lg;
+    color: ds.$theme-secondary;
+    padding: ds.$spacing-xs;
+    border-radius: ds.$radius-full;
+    transition: ds.$transition-base;
+    display: flex;
+    text-decoration: none;
+
+    &:hover {
+      background-color: ds.$clr-slate-100;
+    }
+
+    ng-icon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    ng-icon {
+      width: 32px;
+      height: 32px;
+      color: ds.$theme-secondary;
+    }
+  }
+
+  &__text {
+    @include ds.typography('xl', 'bold', 'tight');
+    color: ds.$theme-secondary;
+    letter-spacing: 1px;
+  }
+}
