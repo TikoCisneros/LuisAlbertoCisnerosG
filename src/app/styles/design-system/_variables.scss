@@ -1,0 +1,77 @@
+@use 'colors' as c;
+
+// ==========================================================================
+// 1. Escala de Espaciados (Rem-based)
+// ==========================================================================
+$spacing-none: 0       !default;
+$spacing-xs:   0.25rem !default; // 4px
+$spacing-sm:   0.5rem  !default; // 8px
+$spacing-md:   1rem    !default; // 16px
+$spacing-lg:   1.5rem  !default; // 24px
+$spacing-xl:   2rem    !default; // 32px
+$spacing-2xl:  3rem    !default; // 48px
+
+$spacers: (
+  'none': $spacing-none,
+  'xs':   $spacing-xs,
+  'sm':   $spacing-sm,
+  'md':   $spacing-md,
+  'lg':   $spacing-lg,
+  'xl':   $spacing-xl,
+  '2xl':  $spacing-2xl
+) !default;
+
+// ==========================================================================
+// 2. Geometría y Bordes
+// ==========================================================================
+$radius-sm:   0.125rem !default; // 2px
+$radius-md:   0.25rem  !default; // 4px
+$radius-lg:   0.5rem   !default; // 8px
+$radius-xl:   0.75rem  !default; // 12px
+$radius-full: 9999px   !default;
+
+// ==========================================================================
+// 3. Elevación y Sombras
+// ==========================================================================
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !default;
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !default;
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !default;
+
+// ==========================================================================
+// 4. Profundidad (Z-Index)
+// ==========================================================================
+$z-index-dropdown: 1000 !default;
+$z-index-sticky:   1020 !default;
+$z-index-modal:    1050 !default;
+$z-index-popover:  1060 !default;
+
+// ==========================================================================
+// 5. Animaciones y Transiciones
+// ==========================================================================
+$transition-duration-fast: 0.15s !default;
+$transition-duration-base: 0.3s  !default;
+$transition-timing-ease: ease-in-out !default;
+$transition-base: all $transition-duration-fast $transition-timing-ease !default;
+
+// ==========================================================================
+// 6. Componentes: Alertas (Actualizado con la nueva semántica)
+// ==========================================================================
+$alert-padding:     $spacing-md !default;
+$alert-radius:      $radius-lg  !default; // 8px, igual que el modal de la imagen
+
+// Info -> Mapeado a Sky
+$alert-bg-info:     c.$clr-sky-100 !default;
+$alert-text-info:   c.$clr-sky-800 !default;
+
+// Advertencia (Warning) -> Mapeado a Amber
+$alert-bg-warning:  c.$clr-amber-100 !default;
+$alert-text-warning: c.$clr-amber-800 !default;
+
+// Error (Danger) -> Mapeado a Red
+$alert-bg-error:    c.$clr-red-100 !default;
+$alert-text-error:  c.$clr-red-800 !default;
+
+// Normal / Éxito -> Mapeado a Lime o Gris según prefieras. 
+// Para el diseño D4, si quieres una alerta neutral, puedes usar Slate:
+$alert-bg-normal:   c.$clr-slate-100 !default;
+$alert-text-normal: c.$clr-slate-800 !default;

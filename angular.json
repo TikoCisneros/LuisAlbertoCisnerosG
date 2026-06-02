@@ -30,8 +30,14 @@
                 "input": "public"
               }
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/app/styles",
+                "src/app/styles/design-system"
+              ]
+            },
             "styles": [
-              "src/styles.scss"
+              "src/app/styles/_index.scss"
             ]
           },
           "configurations": {

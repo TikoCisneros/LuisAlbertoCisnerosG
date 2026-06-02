@@ -1,0 +1,29 @@
+// Tipografías Base
+$font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !default;
+$font-family-mono: Courier, monospace !default;
+
+// Mapa de Tamaños de Fuente (Rem-based)
+$font-sizes: (
+  'xs':   0.75rem,   // 12px
+  'sm':   0.875rem,  // 14px
+  'base': 1rem,      // 16px
+  'lg':   1.125rem,  // 18px
+  'xl':   1.25rem,   // 20px
+  '2xl':  1.5rem,    // 24px
+  '3xl':  1.875rem   // 30px
+) !default;
+
+// Mapa de Pesos Tipográficos
+$font-weights: (
+  'normal':   400,
+  'medium':   500,
+  'semibold': 600,
+  'bold':     700
+) !default;
+
+// Mapa de Alturas de Línea
+$line-heights: (
+  'tight': 1.25,
+  'base':  1.5,
+  'loose': 1.75
+) !default;

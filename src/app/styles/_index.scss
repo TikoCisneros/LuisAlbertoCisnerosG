@@ -1,0 +1,27 @@
+// 1. Importamos todo el sistema de diseño bajo el alias 'ds'
+// SASS buscará automáticamente el archivo _index.scss dentro de esa carpeta
+@use 'design-system' as ds;
+
+// 2. Reset Básico
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+// 3. Estilos Globales (Ahora sí compilará perfectamente usando el alias 'ds')
+body {
+  @include ds.typography('base', 'normal', 'base');
+  background-color: ds.$bg-body;
+  color: ds.$text-main;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

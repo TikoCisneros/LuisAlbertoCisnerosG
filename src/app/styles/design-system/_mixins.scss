@@ -1,0 +1,61 @@
+@use 'sass:map';
+@use 'typography' as typo;
+
+// ==========================================================================
+// Breakpoints del Sistema (Tus valores exactos)
+// ==========================================================================
+$breakpoints: (
+  'sm': 576px,
+  'md': 768px,
+  'lg': 992px,
+  'xl': 1200px
+) !default;
+
+// Mixin 1: Mobile-First (min-width) -> El estándar para maquetar de móvil a desktop
+@mixin respond-to($breakpoint) {
+  @if map.has-key($breakpoints, $breakpoint) {
+    @media (min-width: map.get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint '#{$breakpoint}' no encontrado en la escala global.";
+  }
+}
+
+// Mixin 2: Desktop-First (max-width) -> Súper útil para parches rápidos o comportamientos exclusivos de móvil
+@mixin respond-down($breakpoint) {
+  @if map.has-key($breakpoints, $breakpoint) {
+    // Restamos 0.02px para evitar solapamientos extraños en navegadores modernos
+    @media (max-width: (map.get($breakpoints, $breakpoint) - 0.02px)) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint '#{$breakpoint}' no encontrado en la escala global.";
+  }
+}
+
+@mixin typography($size: 'base', $weight: 'normal', $line-height: 'base', $mono: false) {
+  // Validamos y extraemos el tamaño
+  @if map.has-key(typo.$font-sizes, $size) {
+    font-size: map.get(typo.$font-sizes, $size);
+  } @else {
+    @warn "El tamaño '#{$size}' no existe en $font-sizes.";
+  }
+
+  // Validamos y extraemos el peso
+  @if map.has-key(typo.$font-weights, $weight) {
+    font-weight: map.get(typo.$font-weights, $weight);
+  }
+
+  // Validamos y extraemos el line-height
+  @if map.has-key(typo.$line-heights, $line-height) {
+    line-height: map.get(typo.$line-heights, $line-height);
+  }
+
+  // Definimos la familia tipográfica
+  @if $mono {
+    font-family: typo.$font-family-mono;
+  } @else {
+    font-family: typo.$font-family-sans;
+  }
+}

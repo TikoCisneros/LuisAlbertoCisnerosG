@@ -1,0 +1,170 @@
+// ==========================================================================
+// 1. Raw Palette (Tokens Primitivos - Basados en OKLCH de Tailwind)
+// ==========================================================================
+
+// Neutros Absolutos
+$clr-black: #000 !default;
+$clr-white: #fff !default;
+
+// Red
+$clr-red-50: oklch(97.1% 0.013 17.38) !default;
+$clr-red-100: oklch(93.6% 0.032 17.717) !default;
+$clr-red-200: oklch(88.5% 0.062 18.334) !default;
+$clr-red-300: oklch(80.8% 0.114 19.571) !default;
+$clr-red-400: oklch(70.4% 0.191 22.216) !default;
+$clr-red-500: oklch(63.7% 0.237 25.331) !default;
+$clr-red-600: oklch(57.7% 0.245 27.325) !default;
+$clr-red-700: oklch(50.5% 0.213 27.518) !default;
+$clr-red-800: oklch(44.4% 0.177 26.899) !default;
+$clr-red-900: oklch(39.6% 0.141 25.723) !default;
+$clr-red-950: oklch(25.8% 0.092 26.042) !default;
+
+// Orange
+$clr-orange-50: oklch(98% 0.016 73.684) !default;
+$clr-orange-100: oklch(95.4% 0.038 75.164) !default;
+$clr-orange-200: oklch(90.1% 0.076 70.697) !default;
+$clr-orange-300: oklch(83.7% 0.128 66.29) !default;
+$clr-orange-400: oklch(75% 0.183 55.934) !default;
+$clr-orange-500: oklch(70.5% 0.213 47.604) !default;
+$clr-orange-600: oklch(64.6% 0.222 41.116) !default;
+$clr-orange-700: oklch(55.3% 0.195 38.402) !default;
+$clr-orange-800: oklch(47% 0.157 37.304) !default;
+$clr-orange-900: oklch(40.8% 0.123 38.172) !default;
+$clr-orange-950: oklch(26.6% 0.079 36.259) !default;
+
+// Amber
+$clr-amber-50: oklch(98.7% 0.022 95.277) !default;
+$clr-amber-100: oklch(96.2% 0.059 95.617) !default;
+$clr-amber-200: oklch(92.4% 0.12 95.746) !default;
+$clr-amber-300: oklch(87.9% 0.169 91.605) !default;
+$clr-amber-400: oklch(82.8% 0.189 84.429) !default;
+$clr-amber-500: oklch(76.9% 0.188 70.08) !default;
+$clr-amber-600: oklch(66.6% 0.179 58.318) !default;
+$clr-amber-700: oklch(55.5% 0.163 48.998) !default;
+$clr-amber-800: oklch(47.3% 0.137 46.201) !default;
+$clr-amber-900: oklch(41.4% 0.112 45.904) !default;
+$clr-amber-950: oklch(27.9% 0.077 45.635) !default;
+
+// Yellow
+$clr-yellow-50: oklch(98.7% 0.026 102.212) !default;
+$clr-yellow-100: oklch(97.3% 0.071 103.193) !default;
+$clr-yellow-200: oklch(94.5% 0.129 101.54) !default;
+$clr-yellow-300: oklch(90.5% 0.182 98.111) !default;
+$clr-yellow-400: oklch(85.2% 0.199 91.936) !default;
+$clr-yellow-500: oklch(79.5% 0.184 86.047) !default;
+$clr-yellow-600: oklch(68.1% 0.162 75.834) !default;
+$clr-yellow-700: oklch(55.4% 0.135 66.442) !default;
+$clr-yellow-800: oklch(47.6% 0.114 61.907) !default;
+$clr-yellow-900: oklch(42.1% 0.095 57.708) !default;
+$clr-yellow-950: oklch(28.6% 0.066 53.813) !default;
+
+// Lime
+$clr-lime-50: oklch(98.6% 0.031 120.757) !default;
+$clr-lime-100: oklch(96.7% 0.067 122.328) !default;
+$clr-lime-200: oklch(93.8% 0.127 124.321) !default;
+$clr-lime-300: oklch(89.7% 0.196 126.665) !default;
+$clr-lime-400: oklch(84.1% 0.238 128.85) !default;
+$clr-lime-500: oklch(76.8% 0.233 130.85) !default;
+$clr-lime-600: oklch(64.8% 0.2 131.684) !default;
+$clr-lime-700: oklch(53.2% 0.157 131.589) !default;
+$clr-lime-800: oklch(45.3% 0.124 130.933) !default;
+$clr-lime-900: oklch(40.5% 0.101 131.063) !default;
+$clr-lime-950: oklch(27.4% 0.072 132.109) !default;
+
+// Sky
+$clr-sky-50: oklch(97.7% 0.013 236.62) !default;
+$clr-sky-100: oklch(95.1% 0.026 236.824) !default;
+$clr-sky-200: oklch(90.1% 0.058 230.902) !default;
+$clr-sky-300: oklch(82.8% 0.111 230.318) !default;
+$clr-sky-400: oklch(74.6% 0.16 232.661) !default;
+$clr-sky-500: oklch(68.5% 0.169 237.323) !default;
+$clr-sky-600: oklch(58.8% 0.158 241.966) !default;
+$clr-sky-700: oklch(50% 0.134 242.749) !default;
+$clr-sky-800: oklch(44.3% 0.11 240.79) !default;
+$clr-sky-900: oklch(39.1% 0.09 240.876) !default;
+$clr-sky-950: oklch(29.3% 0.066 243.157) !default;
+
+// Blue
+$clr-blue-50: oklch(97% 0.014 254.604) !default;
+$clr-blue-100: oklch(93.2% 0.032 255.585) !default;
+$clr-blue-200: oklch(88.2% 0.059 254.128) !default;
+$clr-blue-300: oklch(80.9% 0.105 251.813) !default;
+$clr-blue-400: oklch(70.7% 0.165 254.624) !default;
+$clr-blue-500: oklch(62.3% 0.214 259.815) !default;
+$clr-blue-600: oklch(54.6% 0.245 262.881) !default;
+$clr-blue-700: oklch(48.8% 0.243 264.376) !default;
+$clr-blue-800: oklch(42.4% 0.199 265.638) !default;
+$clr-blue-900: oklch(37.9% 0.146 265.522) !default;
+$clr-blue-950: oklch(28.2% 0.091 267.935) !default;
+
+// Slate (Gris Azulado)
+$clr-slate-50: oklch(98.4% 0.003 247.858) !default;
+$clr-slate-100: oklch(96.8% 0.007 247.896) !default;
+$clr-slate-200: oklch(92.9% 0.013 255.508) !default;
+$clr-slate-300: oklch(86.9% 0.022 252.894) !default;
+$clr-slate-400: oklch(70.4% 0.04 256.788) !default;
+$clr-slate-500: oklch(55.4% 0.046 257.417) !default;
+$clr-slate-600: oklch(44.6% 0.043 257.281) !default;
+$clr-slate-700: oklch(37.2% 0.044 257.287) !default;
+$clr-slate-800: oklch(27.9% 0.041 260.031) !default;
+$clr-slate-900: oklch(20.8% 0.042 265.755) !default;
+$clr-slate-950: oklch(12.9% 0.042 264.695) !default;
+
+// Gray (Gris Neutro)
+$clr-gray-50: oklch(98.5% 0.002 247.839) !default;
+$clr-gray-100: oklch(96.7% 0.003 264.542) !default;
+$clr-gray-200: oklch(92.8% 0.006 264.531) !default;
+$clr-gray-300: oklch(87.2% 0.01 258.338) !default;
+$clr-gray-400: oklch(70.7% 0.022 261.325) !default;
+$clr-gray-500: oklch(55.1% 0.027 264.364) !default;
+$clr-gray-600: oklch(44.6% 0.03 256.802) !default;
+$clr-gray-700: oklch(37.3% 0.034 259.733) !default;
+$clr-gray-800: oklch(27.8% 0.033 256.848) !default;
+$clr-gray-900: oklch(21% 0.034 264.665) !default;
+$clr-gray-950: oklch(13% 0.028 261.692) !default;
+
+// Zinc (Gris Plomo Leve)
+$clr-zinc-50: oklch(98.5% 0 0) !default;
+$clr-zinc-100: oklch(96.7% 0.001 286.375) !default;
+$clr-zinc-200: oklch(92% 0.004 286.32) !default;
+$clr-zinc-300: oklch(87.1% 0.006 286.286) !default;
+$clr-zinc-400: oklch(70.5% 0.015 286.067) !default;
+$clr-zinc-500: oklch(55.2% 0.016 285.938) !default;
+$clr-zinc-600: oklch(44.2% 0.017 285.786) !default;
+$clr-zinc-700: oklch(37% 0.013 285.805) !default;
+$clr-zinc-800: oklch(27.4% 0.006 286.033) !default;
+$clr-zinc-900: oklch(21% 0.006 285.885) !default;
+$clr-zinc-950: oklch(14.1% 0.005 285.823) !default;
+
+// ==========================================================================
+// 2. Functional Semantic Mapping (Ajustado al Diseño D4)
+// ==========================================================================
+
+// Color Primario: El botón de acción "Confirmar" (Amarillo/Oro)
+$theme-primary: $clr-yellow-300 !default;
+$theme-primary-hover: $clr-yellow-400 !default;
+$text-on-primary: $clr-black !default; // Contraste puro para el botón amarillo
+
+// Color Secundario: Texto de "Cancelar", branding e íconos (Azul Marino Profundo)
+$theme-secondary: $clr-blue-900 !default;
+$theme-secondary-hover: $clr-blue-950 !default;
+
+// Fondos y Estructura de Superficies (Respetando el Body Blanco)
+$bg-body: $clr-white !default; // El fondo base de toda la aplicación (Blanco)
+$bg-surface: $clr-white !default; // El fondo del contenedor del modal y tarjetas
+$bg-backdrop: oklch(
+  20.8% 0.042 265.755 / 40%
+); // Tu $clr-slate-900 con 40% de opacidad para el velo del modal
+
+// Botones Pasivos / Secundarios (Como el de "Cancelar")
+$bg-button-secondary: $clr-slate-100 !default;
+$bg-button-secondary-hover: $clr-slate-200 !default;
+$text-button-secondary: $theme-secondary !default; // Usa el azul marino corporativo
+
+// Tipografías por Jerarquía
+$text-main: $clr-slate-900 !default; // Título del modal ("¿Estás seguro de...?")
+$text-muted: $clr-slate-400 !default; // Etiquetas secundarias ("Nombre", "Descripción")
+$text-body-gray: $clr-slate-700 !default; // El ID "ID: 123455" de la tarjeta de fondo
+
+// Bordes Funcionales
+$border-color: $clr-slate-200 !default;
