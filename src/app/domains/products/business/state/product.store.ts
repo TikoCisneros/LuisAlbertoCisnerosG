@@ -7,6 +7,8 @@ import { Product } from '../models/product-model';
 import { ProductsApiErrorsDTO } from '@domains/products/data-access/dtos/product.dto';
 import { ProductHttpService } from '@domains/products/data-access/services/product-http.service';
 
+const INITIAL_PAGE = 1 as const;
+const PAGE_SIZE = 5 as const;
 export interface ProductState {
   products: Product[];
   isLoading: boolean;
@@ -14,6 +16,9 @@ export interface ProductState {
   error: string | null;
   /** Search section */
   searchTerm: string;
+  /** Pagination section */
+  currentPage: number;
+  pageSize: number;
 }
 
 const initialState: ProductState = {
@@ -21,6 +26,8 @@ const initialState: ProductState = {
   isLoading: false,
   error: null,
   searchTerm: '',
+  currentPage: INITIAL_PAGE,
+  pageSize: PAGE_SIZE,
 };
 
 /**
@@ -46,6 +53,19 @@ export const ProductStore = signalStore(
     });
     return { filteredProducts };
   }),
+  // For pagination
+  withComputed(({ filteredProducts, currentPage, pageSize }) => {
+    const paginatedProducts = computed(() => {
+      const startIndex = (currentPage() - 1) * pageSize();
+      return filteredProducts().slice(startIndex, startIndex + pageSize());
+    });
+    const totalResults = computed(() => filteredProducts().length);
+
+    const totalPages = computed(() => {
+      return Math.ceil(totalResults() / pageSize()) || INITIAL_PAGE;
+    });
+    return { paginatedProducts, totalResults, totalPages };
+  }),
   // Methods
   withMethods((store, httpService = inject(ProductHttpService)) => ({
     loadProducts: rxMethod<void>(
@@ -67,7 +87,16 @@ export const ProductStore = signalStore(
     ),
     // Filter functionality
     setSearchTerm(searchTerm: string) {
-      patchState(store, { searchTerm });
+      patchState(store, { searchTerm, currentPage: INITIAL_PAGE });
+    },
+    // Pagination functionality
+    setPageSize(pageSize: number): void {
+      patchState(store, { pageSize, currentPage: 1 }); // Return to page 1 when changing size
+    },
+    setCurrentPage(currentPage: number): void {
+      if (currentPage >= INITIAL_PAGE && currentPage <= store.totalPages()) {
+        patchState(store, { currentPage });
+      }
     },
   })),
 );
