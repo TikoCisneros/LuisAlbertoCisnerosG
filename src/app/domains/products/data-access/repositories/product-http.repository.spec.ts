@@ -94,8 +94,8 @@ describe('ProductHttpRepository', () => {
   describe('createProduct', () => {
     it('should send a POST request with the DTO in the body and return the mapped product', () => {
       service.createProduct(mockProduct).subscribe((responseProduct) => {
-        expect(responseProduct.id).toBe(mockProduct.id);
-        expect(responseProduct.name).toBe(mockProduct.name);
+        expect(responseProduct.data.id).toBe(mockProduct.id);
+        expect(responseProduct.data.name).toBe(mockProduct.name);
       });
 
       const req = httpMock.expectOne(`${mockBaseUrl}/products`);
@@ -111,7 +111,7 @@ describe('ProductHttpRepository', () => {
         date_revision: '2027-05-20',
       });
 
-      req.flush(mockDto);
+      req.flush({ message: 'Product created successfully', data: mockDto });
     });
 
     it('should return a 400 Bad Request error when API validation fails', () => {
@@ -127,8 +127,9 @@ describe('ProductHttpRepository', () => {
           throw new Error('Debería haber fallado con un error 400');
         },
         error: (error) => {
-          expect(error.status).toBe(400);
-          expect(error.error).toEqual(errorResponse);
+          expect(error).toBeInstanceOf(ProductErrors);
+          expect(error.code).toBe('CREATE_FAILED');
+          expect(error.message).toBe("Invalid body, check 'errors' property for more info.");
           errorAsserted = true;
         },
       });
@@ -144,14 +145,14 @@ describe('ProductHttpRepository', () => {
   describe('updateProduct', () => {
     it('should send a PUT request with the DTO in the body and return the modified product', () => {
       service.updateProduct(mockProduct).subscribe((responseProduct) => {
-        expect(responseProduct.id).toBe(mockProduct.id);
+        expect(responseProduct.data.id).toBe(mockProduct.id);
       });
 
       const req = httpMock.expectOne(`${mockBaseUrl}/products/${mockProduct.id}`);
       expect(req.request.method).toBe('PUT');
       expect(req.request.body.id).toBe(mockProduct.id);
 
-      req.flush(mockDto);
+      req.flush({ message: 'Product updated successfully', data: mockDto });
     });
   });
 

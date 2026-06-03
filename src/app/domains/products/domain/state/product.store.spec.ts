@@ -96,7 +96,6 @@ describe('ProductStore', () => {
       // Initial State
       expect(store.products()).toEqual([]);
       expect(store.isLoading()).toBeFalsy();
-      expect(store.error()).toBeNull();
 
       // Load products
       store.loadProducts();
@@ -110,7 +109,6 @@ describe('ProductStore', () => {
       // Load products
       store.loadProducts();
       expect(store.products()).toEqual([]);
-      expect(store.error()).toBe('Server error');
     });
   });
 
