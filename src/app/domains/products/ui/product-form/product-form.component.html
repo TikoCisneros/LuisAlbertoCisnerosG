@@ -42,13 +42,13 @@
       />
       <!-- Campo: Logo -->
       <c-input-form
-        [id]="'logo'"
+        [id]="'logoURL'"
         [type]="'text'"
         [label]="'Logo'"
         [placeholder]="'http://imagen.com/logo.png'"
-        formControlName="logo"
-        [isInvalid]="isControlInvalid('logo')"
-        [errorMessage]="getErrorMessage('logo')"
+        formControlName="logoURL"
+        [isInvalid]="isControlInvalid('logoURL')"
+        [errorMessage]="getErrorMessage('logoURL')"
       />
       <!-- Campo: Fecha Liberación -->
       <c-input-form
@@ -70,8 +70,15 @@
     </div>
     <!-- Acciones -->
     <div class="product-form__actions">
-      <c-button variant="secondary" (onClick)="resetForm()">Reiniciar</c-button>
-      <c-button variant="primary" type="submit" [isDisabled]="productForm.invalid || isLoading()"
+      <c-button variant="secondary" (onClick)="resetForm()" [isDisabled]="isLoading()"
+        >Reiniciar</c-button
+      >
+      <c-button
+        variant="primary"
+        type="submit"
+        [isDisabled]="productForm.invalid || isLoading()"
+        [isLoading]="isLoading()"
+        (onClick)="onSubmitHandler()"
         >Enviar</c-button
       >
     </div>

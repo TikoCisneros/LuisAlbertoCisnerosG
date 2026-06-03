@@ -1,1 +1,5 @@
-<!-- Product Operation Page -->
+<product-form
+  [idValidator]="idValidator"
+  [isLoading]="store.isLoading()"
+  (onSubmit)="onAddProduct($event)"
+/>

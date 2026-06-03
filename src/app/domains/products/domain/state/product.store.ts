@@ -18,6 +18,8 @@ export interface ProductState {
   /** Pagination section */
   currentPage: number;
   pageSize: number;
+  /** Api error */
+  hasError: boolean;
 }
 
 const initialState: ProductState = {
@@ -26,6 +28,7 @@ const initialState: ProductState = {
   searchTerm: '',
   currentPage: INITIAL_PAGE,
   pageSize: PAGE_SIZE,
+  hasError: false,
 };
 
 function errorParser(error: unknown, fallback: string) {
@@ -76,11 +79,11 @@ export const ProductStore = signalStore(
           switchMap(() =>
             productRepository.getProducts().pipe(
               tap((products) => {
-                patchState(store, { products, isLoading: false });
+                patchState(store, { products, isLoading: false, hasError: false });
               }),
               catchError((err) => {
                 const errMsg = errorParser(err, 'Error inesperado al cargar productos');
-                patchState(store, { isLoading: false });
+                patchState(store, { isLoading: false, hasError: true });
                 notificationService.notify('error', errMsg);
                 return of(null);
               }),
@@ -97,12 +100,13 @@ export const ProductStore = signalStore(
                 patchState(store, {
                   products: store.products().filter((p) => p.id !== productId),
                   isLoading: false,
+                  hasError: false,
                 });
                 notificationService.notify('success', msj);
               }),
               catchError((err) => {
                 const errMsg = errorParser(err, 'Error inesperado al eliminar productos');
-                patchState(store, { isLoading: false });
+                patchState(store, { isLoading: false, hasError: true });
                 notificationService.notify('error', errMsg);
                 return of(null);
               }),
@@ -119,12 +123,13 @@ export const ProductStore = signalStore(
                 patchState(store, {
                   products: [...store.products(), createdProduct],
                   isLoading: false,
+                  hasError: false,
                 });
                 notificationService.notify('success', message);
               }),
               catchError((err) => {
                 const errMsg = errorParser(err, 'Error inesperado al crear producto');
-                patchState(store, { isLoading: false });
+                patchState(store, { isLoading: false, hasError: true });
                 notificationService.notify('error', errMsg);
                 return of(null);
               }),
@@ -143,12 +148,13 @@ export const ProductStore = signalStore(
                     .products()
                     .map((p) => (p.id === responseProduct.id ? responseProduct : p)),
                   isLoading: false,
+                  hasError: false,
                 });
                 notificationService.notify('success', message);
               }),
               catchError((err) => {
                 const errMsg = errorParser(err, 'Error inesperado al actualizar producto');
-                patchState(store, { isLoading: false });
+                patchState(store, { isLoading: false, hasError: true });
                 notificationService.notify('error', errMsg);
                 return of(null);
               }),

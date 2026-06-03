@@ -8,6 +8,7 @@ import { ProductStore } from '@domains/products/domain/state/product.store';
 import { ProductHttpRepository } from '@domains/products/data-access/repositories/product-http.repository';
 import { CPaginationComponent } from '@shared/components/c-pagination/c-pagination.component';
 import { CModalComponent } from '@shared/components/c-modal/c-modal.component';
+import { Router } from '@angular/router';
 
 const PRODUCT_TABLE_COLUMNS: TableColumn<Product>[] = [
   { key: 'logoURL', header: 'Logo', type: 'image' },
@@ -33,6 +34,7 @@ const PRODUCT_TABLE_COLUMNS: TableColumn<Product>[] = [
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PProductsListPageComponent implements OnInit {
+  private readonly _router = inject(Router);
   readonly store = inject(ProductStore);
   readonly tableColumns = PRODUCT_TABLE_COLUMNS;
 
@@ -68,5 +70,9 @@ export class PProductsListPageComponent implements OnInit {
   onCloseModal() {
     this.productToDelete.set(null);
     this.isDeleting.set(false);
+  }
+
+  onAddProduct() {
+    this._router.navigate(['/products/add']);
   }
 }

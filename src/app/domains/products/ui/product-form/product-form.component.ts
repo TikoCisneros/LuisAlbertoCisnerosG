@@ -46,7 +46,7 @@ export class ProductFormComponent implements OnInit {
     id: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
     name: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
     description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
-    logo: ['', [Validators.required]],
+    logoURL: ['', [Validators.required]],
     releaseDate: ['', [Validators.required, futureOrTodayValidator()]],
     revisionDate: [{ value: '', disabled: true }, [Validators.required]],
   });
@@ -92,13 +92,18 @@ export class ProductFormComponent implements OnInit {
     return !!(control && control.invalid && (control.touched || control.dirty));
   }
 
+  onSubmitHandler() {
+    if (!this.productForm.valid) return;
+    this.onSubmit.emit(this.productForm.getRawValue() as Product);
+  }
+
   private fillForm(product: Product) {
-    const { id, name, description, logoURL: logo, releaseDate, revisionDate } = product;
+    const { id, name, description, logoURL, releaseDate, revisionDate } = product;
     this.productForm.patchValue({
       id,
       name,
       description,
-      logo,
+      logoURL,
       releaseDate: toInputDateFormat(releaseDate),
       revisionDate: toInputDateFormat(revisionDate),
     });

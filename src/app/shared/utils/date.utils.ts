@@ -12,8 +12,15 @@ export function parseDate(date: string): Date {
  * @param date
  * @returns YYYY-MM-DD string
  */
-export function formatDate(date: Date): string {
-  return date.toISOString().split('T')[0];
+export function formatDate(date: Date | string): string {
+  if (!date) return '';
+  if (typeof date === 'string') {
+    return date.includes('T') ? date.split('T')[0] : date;
+  }
+  if (date instanceof Date && !isNaN(date.getTime())) {
+    return date.toISOString().split('T')[0];
+  }
+  return '';
 }
 
 /**
