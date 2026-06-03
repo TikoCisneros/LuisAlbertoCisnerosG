@@ -57,3 +57,16 @@ export function isTodayOrFuture(dateValue: string): boolean {
   if (!dateValue) return false;
   return dateValue >= getTodayString();
 }
+
+/**
+ * Takes a date string (YYYY-MM-DD), adds exactly one year to it, and returns the result in the same format.
+ */
+export function addOneYear(dateString: string): string {
+  if (!dateString) return '';
+
+  const date = new Date(`${dateString}T00:00:00`);
+  if (isNaN(date.getTime())) return '';
+
+  date.setFullYear(date.getFullYear() + 1);
+  return toInputDateFormat(date);
+}

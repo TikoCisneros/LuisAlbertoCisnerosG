@@ -8,11 +8,13 @@ import {
   effect,
   output,
   OnInit,
+  DestroyRef,
 } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Product } from '@domains/products/domain/models/product-model';
-import { getTodayMidnight, toInputDateFormat } from '@shared/utils/date.utils';
+import { addOneYear, getTodayMidnight, toInputDateFormat } from '@shared/utils/date.utils';
 import { futureOrTodayValidator } from './date.validators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'product-form',
@@ -25,6 +27,7 @@ import { futureOrTodayValidator } from './date.validators';
 export class ProductFormComponent implements OnInit {
   private readonly _formBuilder = inject(FormBuilder);
   readonly minDate = toInputDateFormat(getTodayMidnight());
+  private readonly destroyRef = inject(DestroyRef);
   // Input props
   isEditMode = input<boolean>(false);
   initialValues = input<Product | null>(null);
@@ -47,6 +50,8 @@ export class ProductFormComponent implements OnInit {
     if (product) {
       this.fillForm(product);
     }
+    // Listen releaseDate changes
+    this.setupDateSync();
   }
 
   private fillForm(product: Product) {
@@ -62,6 +67,20 @@ export class ProductFormComponent implements OnInit {
 
     if (this.isEditMode()) {
       this.productForm.get('id')?.disable();
+    }
+  }
+
+  private setupDateSync(): void {
+    const releaseControl = this.productForm.get('releaseDate');
+    const revisionControl = this.productForm.get('revisionDate');
+    if (releaseControl && revisionControl) {
+      releaseControl.valueChanges
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe((value: string) => {
+          if (value && releaseControl.valid) {
+            revisionControl.setValue(addOneYear(value), { emitEvent: false });
+          }
+        });
     }
   }
 }
