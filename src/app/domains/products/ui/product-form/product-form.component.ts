@@ -62,6 +62,17 @@ export class ProductFormComponent implements OnInit {
     this.setupIdValidator();
   }
 
+  resetForm() {
+    if (this.isEditMode()) {
+      const product = this.initialValues();
+      if (product) {
+        this.fillForm(product);
+      }
+      return;
+    }
+    this.productForm.reset();
+  }
+
   private fillForm(product: Product) {
     const { id, name, description, logoURL: logo, releaseDate, revisionDate } = product;
     this.productForm.patchValue({

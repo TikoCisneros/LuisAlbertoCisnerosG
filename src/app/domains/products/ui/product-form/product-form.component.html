@@ -53,7 +53,7 @@
   </div>
   <!-- Acciones -->
   <div class="product-form__actions">
-    <c-button variant="secondary" [isDisabled]="isEditMode()">Reiniciar</c-button>
+    <c-button variant="secondary" (onClick)="resetForm()">Reiniciar</c-button>
     <c-button variant="primary" type="submit" [isDisabled]="productForm.invalid || isLoading()"
       >Enviar</c-button
     >
