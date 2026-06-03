@@ -1,0 +1,28 @@
+// Based on https://www.matsimon.dev/blog/simple-skeleton-loaders
+@use 'design-system' as ds;
+
+:host {
+  display: block;
+}
+
+.c-skeleton {
+  display: block;
+  border-radius: ds.$radius-sm;
+  background: linear-gradient(
+    90deg,
+    ds.$clr-slate-200 25%,
+    ds.$clr-slate-100 50%,
+    ds.$clr-slate-200 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite ease-in-out;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
