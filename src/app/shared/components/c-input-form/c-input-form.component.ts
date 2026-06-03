@@ -1,4 +1,13 @@
-import { Component, input, signal, computed, forwardRef, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
+import {
+  Component,
+  input,
+  signal,
+  computed,
+  forwardRef,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  inject,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -24,6 +33,8 @@ export class CInputFormComponent implements ControlValueAccessor {
   isInvalid = input<boolean>(false);
   errorMessage = input<string>('');
   isDisabled = input<boolean>(false);
+  maxLength = input<number | null>(null);
+  minDate = input<string | null>(null);
 
   // Estado interno
   value = signal<string>('');

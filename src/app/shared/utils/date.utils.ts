@@ -27,3 +27,12 @@ export function toInputDateFormat(date: Date): string {
   const day = String(date.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 }
+
+/**
+ * Returns a Date object representing today at 12:00:00 AM
+ */
+export function getTodayMidnight(): Date {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return today;
+}

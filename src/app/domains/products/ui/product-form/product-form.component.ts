@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Product } from '@domains/products/domain/models/product-model';
-import { toInputDateFormat } from '@shared/utils/date.utils';
+import { getTodayMidnight, toInputDateFormat } from '@shared/utils/date.utils';
 
 @Component({
   selector: 'product-form',
@@ -23,6 +23,7 @@ import { toInputDateFormat } from '@shared/utils/date.utils';
 })
 export class ProductFormComponent implements OnInit {
   private readonly _formBuilder = inject(FormBuilder);
+  readonly minDate = toInputDateFormat(getTodayMidnight());
   // Input props
   isEditMode = input<boolean>(false);
   initialValues = input<Product | null>(null);

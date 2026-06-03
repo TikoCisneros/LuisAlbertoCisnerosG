@@ -7,6 +7,7 @@
       [label]="'ID'"
       [placeholder]="'Ej. trj-1234'"
       formControlName="id"
+      [maxLength]="10"
     />
     <!-- Campo: Nombre -->
     <c-input-form
@@ -15,6 +16,7 @@
       [label]="'Nombre'"
       [placeholder]="'Nombre del producto'"
       formControlName="name"
+      [maxLength]="100"
     />
     <!-- Campo: Descripción -->
     <c-input-form
@@ -23,6 +25,7 @@
       [label]="'Descripción'"
       [placeholder]="'Descripción detallada'"
       formControlName="description"
+      [maxLength]="200"
     />
     <!-- Campo: Logo -->
     <c-input-form
@@ -38,6 +41,7 @@
       [type]="'date'"
       [label]="'Fecha de Liberación'"
       formControlName="releaseDate"
+      [minDate]="minDate"
     />
     <!-- Campo: Fecha Revisión -->
     <c-input-form
@@ -49,7 +53,9 @@
   </div>
   <!-- Acciones -->
   <div class="product-form__actions">
-    <c-button variant="secondary">Reiniciar</c-button>
-    <c-button variant="primary" type="submit">Enviar</c-button>
+    <c-button variant="secondary" [isDisabled]="isEditMode()">Reiniciar</c-button>
+    <c-button variant="primary" type="submit" [isDisabled]="productForm.invalid || isLoading()"
+      >Enviar</c-button
+    >
   </div>
 </form>

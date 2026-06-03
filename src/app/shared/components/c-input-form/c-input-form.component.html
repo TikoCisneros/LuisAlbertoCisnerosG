@@ -3,15 +3,17 @@
     <label [attr.for]="id()" class="c-input-form-label">{{ label() }}</label>
   }
   <input
+    class="c-input-form-control"
     [id]="id()"
     [type]="type()"
     [placeholder]="placeholder()"
     [value]="value()"
     [disabled]="disabled"
+    [class.c-input-form-control--invalid]="isInvalid()"
+    [attr.maxlength]="maxLength()"
+    [min]="minDate()"
     (input)="onInputHandler($event)"
     (blur)="onTouchedHandler()"
-    class="c-input-form-control"
-    [class.c-input-form-control--invalid]="isInvalid()"
   />
   @if (isInvalid() && errorMessage()) {
     <span class="c-input-form-error">{{ errorMessage() }}</span>
