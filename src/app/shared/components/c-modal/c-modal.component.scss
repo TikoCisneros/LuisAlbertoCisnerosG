@@ -1,0 +1,61 @@
+@use 'design-system' as ds;
+
+.c-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: ds.$bg-backdrop;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.c-modal-box {
+  background-color: ds.$bg-surface;
+  border-radius: ds.$radius-xl;
+  min-width: 200px;
+  max-width: 400px;
+  width: auto;
+  box-shadow: ds.$shadow-lg;
+  animation: slideDown 0.25s ease-out;
+  overflow: hidden;
+
+  &__content {
+    padding: 3rem 2.5rem;
+    border-bottom: 1px solid ds.$border-color;
+  }
+
+  &__body-text {
+    @include ds.typography('base', 'semibold', 'normal');
+    color: ds.$text-main;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: center;
+    gap: ds.$spacing-md;
+    padding: ds.$spacing-lg;
+  }
+
+  &__action-btn {
+    flex: 1;
+    width: 100%;
+
+    ::ng-deep .c-button {
+      width: 100% !important;
+    }
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

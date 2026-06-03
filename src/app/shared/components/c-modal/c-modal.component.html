@@ -1,0 +1,30 @@
+@if (isOpen()) {
+  <div class="c-modal-overlay" (click)="!isLoading() && onCancelHandler()">
+    <div class="c-modal-box" (click)="$event.stopPropagation()">
+      <div class="c-modal-box__content">
+        <p class="c-modal-box__body-text">{{ bodyText() }}</p>
+      </div>
+
+      <div class="c-modal-box__actions">
+        <c-button
+          variant="secondary"
+          class="c-modal-box__action-btn"
+          [isDisabled]="isLoading()"
+          [isFullWidth]="true"
+          (onClick)="onCancelHandler()"
+        >
+          {{ cancelText() }}
+        </c-button>
+        <c-button
+          variant="primary"
+          class="c-modal-box__action-btn"
+          [isLoading]="isLoading()"
+          [isFullWidth]="true"
+          (onClick)="onConfirmHandler()"
+        >
+          {{ confirmText() }}
+        </c-button>
+      </div>
+    </div>
+  </div>
+}
