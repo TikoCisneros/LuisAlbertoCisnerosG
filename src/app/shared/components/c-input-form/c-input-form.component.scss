@@ -15,6 +15,10 @@
 .c-input-form-label {
   @include ds.typography('sm', 'bold');
   color: ds.$text-main;
+
+  &--disabled {
+    color: ds.$text-muted;
+  }
 }
 
 .c-input-form-control {
@@ -50,7 +54,7 @@
     }
   }
 
-  &[type="date"] {
+  &[type='date'] {
     min-height: 38px;
     font-family: inherit;
   }

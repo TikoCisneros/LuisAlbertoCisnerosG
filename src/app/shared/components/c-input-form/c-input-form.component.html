@@ -1,6 +1,11 @@
 <div class="c-input-form-group">
   @if (label()) {
-    <label [attr.for]="id()" class="c-input-form-label">{{ label() }}</label>
+    <label
+      [attr.for]="id()"
+      class="c-input-form-label"
+      [class]="disabled ? ' c-input-form-label--disabled' : ''"
+      >{{ label() }}</label
+    >
   }
   <input
     class="c-input-form-control"
