@@ -5,9 +5,10 @@ import { BASE_URL } from '@core/services/api-url.token';
 import { Product } from '@domains/products/domain/models/product-model';
 import { ProductDTO, ProductsApiResponseDTO } from '@domains/products/data-access/dtos/product.dto';
 import { ProductMapper } from '@domains/products/domain/mappers/product.mapper';
+import { ProductRepository } from '@domains/products/domain/repositories/product.repository';
 
 @Injectable()
-export class ProductHttpRepository {
+export class ProductHttpRepository implements ProductRepository {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = inject(BASE_URL);
   private readonly productURL = `${this.baseUrl}/products`;

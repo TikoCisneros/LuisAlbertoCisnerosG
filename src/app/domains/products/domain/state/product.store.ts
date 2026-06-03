@@ -5,7 +5,7 @@ import { pipe, switchMap, tap, catchError, of } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Product } from '../models/product-model';
 import { ProductsApiErrorsDTO } from '@domains/products/data-access/dtos/product.dto';
-import { ProductHttpRepository } from '@domains/products/data-access/repositories/product-http.repository';
+import { ProductRepository } from '@domains/products/domain/repositories/product.repository';
 
 const INITIAL_PAGE = 1 as const;
 const DEFAULT_TOTAL_PAGES = 1 as const;
@@ -68,12 +68,12 @@ export const ProductStore = signalStore(
     return { paginatedProducts, totalResults, totalPages };
   }),
   // Methods
-  withMethods((store, httpService = inject(ProductHttpRepository)) => ({
+  withMethods((store, productRepository = inject(ProductRepository)) => ({
     loadProducts: rxMethod<void>(
       pipe(
         tap(() => patchState(store, { error: null, isLoading: true })),
         switchMap(() =>
-          httpService.getProducts().pipe(
+          productRepository.getProducts().pipe(
             tap((products) => {
               patchState(store, { products, isLoading: false });
             }),
@@ -90,7 +90,7 @@ export const ProductStore = signalStore(
       pipe(
         tap(() => patchState(store, { error: null, isLoading: true })),
         switchMap((productId) =>
-          httpService.deleteProduct(productId).pipe(
+          productRepository.deleteProduct(productId).pipe(
             tap(() => {
               patchState(store, {
                 products: store.products().filter((p) => p.id !== productId),
