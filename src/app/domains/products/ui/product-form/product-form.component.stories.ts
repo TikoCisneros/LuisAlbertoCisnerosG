@@ -14,9 +14,7 @@ export const CreateMode: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <div style="max-width: 800px; margin: 40px auto; padding: 24px; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);">
-        <product-form [initialValues]="initialValues" [isEditMode]="isEditMode"></product-form>
-      </div>
+      <product-form [initialValues]="initialValues" [isEditMode]="isEditMode"></product-form>
     `,
   }),
   args: {
@@ -29,9 +27,7 @@ export const EditMode: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <div style="max-width: 800px; margin: 40px auto; padding: 24px; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);">
-        <product-form [initialValues]="initialValues" [isEditMode]="isEditMode"></product-form>
-      </div>
+      <product-form [initialValues]="initialValues" [isEditMode]="isEditMode"></product-form>
     `,
   }),
   args: {

@@ -1,61 +1,69 @@
-<form class="product-form" [formGroup]="productForm">
-  <div class="product-form__grid">
-    <!-- Campo: ID -->
-    <c-input-form
-      [id]="'id'"
-      [type]="'text'"
-      [label]="'ID'"
-      [placeholder]="'Ej. trj-1234'"
-      formControlName="id"
-      [maxLength]="10"
-    />
-    <!-- Campo: Nombre -->
-    <c-input-form
-      [id]="'name'"
-      [type]="'text'"
-      [label]="'Nombre'"
-      [placeholder]="'Nombre del producto'"
-      formControlName="name"
-      [maxLength]="100"
-    />
-    <!-- Campo: Descripción -->
-    <c-input-form
-      [id]="'description'"
-      [type]="'text'"
-      [label]="'Descripción'"
-      [placeholder]="'Descripción detallada'"
-      formControlName="description"
-      [maxLength]="200"
-    />
-    <!-- Campo: Logo -->
-    <c-input-form
-      [id]="'logo'"
-      [type]="'text'"
-      [label]="'Logo'"
-      [placeholder]="'http://imagen.com/logo.png'"
-      formControlName="logo"
-    />
-    <!-- Campo: Fecha Liberación -->
-    <c-input-form
-      [id]="'releaseDate'"
-      [type]="'date'"
-      [label]="'Fecha de Liberación'"
-      formControlName="releaseDate"
-      [minDate]="minDate"
-    />
-    <!-- Campo: Fecha Revisión -->
-    <c-input-form
-      [id]="'revisionDate'"
-      [type]="'date'"
-      [label]="'Fecha de Reestructuración'"
-      formControlName="revisionDate"
-    />
-  </div>
-  <!-- Acciones -->
-  <div class="product-form__actions">
-    <c-button variant="secondary" (onClick)="resetForm()">Reiniciar</c-button>
-    <c-button variant="primary" type="submit" [isDisabled]="productForm.invalid || isLoading()"
-      >Enviar</c-button
-    >
-  </div>
-</form>
+<div class="product-form-container">
+  <h2 class="product-form-container__title">
+    {{ isEditMode() ? 'Edición de Producto' : 'Formulario de Registro' }}
+  </h2>
+
+  <hr class="product-form-container__divider" />
+
+  <form class="product-form" [formGroup]="productForm">
+    <div class="product-form__grid">
+      <!-- Campo: ID -->
+      <c-input-form
+        [id]="'id'"
+        [type]="'text'"
+        [label]="'ID'"
+        [placeholder]="'Ej. trj-1234'"
+        formControlName="id"
+        [maxLength]="10"
+      />
+      <!-- Campo: Nombre -->
+      <c-input-form
+        [id]="'name'"
+        [type]="'text'"
+        [label]="'Nombre'"
+        [placeholder]="'Nombre del producto'"
+        formControlName="name"
+        [maxLength]="100"
+      />
+      <!-- Campo: Descripción -->
+      <c-input-form
+        [id]="'description'"
+        [type]="'text'"
+        [label]="'Descripción'"
+        [placeholder]="'Descripción detallada'"
+        formControlName="description"
+        [maxLength]="200"
+      />
+      <!-- Campo: Logo -->
+      <c-input-form
+        [id]="'logo'"
+        [type]="'text'"
+        [label]="'Logo'"
+        [placeholder]="'http://imagen.com/logo.png'"
+        formControlName="logo"
+      />
+      <!-- Campo: Fecha Liberación -->
+      <c-input-form
+        [id]="'releaseDate'"
+        [type]="'date'"
+        [label]="'Fecha de Liberación'"
+        formControlName="releaseDate"
+        [minDate]="minDate"
+      />
+      <!-- Campo: Fecha Revisión -->
+      <c-input-form
+        [id]="'revisionDate'"
+        [type]="'date'"
+        [label]="'Fecha de Reestructuración'"
+        formControlName="revisionDate"
+      />
+    </div>
+    <!-- Acciones -->
+    <div class="product-form__actions">
+      <c-button variant="secondary" (onClick)="resetForm()">Reiniciar</c-button>
+      <c-button variant="primary" type="submit" [isDisabled]="productForm.invalid || isLoading()"
+        >Enviar</c-button
+      >
+    </div>
+  </form>
+</div>

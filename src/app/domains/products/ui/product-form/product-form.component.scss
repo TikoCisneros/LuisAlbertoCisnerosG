@@ -1,5 +1,29 @@
 @use 'design-system' as ds;
 
+.product-form-container {
+  max-width: 800px;
+  margin: 2.5rem auto;
+  padding: ds.$spacing-lg;
+  background-color: ds.$bg-surface;
+  border-radius: ds.$radius-lg;
+  box-shadow: ds.$shadow-md;
+  border: 1px solid ds.$border-color;
+
+  &__title {
+    font-size: ds.$spacing-lg;
+    font-weight: 600;
+    color: ds.$text-main;
+    margin-bottom: ds.$spacing-sm;
+  }
+
+  &__divider {
+    border: 0;
+    height: 1px;
+    background-color: ds.$border-color;
+    margin-bottom: ds.$spacing-xl;
+  }
+}
+
 .product-form {
   display: flex;
   flex-direction: column;
