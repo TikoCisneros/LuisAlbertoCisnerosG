@@ -3,8 +3,8 @@ import { CHeaderComponent } from './c-header.component';
 import { provideRouter } from '@angular/router';
 import { describe, it, expect } from 'vitest';
 
-describe('Pruebas de CHeaderComponent', () => {
-  it('deberia renderizar correctamente con el logo y texto', async () => {
+describe('CHeaderComponent', () => {
+  it('should render successfully with logo and text', async () => {
     await render(CHeaderComponent, {
       providers: [provideRouter([])],
     });
@@ -13,7 +13,7 @@ describe('Pruebas de CHeaderComponent', () => {
     expect(screen.getByText('BANCO')).toBeDefined();
   });
 
-  it('deberia tener la ruta de navegacion hacia atras correcta', async () => {
+  it('should render the back navigation link with correct URL when backUrl is provided', async () => {
     await render(CHeaderComponent, {
       inputs: {
         backUrl: '/products',

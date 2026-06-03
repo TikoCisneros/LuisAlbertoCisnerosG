@@ -3,10 +3,10 @@ import userEvent from '@testing-library/user-event';
 import { CTableActionsComponent } from './c-table-actions.component';
 import { vi, describe, it, expect } from 'vitest';
 
-describe('Pruebas de CTableActionsComponent', () => {
+describe('CTableActionsComponent', () => {
   const mockItem = { id: '123', name: 'Product A' };
 
-  it('deberia mostra o ocultar el menú y ejecutar los eventos de editar o eliminar ', async () => {
+  it('should toggle dropdown visibility and emit edit/delete outputs appropriately', async () => {
     const editSpy = vi.fn();
     const deleteSpy = vi.fn();
 

@@ -2,8 +2,8 @@ import { ProductMapper } from './product.mapper';
 import { ProductDTO } from '../../data-access/dtos/product.dto';
 import { Product } from '../models/product-model';
 
-describe('Pruebas de ProductMapper', () => {
-  it('debe mapear de DTO a Dominio correctamente', () => {
+describe('ProductMapper', () => {
+  it('should correctly map DTO to Domain model', () => {
     const dto: ProductDTO = {
       id: '1',
       name: 'Test Product',
@@ -23,7 +23,7 @@ describe('Pruebas de ProductMapper', () => {
     expect(domain.revisionDate.toISOString()).toContain('2027-01-15');
   });
 
-  it('debe mapear de Dominio a DTO correctamente', () => {
+  it('should correctly map Domain model to DTO', () => {
     const domain: Product = {
       id: '1',
       name: 'Test Product',

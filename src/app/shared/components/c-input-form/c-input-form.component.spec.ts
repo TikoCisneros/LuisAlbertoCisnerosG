@@ -36,7 +36,7 @@ class TestFormWrapperComponent {
 }
 
 describe('CInputFormComponent', () => {
-  it('should render input field with labels and placeholder', async () => {
+  it('should render the input field with its label and placeholder', async () => {
     await render(CInputFormComponent, {
       inputs: {
         id: 'user-input',
@@ -51,7 +51,7 @@ describe('CInputFormComponent', () => {
     expect(inputEl.id).toBe('user-input');
   });
 
-  it('should integrate with reactive form and update form value on typing', async () => {
+  it('should integrate with reactive forms and update the control value on typing', async () => {
     const { fixture } = await render(TestFormWrapperComponent);
 
     const user = userEvent.setup();
@@ -65,7 +65,7 @@ describe('CInputFormComponent', () => {
     expect(formValue.name).toBe('Luis');
   });
 
-  it('should display error message when invalid is true', async () => {
+  it('should display the error message when isInvalid is true', async () => {
     await render(CInputFormComponent, {
       inputs: {
         label: 'Nombre',
@@ -77,7 +77,7 @@ describe('CInputFormComponent', () => {
     expect(screen.getByText('Nombre es requerido')).toBeDefined();
   });
 
-  it('should handle disabled state from control', async () => {
+  it('should update its disabled state based on the form control status', async () => {
     const { fixture } = await render(TestFormWrapperComponent);
     fixture.componentInstance.testForm.get('name')?.disable();
     fixture.detectChanges();
@@ -86,7 +86,7 @@ describe('CInputFormComponent', () => {
     expect(inputEl.disabled).toBe(true);
   });
 
-  it('should support date input type', async () => {
+  it('should support the date input type', async () => {
     const { container } = await render(CInputFormComponent, {
       inputs: {
         type: 'date',

@@ -7,8 +7,8 @@ import { describe, it, expect } from 'vitest';
 @Component({ standalone: true, template: '' })
 class DummyComponent {}
 
-describe('Pruebas de MainLayoutComponent', () => {
-  it('deberia renderizar correctamente', async () => {
+describe('MainLayoutComponent', () => {
+  it('should render the layout successfully', async () => {
     await render(MainLayoutComponent, {
       providers: [provideRouter([{ path: 'products', component: DummyComponent }])],
     });
@@ -17,7 +17,7 @@ describe('Pruebas de MainLayoutComponent', () => {
     expect(screen.getByText('BANCO')).toBeDefined();
   });
 
-  it('deberia funcionar correctamente la funcionalidad de Volver', async () => {
+  it('should display the back navigation button appropriately based on the current route', async () => {
     const { navigate } = await render(MainLayoutComponent, {
       providers: [
         provideRouter([

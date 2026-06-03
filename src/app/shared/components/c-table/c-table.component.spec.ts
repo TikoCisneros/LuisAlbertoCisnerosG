@@ -10,7 +10,7 @@ interface TestItem {
   date: string;
 }
 
-describe('Pruebas de CTableComponent', () => {
+describe('CTableComponent', () => {
   const mockColumns: TableColumn<TestItem>[] = [
     { key: 'id', header: 'ID', type: 'text' },
     { key: 'name', header: 'Nombre', type: 'text' },
@@ -21,7 +21,7 @@ describe('Pruebas de CTableComponent', () => {
     { id: '2', name: 'Producto B', date: '2026-06-03' },
   ];
 
-  it('deberia renderizar correctamente', async () => {
+  it('should successfully render the table headers and data cells', async () => {
     await render(CTableComponent, {
       inputs: {
         columns: mockColumns,
@@ -36,7 +36,7 @@ describe('Pruebas de CTableComponent', () => {
     expect(screen.getByText('Producto B')).toBeDefined();
   });
 
-  it('debria mostrar mensaje si los datos son vacíos', async () => {
+  it('should display an empty state message when there are no records', async () => {
     await render(CTableComponent, {
       inputs: {
         columns: mockColumns,
@@ -47,7 +47,7 @@ describe('Pruebas de CTableComponent', () => {
     expect(screen.getByText('No se encontraron registros.')).toBeDefined();
   });
 
-  it('deberia ejecutar las acciones correctamente', async () => {
+  it('should emit the appropriate events when edit or delete actions are clicked', async () => {
     const editSpy = vi.fn();
     const deleteSpy = vi.fn();
 

@@ -4,7 +4,7 @@ import { CInputSearchComponent } from './c-input-search.component';
 import { vi, describe, it, expect } from 'vitest';
 
 describe('CInputSearchComponent', () => {
-  it('should render input with correct placeholder and value', async () => {
+  it('should render the input field with correct placeholder and value', async () => {
     await render(CInputSearchComponent, {
       inputs: {
         placeholder: 'Search product...',
@@ -17,7 +17,7 @@ describe('CInputSearchComponent', () => {
     expect(inputEl.value).toBe('Apple');
   });
 
-  it('should emit valueChange when user types', async () => {
+  it('should emit onValueChange when the user types', async () => {
     const valueChangeSpy = vi.fn();
 
     await render(CInputSearchComponent, {
@@ -33,7 +33,7 @@ describe('CInputSearchComponent', () => {
     expect(valueChangeSpy).toHaveBeenCalledWith('B');
   });
 
-  it('should show clear button only when value is present and not disabled', async () => {
+  it('should display the clear button only when a value is present', async () => {
     const { fixture } = await render(CInputSearchComponent, {
       inputs: {
         value: '',
@@ -49,7 +49,7 @@ describe('CInputSearchComponent', () => {
     expect(screen.getByRole('button', { name: /clear search/i })).toBeDefined();
   });
 
-  it('should emit empty string when clear button is clicked', async () => {
+  it('should emit an empty string when the clear button is clicked', async () => {
     const valueChangeSpy = vi.fn();
 
     await render(CInputSearchComponent, {

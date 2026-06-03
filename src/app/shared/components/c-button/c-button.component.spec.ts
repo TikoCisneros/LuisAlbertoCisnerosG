@@ -3,15 +3,15 @@ import { render, screen } from '@testing-library/angular';
 import { vi, describe, it, expect } from 'vitest';
 import { CButtonComponent } from './c-button.component';
 
-describe('Componente CButtonComponent', () => {
-  it('debería tener la apariencia primaria por defecto', async () => {
+describe('CButtonComponent', () => {
+  it('should render with primary variant by default', async () => {
     await render(CButtonComponent);
 
     const button = screen.getByRole('button');
     expect(button.classList.contains('c-button--primary')).toBe(true);
   });
 
-  it('debería cambiar su apariencia a secundaria cuando se le indique', async () => {
+  it('should change to secondary variant when specified', async () => {
     await render(CButtonComponent, {
       inputs: {
         variant: 'secondary',
@@ -22,7 +22,7 @@ describe('Componente CButtonComponent', () => {
     expect(button.classList.contains('c-button--secondary')).toBe(true);
   });
 
-  it('debería estar deshabilitado en el navegador cuando se activa la propiedad isDisabled', async () => {
+  it('should be disabled when isDisabled input is true', async () => {
     await render(CButtonComponent, {
       inputs: {
         isDisabled: true,
@@ -33,7 +33,7 @@ describe('Componente CButtonComponent', () => {
     expect(button.hasAttribute('disabled')).toBe(true);
   });
 
-  it('debería hacerle clic correctamente', async () => {
+  it('should trigger onClick output when clicked', async () => {
     const clickHandler = vi.fn();
 
     await render(CButtonComponent, {
@@ -51,7 +51,7 @@ describe('Componente CButtonComponent', () => {
     expect(clickHandler).toHaveBeenCalledTimes(1);
   });
 
-  it('debería mostrar el indicador de carga y bloquear cualquier intento de clic', async () => {
+  it('should display a loading spinner and prevent click events when isLoading is true', async () => {
     const clickHandler = vi.fn();
 
     await render(CButtonComponent, {

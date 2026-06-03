@@ -2,8 +2,8 @@ import { render, screen } from '@testing-library/angular';
 import { CLogoComponent } from './c-logo.component';
 import { describe, it, expect } from 'vitest';
 
-describe('Preubas de CLogoComponent', () => {
-  it('deberia renderizar fallback si no posee src', async () => {
+describe('CLogoComponent', () => {
+  it('should render fallback initials when src is not provided', async () => {
     await render(CLogoComponent, {
       inputs: {
         fallbackName: 'Smart Watch',
@@ -15,7 +15,7 @@ describe('Preubas de CLogoComponent', () => {
     expect(screen.getByText('SM')).toBeDefined();
   });
 
-  it('deberia renderizar la imagen', async () => {
+  it('should render the image when src is provided', async () => {
     await render(CLogoComponent, {
       inputs: {
         fallbackName: 'Smart Watch',
@@ -28,7 +28,7 @@ describe('Preubas de CLogoComponent', () => {
     expect(img.getAttribute('src')).toBe('https://example.com/logo.png');
   });
 
-  it('deberia renderizar el falback si falla la carga de imagen', async () => {
+  it('should fallback to initials when the image fails to load', async () => {
     const { fixture } = await render(CLogoComponent, {
       inputs: {
         fallbackName: 'Smart Watch',

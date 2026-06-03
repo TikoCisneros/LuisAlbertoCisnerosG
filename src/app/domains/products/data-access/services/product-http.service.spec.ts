@@ -27,7 +27,7 @@ describe('Pruebas de ProductHttpService', () => {
     id: 'PROD-100',
     name: 'Smart Watch v2',
     description: 'Reloj inteligente de última generación.',
-    logo: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30',
+    logoURL: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30',
     releaseDate: new Date('2026-01-15T00:00:00.000Z'),
     revisionDate: new Date('2027-05-20T00:00:00.000Z'),
   };
@@ -51,12 +51,12 @@ describe('Pruebas de ProductHttpService', () => {
     httpMock.verify();
   });
 
-  it('should be created', () => {
+  it('debería crearse correctamente el servicio', () => {
     expect(service).toBeTruthy();
   });
 
   describe('getProducts', () => {
-    it('should send a GET request and map DTOs to Domain Products', (done) => {
+    it('debería enviar una petición GET y mapear los DTOs a productos de dominio', (done) => {
       service.getProducts().subscribe((products) => {
         expect(products.length).toBe(1);
         expect(products[0].id).toBe(mockProduct.id);
@@ -70,7 +70,7 @@ describe('Pruebas de ProductHttpService', () => {
   });
 
   describe('createProduct', () => {
-    it('should send a POST request with DTO body and return the mapped Product', () => {
+    it('debería enviar una petición POST con el DTO en el cuerpo y retornar el producto mapeado', () => {
       service.createProduct(mockProduct).subscribe((responseProduct) => {
         expect(responseProduct.id).toBe(mockProduct.id);
         expect(responseProduct.name).toBe(mockProduct.name);
@@ -92,7 +92,7 @@ describe('Pruebas de ProductHttpService', () => {
       req.flush(mockDto);
     });
 
-    it('should propagate a 400 BadRequestError when the API validation fails', () => {
+    it('debería propagar un error BadRequest 400 cuando la validación de la API falla', () => {
       const errorResponse = {
         name: 'BadRequestError',
         message: "Invalid body, check 'errors' property for more info.",
@@ -102,7 +102,7 @@ describe('Pruebas de ProductHttpService', () => {
 
       service.createProduct(mockProduct).subscribe({
         next: () => {
-          throw new Error('should have failed with 400 error');
+          throw new Error('Debería haber fallado con un error 400');
         },
         error: (error) => {
           expect(error.status).toBe(400);
@@ -120,7 +120,7 @@ describe('Pruebas de ProductHttpService', () => {
   });
 
   describe('updateProduct', () => {
-    it('should send a PUT request with DTO body and return the mapped updated Product', () => {
+    it('debería enviar una petición PUT con el DTO en el cuerpo y retornar el producto modificado', () => {
       service.updateProduct(mockProduct).subscribe((responseProduct) => {
         expect(responseProduct.id).toBe(mockProduct.id);
       });
@@ -134,7 +134,7 @@ describe('Pruebas de ProductHttpService', () => {
   });
 
   describe('deleteProduct', () => {
-    it('should send a DELETE request to products/:id', () => {
+    it('debería enviar una petición DELETE al endpoint con el ID del producto', () => {
       const targetId = 'PROD-100';
 
       service.deleteProduct(targetId).subscribe((res) => {
@@ -148,7 +148,7 @@ describe('Pruebas de ProductHttpService', () => {
   });
 
   describe('verifyProductIDExists', () => {
-    it('should send a GET request to /products/verification/:id and return boolean', () => {
+    it('debería verificar si un ID de producto ya existe retornando un valor booleano', () => {
       const testId = 'PROD-100';
 
       service.verifyProductIDExists(testId).subscribe((exists) => {
