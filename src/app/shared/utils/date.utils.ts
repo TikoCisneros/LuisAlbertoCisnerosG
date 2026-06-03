@@ -36,3 +36,24 @@ export function getTodayMidnight(): Date {
   today.setHours(0, 0, 0, 0);
   return today;
 }
+
+/**
+ * Returns a YYYY-MM-DD string representing today
+ */
+export function getTodayString(): string {
+  const today = getTodayMidnight();
+
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
+
+/**
+ * Simply check whether a date is today or later.
+ */
+export function isTodayOrFuture(dateValue: string): boolean {
+  if (!dateValue) return false;
+  return dateValue >= getTodayString();
+}

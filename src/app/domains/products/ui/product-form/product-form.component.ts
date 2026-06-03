@@ -12,6 +12,7 @@ import {
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Product } from '@domains/products/domain/models/product-model';
 import { getTodayMidnight, toInputDateFormat } from '@shared/utils/date.utils';
+import { futureOrTodayValidator } from './date.validators';
 
 @Component({
   selector: 'product-form',
@@ -37,7 +38,7 @@ export class ProductFormComponent implements OnInit {
     name: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
     description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
     logo: ['', [Validators.required]],
-    releaseDate: ['', [Validators.required]],
+    releaseDate: ['', [Validators.required, futureOrTodayValidator()]],
     revisionDate: [{ value: '', disabled: true }, [Validators.required]],
   });
 
