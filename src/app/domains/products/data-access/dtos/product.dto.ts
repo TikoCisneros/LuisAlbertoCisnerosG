@@ -3,8 +3,8 @@ export interface ProductDTO {
   readonly name: string;
   readonly description: string;
   readonly logo: string;
-  readonly release_date: string;
-  readonly revision_date: string;
+  readonly date_release: string;
+  readonly date_revision: string;
 }
 
 export interface ProductsApiResponseDTO {

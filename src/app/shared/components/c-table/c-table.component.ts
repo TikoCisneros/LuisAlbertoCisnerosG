@@ -22,7 +22,11 @@ export class CTableComponent<T> {
   onDelete = output<T>();
 
   resolveValue(item: any, key: string): any {
-    return item[key];
+    const value = item[key];
+    if (value instanceof Date && isNaN(value.getTime())) {
+      return null;
+    }
+    return value;
   }
 
   trackByFn(item: T): unknown {

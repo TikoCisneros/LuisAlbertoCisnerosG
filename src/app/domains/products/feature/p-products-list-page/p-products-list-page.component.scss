@@ -1,1 +1,26 @@
-/* Products List Page Styles */
+@use 'design-system' as ds;
+
+.p-product-list-container,
+.p-product-list-table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.p-product-list-table {
+  background-color: ds.$clr-white;
+  padding: ds.$spacing-md;
+}
+
+.p-product-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+
+  &__search-bar {
+    max-width: 320px;
+    width: 100%;
+  }
+}

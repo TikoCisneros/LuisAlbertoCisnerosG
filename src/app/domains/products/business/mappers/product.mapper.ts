@@ -8,16 +8,16 @@ export class ProductMapper {
     logo,
     description,
     name,
-    release_date,
-    revision_date,
+    date_release,
+    date_revision,
   }: ProductDTO): Product {
     return {
       id,
       name,
       description,
       logoURL: logo,
-      releaseDate: parseDate(release_date),
-      revisionDate: parseDate(revision_date),
+      releaseDate: parseDate(date_release),
+      revisionDate: parseDate(date_revision),
     };
   }
 
@@ -34,8 +34,8 @@ export class ProductMapper {
       name,
       description,
       logo: logoURL,
-      release_date: formatDate(releaseDate),
-      revision_date: formatDate(revisionDate),
+      date_release: formatDate(releaseDate),
+      date_revision: formatDate(revisionDate),
     };
   }
 

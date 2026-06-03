@@ -19,8 +19,8 @@ describe('Pruebas de ProductHttpService', () => {
     name: 'Smart Watch v2',
     description: 'Reloj inteligente de última generación.',
     logo: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30',
-    release_date: '2026-01-15',
-    revision_date: '2027-05-20',
+    date_release: '2026-01-15',
+    date_revision: '2027-05-20',
   };
 
   const mockProduct: Product = {
@@ -85,8 +85,8 @@ describe('Pruebas de ProductHttpService', () => {
         name: 'Smart Watch v2',
         description: 'Reloj inteligente de última generación.',
         logo: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30',
-        release_date: '2026-01-15',
-        revision_date: '2027-05-20',
+        date_release: '2026-01-15',
+        date_revision: '2027-05-20',
       });
 
       req.flush(mockDto);

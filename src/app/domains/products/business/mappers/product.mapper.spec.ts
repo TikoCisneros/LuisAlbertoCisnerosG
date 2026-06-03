@@ -9,8 +9,8 @@ describe('ProductMapper', () => {
       name: 'Test Product',
       description: 'Test Description',
       logo: 'logo.png',
-      release_date: '2026-01-15T00:00:00.000Z',
-      revision_date: '2027-01-15T00:00:00.000Z',
+      date_release: '2026-01-15T00:00:00.000Z',
+      date_revision: '2027-01-15T00:00:00.000Z',
     };
 
     const domain = ProductMapper.dtoToDomain(dto);
@@ -39,7 +39,7 @@ describe('ProductMapper', () => {
     expect(dto.name).toBe('Test Product');
     expect(dto.description).toBe('Test Description');
     expect(dto.logo).toBe('logo.png');
-    expect(dto.release_date).toBe('2026-01-15');
-    expect(dto.revision_date).toBe('2027-01-15');
+    expect(dto.date_release).toBe('2026-01-15');
+    expect(dto.date_revision).toBe('2027-01-15');
   });
 });

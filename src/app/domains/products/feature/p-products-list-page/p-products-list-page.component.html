@@ -1,1 +1,18 @@
-<!-- Products List Page -->
+<div class="p-product-list-container">
+  <div class="p-product-list-header">
+    <div class="p-product-list-header__search-bar">
+      <c-input-search
+        [placeholder]="'Buscar...'"
+        [value]="store.searchTerm()"
+        (onValueChange)="store.setSearchTerm($event)"
+      ></c-input-search>
+    </div>
+
+    <c-button>Agregar</c-button>
+  </div>
+  <div class="p-product-list-table">
+    @if (!store.isLoading()) {
+      <c-table [data]="store.filteredProducts()" [columns]="tableColumns" [showActions]="true"></c-table>
+    }
+  </div>
+</div>
