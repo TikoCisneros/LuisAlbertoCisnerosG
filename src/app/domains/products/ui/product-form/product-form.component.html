@@ -15,6 +15,8 @@
         [placeholder]="'Ej. trj-1234'"
         formControlName="id"
         [maxLength]="10"
+        [isInvalid]="isControlInvalid('id')"
+        [errorMessage]="getErrorMessage('id')"
       />
       <!-- Campo: Nombre -->
       <c-input-form
@@ -24,6 +26,8 @@
         [placeholder]="'Nombre del producto'"
         formControlName="name"
         [maxLength]="100"
+        [isInvalid]="isControlInvalid('name')"
+        [errorMessage]="getErrorMessage('name')"
       />
       <!-- Campo: Descripción -->
       <c-input-form
@@ -33,6 +37,8 @@
         [placeholder]="'Descripción detallada'"
         formControlName="description"
         [maxLength]="200"
+        [isInvalid]="isControlInvalid('description')"
+        [errorMessage]="getErrorMessage('description')"
       />
       <!-- Campo: Logo -->
       <c-input-form
@@ -41,6 +47,8 @@
         [label]="'Logo'"
         [placeholder]="'http://imagen.com/logo.png'"
         formControlName="logo"
+        [isInvalid]="isControlInvalid('logo')"
+        [errorMessage]="getErrorMessage('logo')"
       />
       <!-- Campo: Fecha Liberación -->
       <c-input-form
@@ -49,6 +57,8 @@
         [label]="'Fecha de Liberación'"
         formControlName="releaseDate"
         [minDate]="minDate"
+        [isInvalid]="isControlInvalid('revisionDate')"
+        [errorMessage]="getErrorMessage('revisionDate')"
       />
       <!-- Campo: Fecha Revisión -->
       <c-input-form

@@ -385,12 +385,12 @@
         },
         {
             "name": "ProductState",
-            "id": "interface-ProductState-753203a5801042d84a9b6cd2cc5b9f57f52cff2cd5789505681cd01fda6304549dfff82f3a199ceace831621a7cdce9fc95a18e325ef57e3480160de36a9ef0d",
+            "id": "interface-ProductState-01ff86997f745f4b18d65d33701f057ee8fc0dd573db0d9726f413782e2b0066032cdbf502c67590a110ae325b854b5836f84f580f176ba80bcd834c8a30508a",
             "file": "src/app/domains/products/domain/state/product.store.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { computed, inject } from '@angular/core';\nimport { signalStore, withState, withMethods, patchState, withComputed } from '@ngrx/signals';\nimport { rxMethod } from '@ngrx/signals/rxjs-interop';\nimport { pipe, switchMap, tap, catchError, of } from 'rxjs';\nimport { Product, ProductErrors } from '../models/product-model';\nimport { ProductRepository } from '@domains/products/domain/repositories/product.repository';\nimport { NotificationService } from '@core/notifications/services/notification.service';\nimport { HttpErrorResponse } from '@angular/common/http';\n\nconst INITIAL_PAGE = 1 as const;\nconst DEFAULT_TOTAL_PAGES = 1 as const;\nconst PAGE_SIZE = 5 as const;\nexport interface ProductState {\n  products: Product[];\n  isLoading: boolean;\n  /** Search section */\n  searchTerm: string;\n  /** Pagination section */\n  currentPage: number;\n  pageSize: number;\n  /** Verification section */\n  existId: boolean;\n}\n\nconst initialState: ProductState = {\n  products: [],\n  isLoading: false,\n  searchTerm: '',\n  currentPage: INITIAL_PAGE,\n  pageSize: PAGE_SIZE,\n  existId: false,\n};\n\nfunction errorParser(error: unknown, fallback: string) {\n  // Verificación estricta del tipo de error\n  const errMsg = error instanceof ProductErrors ? error.message : fallback;\n  return errMsg;\n}\n\nexport const ProductStore = signalStore(\n  withState(initialState),\n  // Filtering\n  withComputed(({ products, searchTerm }) => {\n    const filteredProducts = computed(() => {\n      const query = searchTerm().toLowerCase().trim();\n      if (!query) return products();\n\n      return products().filter(\n        (product) =>\n          product.name.toLowerCase().includes(query) ||\n          product.description.toLowerCase().includes(query),\n      );\n    });\n    return { filteredProducts };\n  }),\n  // For pagination\n  withComputed(({ filteredProducts, currentPage, pageSize }) => {\n    const paginatedProducts = computed(() => {\n      const startIndex = (currentPage() - DEFAULT_TOTAL_PAGES) * pageSize();\n      return filteredProducts().slice(startIndex, startIndex + pageSize());\n    });\n    const totalResults = computed(() => filteredProducts().length);\n\n    const totalPages = computed(() => {\n      return Math.ceil(totalResults() / pageSize()) || DEFAULT_TOTAL_PAGES;\n    });\n    return { paginatedProducts, totalResults, totalPages };\n  }),\n  // Methods\n  withMethods(\n    (\n      store,\n      productRepository = inject(ProductRepository),\n      notificationService = inject(NotificationService),\n    ) => ({\n      loadProducts: rxMethod<void>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap(() =>\n            productRepository.getProducts().pipe(\n              tap((products) => {\n                patchState(store, { products, isLoading: false });\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al cargar productos');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      deleteProduct: rxMethod<string>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((productId) =>\n            productRepository.deleteProduct(productId).pipe(\n              tap((msj) => {\n                patchState(store, {\n                  products: store.products().filter((p) => p.id !== productId),\n                  isLoading: false,\n                });\n                notificationService.notify('success', msj);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al eliminar productos');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      addProduct: rxMethod<Product>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((newProduct) =>\n            productRepository.createProduct(newProduct).pipe(\n              tap(({ message, data: createdProduct }) => {\n                patchState(store, {\n                  products: [...store.products(), createdProduct],\n                  isLoading: false,\n                });\n                notificationService.notify('success', message);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al crear producto');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      verifyProductId: rxMethod<string>(\n        pipe(\n          tap(() => patchState(store, { existId: false, isLoading: true })),\n          switchMap((productId) =>\n            productRepository.verifyProductIDExists(productId).pipe(\n              tap((existId) => {\n                patchState(store, { existId, isLoading: false });\n              }),\n              catchError((err: HttpErrorResponse) => {\n                const errMsg = errorParser(err, 'Error inesperado al verificar producto');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      updateProduct: rxMethod<Product>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((updatedProduct) =>\n            productRepository.updateProduct(updatedProduct).pipe(\n              tap(({ message, data: responseProduct }) => {\n                patchState(store, {\n                  products: store\n                    .products()\n                    .map((p) => (p.id === responseProduct.id ? responseProduct : p)),\n                  isLoading: false,\n                });\n                notificationService.notify('success', message);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al actualizar producto');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      // Filter functionality\n      setSearchTerm(searchTerm: string) {\n        patchState(store, { searchTerm, currentPage: INITIAL_PAGE });\n      },\n      // Pagination functionality\n      setPageSize(pageSize: number): void {\n        patchState(store, { pageSize, currentPage: INITIAL_PAGE });\n      },\n      setCurrentPage(currentPage: number): void {\n        if (currentPage >= INITIAL_PAGE && currentPage <= store.totalPages()) {\n          patchState(store, { currentPage });\n        }\n      },\n    }),\n  ),\n);\n",
+            "sourceCode": "import { computed, inject } from '@angular/core';\nimport { signalStore, withState, withMethods, patchState, withComputed } from '@ngrx/signals';\nimport { rxMethod } from '@ngrx/signals/rxjs-interop';\nimport { pipe, switchMap, tap, catchError, of } from 'rxjs';\nimport { Product, ProductErrors } from '../models/product-model';\nimport { ProductRepository } from '@domains/products/domain/repositories/product.repository';\nimport { NotificationService } from '@core/notifications/services/notification.service';\nimport { HttpErrorResponse } from '@angular/common/http';\n\nconst INITIAL_PAGE = 1 as const;\nconst DEFAULT_TOTAL_PAGES = 1 as const;\nconst PAGE_SIZE = 5 as const;\nexport interface ProductState {\n  products: Product[];\n  isLoading: boolean;\n  /** Search section */\n  searchTerm: string;\n  /** Pagination section */\n  currentPage: number;\n  pageSize: number;\n}\n\nconst initialState: ProductState = {\n  products: [],\n  isLoading: false,\n  searchTerm: '',\n  currentPage: INITIAL_PAGE,\n  pageSize: PAGE_SIZE,\n};\n\nfunction errorParser(error: unknown, fallback: string) {\n  // Verificación estricta del tipo de error\n  const errMsg = error instanceof ProductErrors ? error.message : fallback;\n  return errMsg;\n}\n\nexport const ProductStore = signalStore(\n  withState(initialState),\n  // Filtering\n  withComputed(({ products, searchTerm }) => {\n    const filteredProducts = computed(() => {\n      const query = searchTerm().toLowerCase().trim();\n      if (!query) return products();\n\n      return products().filter(\n        (product) =>\n          product.name.toLowerCase().includes(query) ||\n          product.description.toLowerCase().includes(query),\n      );\n    });\n    return { filteredProducts };\n  }),\n  // For pagination\n  withComputed(({ filteredProducts, currentPage, pageSize }) => {\n    const paginatedProducts = computed(() => {\n      const startIndex = (currentPage() - DEFAULT_TOTAL_PAGES) * pageSize();\n      return filteredProducts().slice(startIndex, startIndex + pageSize());\n    });\n    const totalResults = computed(() => filteredProducts().length);\n\n    const totalPages = computed(() => {\n      return Math.ceil(totalResults() / pageSize()) || DEFAULT_TOTAL_PAGES;\n    });\n    return { paginatedProducts, totalResults, totalPages };\n  }),\n  // Methods\n  withMethods(\n    (\n      store,\n      productRepository = inject(ProductRepository),\n      notificationService = inject(NotificationService),\n    ) => ({\n      loadProducts: rxMethod<void>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap(() =>\n            productRepository.getProducts().pipe(\n              tap((products) => {\n                patchState(store, { products, isLoading: false });\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al cargar productos');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      deleteProduct: rxMethod<string>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((productId) =>\n            productRepository.deleteProduct(productId).pipe(\n              tap((msj) => {\n                patchState(store, {\n                  products: store.products().filter((p) => p.id !== productId),\n                  isLoading: false,\n                });\n                notificationService.notify('success', msj);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al eliminar productos');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      addProduct: rxMethod<Product>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((newProduct) =>\n            productRepository.createProduct(newProduct).pipe(\n              tap(({ message, data: createdProduct }) => {\n                patchState(store, {\n                  products: [...store.products(), createdProduct],\n                  isLoading: false,\n                });\n                notificationService.notify('success', message);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al crear producto');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      updateProduct: rxMethod<Product>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((updatedProduct) =>\n            productRepository.updateProduct(updatedProduct).pipe(\n              tap(({ message, data: responseProduct }) => {\n                patchState(store, {\n                  products: store\n                    .products()\n                    .map((p) => (p.id === responseProduct.id ? responseProduct : p)),\n                  isLoading: false,\n                });\n                notificationService.notify('success', message);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al actualizar producto');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      // Filter functionality\n      setSearchTerm(searchTerm: string) {\n        patchState(store, { searchTerm, currentPage: INITIAL_PAGE });\n      },\n      // Pagination functionality\n      setPageSize(pageSize: number): void {\n        patchState(store, { pageSize, currentPage: INITIAL_PAGE });\n      },\n      setCurrentPage(currentPage: number): void {\n        if (currentPage >= INITIAL_PAGE && currentPage <= store.totalPages()) {\n          patchState(store, { currentPage });\n        }\n      },\n    }),\n  ),\n);\n",
             "properties": [
                 {
                     "name": "currentPage",
@@ -402,17 +402,6 @@
                     "description": "<p>Pagination section</p>\n",
                     "line": 19,
                     "rawdescription": "\nPagination section"
-                },
-                {
-                    "name": "existId",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "boolean",
-                    "indexKey": "",
-                    "optional": false,
-                    "description": "<p>Verification section</p>\n",
-                    "line": 22,
-                    "rawdescription": "\nVerification section"
                 },
                 {
                     "name": "isLoading",
@@ -1901,7 +1890,7 @@
         },
         {
             "name": "CInputFormComponent",
-            "id": "component-CInputFormComponent-5f966415b076b692cd5c793fad47f62794f952eea53d3bb6734d0436fc019f365ca0b384b1a22dff4f413707d5369a18d156f683223fe41bdb6c345ed7f3eb78",
+            "id": "component-CInputFormComponent-dcb23c5d874f3b879eec89ec760612e8665f35c48ee45e27ac9815d25a2739ca5cbe93251b02f5eae6e6c44353678d37f644eafbfa22dba4b199dfa597168ad0",
             "file": "src/app/shared/components/c-input-form/c-input-form.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -1931,7 +1920,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 25,
+                    "line": 33,
                     "required": false
                 },
                 {
@@ -1943,7 +1932,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 22,
+                    "line": 30,
                     "required": false
                 },
                 {
@@ -1955,7 +1944,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 26,
+                    "line": 34,
                     "required": false
                 },
                 {
@@ -1967,7 +1956,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 24,
+                    "line": 32,
                     "required": false
                 },
                 {
@@ -1979,7 +1968,31 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 23,
+                    "line": 31,
+                    "required": false
+                },
+                {
+                    "name": "maxLength",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number | null",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 35,
+                    "required": false
+                },
+                {
+                    "name": "minDate",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string | null",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 36,
                     "required": false
                 },
                 {
@@ -1991,7 +2004,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 20,
+                    "line": 28,
                     "required": false
                 },
                 {
@@ -2003,12 +2016,38 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 21,
+                    "line": 29,
                     "required": false
                 }
             ],
             "outputsClass": [],
             "propertiesClass": [
+                {
+                    "name": "cdr",
+                    "defaultValue": "inject(ChangeDetectorRef)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 45,
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "isDisabledState",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 40
+                },
                 {
                     "name": "onChangeHandler",
                     "defaultValue": "() => {...}",
@@ -2018,7 +2057,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 32
+                    "line": 48
                 },
                 {
                     "name": "onTouchedHandler",
@@ -2029,7 +2068,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 33
+                    "line": 49
                 },
                 {
                     "name": "value",
@@ -2040,7 +2079,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 29
+                    "line": 39
                 }
             ],
             "methodsClass": [
@@ -2059,7 +2098,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 34,
+                    "line": 50,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2101,7 +2140,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 45,
+                    "line": 61,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2144,7 +2183,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 49,
+                    "line": 65,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2156,6 +2195,38 @@
                             "deprecated": false,
                             "deprecationMessage": "",
                             "function": [],
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "setDisabledState",
+                    "args": [
+                        {
+                            "name": "isDisabled",
+                            "type": "boolean",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 69,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "isDisabled",
+                            "type": "boolean",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
                             "tagName": {
                                 "text": "param"
                             }
@@ -2177,7 +2248,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 41,
+                    "line": 57,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2204,7 +2275,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, input, signal, forwardRef, ChangeDetectionStrategy } from '@angular/core';\nimport { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';\n\n@Component({\n  selector: 'c-input-form',\n  standalone: true,\n  providers: [\n    {\n      provide: NG_VALUE_ACCESSOR,\n      useExisting: forwardRef(() => CInputFormComponent),\n      multi: true,\n    },\n  ],\n  templateUrl: './c-input-form.component.html',\n  styleUrl: './c-input-form.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class CInputFormComponent implements ControlValueAccessor {\n  // Configuración del input\n  placeholder = input<string>('');\n  type = input<'text' | 'date'>('text');\n  id = input<string>('');\n  label = input<string>('');\n  isInvalid = input<boolean>(false);\n  errorMessage = input<string>('');\n  isDisabled = input<boolean>(false);\n\n  // Estado interno\n  value = signal<string>('');\n\n  // Funciones callback de ControlValueAccessor\n  onChangeHandler: (value: string) => void = () => {};\n  onTouchedHandler: () => void = () => {};\n  onInputHandler(event: Event): void {\n    const inputEl = event.target as HTMLInputElement;\n    this.value.set(inputEl.value);\n    this.onChangeHandler(inputEl.value);\n  }\n\n  // ControlValueAccessor interface implementation\n  writeValue(value: string | null | undefined): void {\n    this.value.set(value || '');\n  }\n\n  registerOnChange(fn: (value: string) => void): void {\n    this.onChangeHandler = fn;\n  }\n\n  registerOnTouched(fn: () => void): void {\n    this.onTouchedHandler = fn;\n  }\n}\n",
+            "sourceCode": "import {\n  Component,\n  input,\n  signal,\n  forwardRef,\n  ChangeDetectionStrategy,\n  ChangeDetectorRef,\n  inject,\n} from '@angular/core';\nimport { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';\n\n@Component({\n  selector: 'c-input-form',\n  standalone: true,\n  providers: [\n    {\n      provide: NG_VALUE_ACCESSOR,\n      useExisting: forwardRef(() => CInputFormComponent),\n      multi: true,\n    },\n  ],\n  templateUrl: './c-input-form.component.html',\n  styleUrl: './c-input-form.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class CInputFormComponent implements ControlValueAccessor {\n  // Configuración del input\n  placeholder = input<string>('');\n  type = input<'text' | 'date'>('text');\n  id = input<string>('');\n  label = input<string>('');\n  isInvalid = input<boolean>(false);\n  errorMessage = input<string>('');\n  isDisabled = input<boolean>(false);\n  maxLength = input<number | null>(null);\n  minDate = input<string | null>(null);\n\n  // Estado interno\n  value = signal<string>('');\n  isDisabledState = false;\n  get disabled(): boolean {\n    return this.isDisabled() || this.isDisabledState;\n  }\n\n  private readonly cdr = inject(ChangeDetectorRef);\n\n  // Funciones callback de ControlValueAccessor\n  onChangeHandler: (value: string) => void = () => {};\n  onTouchedHandler: () => void = () => {};\n  onInputHandler(event: Event): void {\n    const inputEl = event.target as HTMLInputElement;\n    this.value.set(inputEl.value);\n    this.onChangeHandler(inputEl.value);\n  }\n\n  // ControlValueAccessor interface implementation\n  writeValue(value: string | null | undefined): void {\n    this.value.set(value || '');\n  }\n\n  registerOnChange(fn: (value: string) => void): void {\n    this.onChangeHandler = fn;\n  }\n\n  registerOnTouched(fn: () => void): void {\n    this.onTouchedHandler = fn;\n  }\n\n  setDisabledState(isDisabled: boolean): void {\n    this.isDisabledState = isDisabled;\n    this.cdr.detectChanges();\n  }\n}\n",
             "styleUrl": "./c-input-form.component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
@@ -2213,7 +2284,18 @@
             "implements": [
                 "ControlValueAccessor"
             ],
-            "templateData": "<div class=\"c-input-form-group\">\n  @if (label()) {\n    <label [attr.for]=\"id()\" class=\"c-input-form-label\">{{ label() }}</label>\n  }\n  <input\n    [id]=\"id()\"\n    [type]=\"type()\"\n    [placeholder]=\"placeholder()\"\n    [value]=\"value()\"\n    [disabled]=\"isDisabled()\"\n    (input)=\"onInputHandler($event)\"\n    (blur)=\"onTouchedHandler()\"\n    class=\"c-input-form-control\"\n    [class.c-input-form-control--invalid]=\"isInvalid()\"\n  />\n  @if (isInvalid() && errorMessage()) {\n    <span class=\"c-input-form-error\">{{ errorMessage() }}</span>\n  }\n</div>\n"
+            "accessors": {
+                "disabled": {
+                    "name": "disabled",
+                    "getSignature": {
+                        "name": "disabled",
+                        "type": "boolean",
+                        "returnType": "boolean",
+                        "line": 41
+                    }
+                }
+            },
+            "templateData": "<div class=\"c-input-form-group\">\n  @if (label()) {\n    <label\n      [attr.for]=\"id()\"\n      class=\"c-input-form-label\"\n      [class]=\"disabled ? ' c-input-form-label--disabled' : ''\"\n      >{{ label() }}</label\n    >\n  }\n  <input\n    class=\"c-input-form-control\"\n    [id]=\"id()\"\n    [type]=\"type()\"\n    [placeholder]=\"placeholder()\"\n    [value]=\"value()\"\n    [disabled]=\"disabled\"\n    [class.c-input-form-control--invalid]=\"isInvalid()\"\n    [attr.maxlength]=\"maxLength()\"\n    [min]=\"minDate()\"\n    (input)=\"onInputHandler($event)\"\n    (blur)=\"onTouchedHandler()\"\n  />\n  @if (isInvalid() && errorMessage()) {\n    <span class=\"c-input-form-error\">{{ errorMessage() }}</span>\n  }\n</div>\n"
         },
         {
             "name": "CInputSearchComponent",
@@ -3709,14 +3791,18 @@
         },
         {
             "name": "PProductOperationPageComponent",
-            "id": "component-PProductOperationPageComponent-828b4f32a314ba16785b2b6e09240539b931c895d4e0f53854782d2eedfece82e16e3bb799832a56097d9dbe2aa5483ba8aba946864b65b531193d92900ce5d9",
+            "id": "component-PProductOperationPageComponent-597644dcb5868ad4eef785d7e600b27c406dcc455ef68649e5872913c5af0f2ac91e4e2d2d7c1bce4455f5f78771849c835783a156fad47c52889d496efd3f35",
             "file": "src/app/domains/products/feature/p-product-operation-page/p-product-operation-page.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
             "outputs": [],
-            "providers": [],
+            "providers": [
+                {
+                    "name": "ProductStore"
+                }
+            ],
             "selector": "p-product-operation-page",
             "styleUrls": [],
             "styles": [],
@@ -3727,28 +3813,148 @@
             "hostDirectives": [],
             "inputsClass": [],
             "outputsClass": [],
-            "propertiesClass": [],
-            "methodsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "_isSubmitting",
+                    "defaultValue": "signal(false)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 24,
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "_productRepository",
+                    "defaultValue": "inject(ProductRepository)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 19,
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "_router",
+                    "defaultValue": "inject(Router)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 20,
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "idValidator",
+                    "defaultValue": "uniqueProductIdValidator(this._productRepository)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 21,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "store",
+                    "defaultValue": "inject(ProductStore)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 22,
+                    "modifierKind": [
+                        148
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "onAddProduct",
+                    "args": [
+                        {
+                            "name": "product",
+                            "type": "Product",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 33,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "product",
+                            "type": "Product",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
             "deprecated": false,
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
             "standalone": true,
-            "imports": [],
+            "imports": [
+                {
+                    "name": "ProductFormComponent",
+                    "type": "component"
+                }
+            ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { ChangeDetectionStrategy, Component } from '@angular/core';\n\n@Component({\n  selector: 'p-product-operation-page',\n  standalone: true,\n  imports: [],\n  templateUrl: './p-product-operation-page.component.html',\n  styleUrl: './p-product-operation-page.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class PProductOperationPageComponent {}\n",
+            "sourceCode": "import { ProductRepository } from '@domains/products/domain/repositories/product.repository';\nimport { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';\nimport { uniqueProductIdValidator } from '@domains/products/validators/product-id.validator';\nimport { ProductFormComponent } from '@domains/products/ui/product-form/product-form.component';\nimport { ProductStore } from '@domains/products/domain/state/product.store';\nimport { Router } from '@angular/router';\nimport { Product } from '@domains/products/domain/models/product-model';\n\n@Component({\n  selector: 'p-product-operation-page',\n  standalone: true,\n  imports: [ProductFormComponent],\n  providers: [ProductStore],\n  templateUrl: './p-product-operation-page.component.html',\n  styleUrl: './p-product-operation-page.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class PProductOperationPageComponent {\n  private readonly _productRepository = inject(ProductRepository);\n  private readonly _router = inject(Router);\n  readonly idValidator = uniqueProductIdValidator(this._productRepository);\n  readonly store = inject(ProductStore);\n  // Auxiliar para controlar la redirección\n  private readonly _isSubmitting = signal(false);\n\n  constructor() {\n    effect(() => {\n      if (this._isSubmitting() && !this.store.isLoading()) {\n        this._router.navigate(['/']);\n      }\n    });\n  }\n  onAddProduct(product: Product): void {\n    this._isSubmitting.set(true);\n    this.store.addProduct(product);\n  }\n}\n",
             "styleUrl": "./p-product-operation-page.component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 24
+            },
             "extends": [],
-            "templateData": "<!-- Product Operation Page -->\n"
+            "templateData": "<product-form\n  [idValidator]=\"idValidator\"\n  [isLoading]=\"store.isLoading()\"\n  (onSubmit)=\"onAddProduct($event)\"\n/>\n"
         },
         {
             "name": "PProductsListPageComponent",
-            "id": "component-PProductsListPageComponent-f815b2d896716dada3df874efbd7b1aff689510bbf7808cf9854d32859e0be0a4fef72de490cc9c02971d863e5766062644e63076fb584113badc7327244793f",
+            "id": "component-PProductsListPageComponent-2e09e80c0d946c26cfd9279ad79a7f06b36189cb8c28d91c6245c4defdcf073dbc5c51eaaa2f7e5d16a12e5e25fcaab77b99fe87e9082eec1969f85b0b33f74d",
             "file": "src/app/domains/products/feature/p-products-list-page/p-products-list-page.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -3775,6 +3981,21 @@
             "outputsClass": [],
             "propertiesClass": [
                 {
+                    "name": "_router",
+                    "defaultValue": "inject(Router)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 37,
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
                     "name": "isDeleting",
                     "defaultValue": "signal<boolean>(false)",
                     "deprecated": false,
@@ -3783,7 +4004,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 40
+                    "line": 42
                 },
                 {
                     "name": "productToDelete",
@@ -3794,7 +4015,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 39
+                    "line": 41
                 },
                 {
                     "name": "store",
@@ -3805,7 +4026,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 36,
+                    "line": 38,
                     "modifierKind": [
                         148
                     ]
@@ -3819,7 +4040,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 37,
+                    "line": 39,
                     "modifierKind": [
                         148
                     ]
@@ -3832,7 +4053,17 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 50,
+                    "line": 52,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "onAddProduct",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 75,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -3842,7 +4073,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 68,
+                    "line": 70,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -3861,7 +4092,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 56,
+                    "line": 58,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -3884,7 +4115,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 60,
+                    "line": 62,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -3919,7 +4150,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { ChangeDetectionStrategy, Component, effect, inject, OnInit, signal } from '@angular/core';\nimport { CInputSearchComponent } from '@shared/components/c-input-search/c-input-search.component';\nimport { CButtonComponent } from '@shared/components/c-button/c-button.component';\nimport { TableColumn } from '@shared/components/c-table/c-table.interface';\nimport { Product } from '@domains/products/domain/models/product-model';\nimport { CTableComponent } from '@shared/components/c-table/c-table.component';\nimport { ProductStore } from '@domains/products/domain/state/product.store';\nimport { ProductHttpRepository } from '@domains/products/data-access/repositories/product-http.repository';\nimport { CPaginationComponent } from '@shared/components/c-pagination/c-pagination.component';\nimport { CModalComponent } from '@shared/components/c-modal/c-modal.component';\n\nconst PRODUCT_TABLE_COLUMNS: TableColumn<Product>[] = [\n  { key: 'logoURL', header: 'Logo', type: 'image' },\n  { key: 'name', header: 'Nombre del producto' },\n  { key: 'description', header: 'Descripción' },\n  { key: 'releaseDate', header: 'Fecha de liberación', type: 'date' },\n  { key: 'revisionDate', header: 'Fecha de reestructuración', type: 'date' },\n];\n\n@Component({\n  selector: 'p-products-list-page',\n  standalone: true,\n  imports: [\n    CInputSearchComponent,\n    CButtonComponent,\n    CTableComponent,\n    CPaginationComponent,\n    CModalComponent,\n  ],\n  providers: [ProductStore, ProductHttpRepository],\n  templateUrl: './p-products-list-page.component.html',\n  styleUrl: './p-products-list-page.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class PProductsListPageComponent implements OnInit {\n  readonly store = inject(ProductStore);\n  readonly tableColumns = PRODUCT_TABLE_COLUMNS;\n\n  productToDelete = signal<Product | null>(null);\n  isDeleting = signal<boolean>(false);\n\n  constructor() {\n    effect(() => {\n      if (this.isDeleting() && !this.store.isLoading()) {\n        this.onCloseModal();\n      }\n    });\n  }\n\n  ngOnInit() {\n    if (this.store.products().length === 0) {\n      this.store.loadProducts();\n    }\n  }\n\n  onDeleteProduct(product: Product): void {\n    this.productToDelete.set(product);\n  }\n\n  onDeleteProductConfirm() {\n    const product = this.productToDelete();\n    if (product) {\n      this.isDeleting.set(true);\n      this.store.deleteProduct(product.id);\n    }\n  }\n\n  onCloseModal() {\n    this.productToDelete.set(null);\n    this.isDeleting.set(false);\n  }\n}\n",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, effect, inject, OnInit, signal } from '@angular/core';\nimport { CInputSearchComponent } from '@shared/components/c-input-search/c-input-search.component';\nimport { CButtonComponent } from '@shared/components/c-button/c-button.component';\nimport { TableColumn } from '@shared/components/c-table/c-table.interface';\nimport { Product } from '@domains/products/domain/models/product-model';\nimport { CTableComponent } from '@shared/components/c-table/c-table.component';\nimport { ProductStore } from '@domains/products/domain/state/product.store';\nimport { ProductHttpRepository } from '@domains/products/data-access/repositories/product-http.repository';\nimport { CPaginationComponent } from '@shared/components/c-pagination/c-pagination.component';\nimport { CModalComponent } from '@shared/components/c-modal/c-modal.component';\nimport { Router } from '@angular/router';\n\nconst PRODUCT_TABLE_COLUMNS: TableColumn<Product>[] = [\n  { key: 'logoURL', header: 'Logo', type: 'image' },\n  { key: 'name', header: 'Nombre del producto' },\n  { key: 'description', header: 'Descripción' },\n  { key: 'releaseDate', header: 'Fecha de liberación', type: 'date' },\n  { key: 'revisionDate', header: 'Fecha de reestructuración', type: 'date' },\n];\n\n@Component({\n  selector: 'p-products-list-page',\n  standalone: true,\n  imports: [\n    CInputSearchComponent,\n    CButtonComponent,\n    CTableComponent,\n    CPaginationComponent,\n    CModalComponent,\n  ],\n  providers: [ProductStore, ProductHttpRepository],\n  templateUrl: './p-products-list-page.component.html',\n  styleUrl: './p-products-list-page.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class PProductsListPageComponent implements OnInit {\n  private readonly _router = inject(Router);\n  readonly store = inject(ProductStore);\n  readonly tableColumns = PRODUCT_TABLE_COLUMNS;\n\n  productToDelete = signal<Product | null>(null);\n  isDeleting = signal<boolean>(false);\n\n  constructor() {\n    effect(() => {\n      if (this.isDeleting() && !this.store.isLoading()) {\n        this.onCloseModal();\n      }\n    });\n  }\n\n  ngOnInit() {\n    if (this.store.products().length === 0) {\n      this.store.loadProducts();\n    }\n  }\n\n  onDeleteProduct(product: Product): void {\n    this.productToDelete.set(product);\n  }\n\n  onDeleteProductConfirm() {\n    const product = this.productToDelete();\n    if (product) {\n      this.isDeleting.set(true);\n      this.store.deleteProduct(product.id);\n    }\n  }\n\n  onCloseModal() {\n    this.productToDelete.set(null);\n    this.isDeleting.set(false);\n  }\n\n  onAddProduct() {\n    this._router.navigate(['/products/add']);\n  }\n}\n",
             "styleUrl": "./p-products-list-page.component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
@@ -3930,17 +4161,17 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "args": [],
-                "line": 40
+                "line": 42
             },
             "extends": [],
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<div class=\"p-product-list-container\">\n  <div class=\"p-product-list-header\">\n    <div class=\"p-product-list-header__search-bar\">\n      <c-input-search\n        [placeholder]=\"'Buscar...'\"\n        [value]=\"store.searchTerm()\"\n        (onValueChange)=\"store.setSearchTerm($event)\"\n      ></c-input-search>\n    </div>\n\n    <c-button>Agregar</c-button>\n  </div>\n  <div class=\"p-product-list-table\">\n    <c-table\n      [data]=\"store.paginatedProducts()\"\n      [columns]=\"tableColumns\"\n      [showActions]=\"true\"\n      [isLoading]=\"store.isLoading()\"\n      (onDelete)=\"onDeleteProduct($event)\"\n    ></c-table>\n    @if (!store.isLoading()) {\n      <c-pagination\n        [totalResults]=\"store.totalResults()\"\n        [pageSize]=\"store.pageSize()\"\n        [currentPage]=\"store.currentPage()\"\n        (onPageChange)=\"store.setCurrentPage($event)\"\n        (onPageSizeChange)=\"store.setPageSize($event)\"\n      ></c-pagination>\n    }\n  </div>\n</div>\n<c-modal\n  [isOpen]=\"!!productToDelete()\"\n  [bodyText]=\"'¿Estás seguro de eliminar el producto ' + productToDelete()?.name + '?'\"\n  [confirmText]=\"'Eliminar'\"\n  [cancelText]=\"'Cancelar'\"\n  [isLoading]=\"store.isLoading()\"\n  (onConfirm)=\"onDeleteProductConfirm()\"\n  (onCancel)=\"onCloseModal()\"\n></c-modal>\n"
+            "templateData": "<div class=\"p-product-list-container\">\n  <div class=\"p-product-list-header\">\n    <div class=\"p-product-list-header__search-bar\">\n      <c-input-search\n        [placeholder]=\"'Buscar...'\"\n        [value]=\"store.searchTerm()\"\n        (onValueChange)=\"store.setSearchTerm($event)\"\n      ></c-input-search>\n    </div>\n\n    <c-button (onClick)=\"onAddProduct()\">Agregar</c-button>\n  </div>\n  <div class=\"p-product-list-table\">\n    <c-table\n      [data]=\"store.paginatedProducts()\"\n      [columns]=\"tableColumns\"\n      [showActions]=\"true\"\n      [isLoading]=\"store.isLoading()\"\n      (onDelete)=\"onDeleteProduct($event)\"\n    ></c-table>\n    @if (!store.isLoading()) {\n      <c-pagination\n        [totalResults]=\"store.totalResults()\"\n        [pageSize]=\"store.pageSize()\"\n        [currentPage]=\"store.currentPage()\"\n        (onPageChange)=\"store.setCurrentPage($event)\"\n        (onPageSizeChange)=\"store.setPageSize($event)\"\n      ></c-pagination>\n    }\n  </div>\n</div>\n<c-modal\n  [isOpen]=\"!!productToDelete()\"\n  [bodyText]=\"'¿Estás seguro de eliminar el producto ' + productToDelete()?.name + '?'\"\n  [confirmText]=\"'Eliminar'\"\n  [cancelText]=\"'Cancelar'\"\n  [isLoading]=\"store.isLoading()\"\n  (onConfirm)=\"onDeleteProductConfirm()\"\n  (onCancel)=\"onCloseModal()\"\n></c-modal>\n"
         },
         {
             "name": "ProductFormComponent",
-            "id": "component-ProductFormComponent-df6234f1f467bf5dc8c4a32625f267ffbecf33b3bf4b0504206034ef13ea6f3d81852f4495b01e15555dfbd117dee1270072255b9faafed18ac6d9487dfb694a",
+            "id": "component-ProductFormComponent-7f7791f1b626eebd921789ac2e16a0606ecf1fbebe3bd8310c256b0ef01ac362cc3240f4cfc7d23da5eddfa22d89e00f26c8ad52c413f802cda352a54b5b4107",
             "file": "src/app/domains/products/ui/product-form/product-form.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -3958,6 +4189,30 @@
             "hostDirectives": [],
             "inputsClass": [
                 {
+                    "name": "idValidator",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "AsyncValidatorFn | null",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 40,
+                    "required": false
+                },
+                {
+                    "name": "initialValues",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Product | null",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 38,
+                    "required": false
+                },
+                {
                     "name": "isEditMode",
                     "defaultValue": "false",
                     "deprecated": false,
@@ -3966,11 +4221,35 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 17,
+                    "line": 37,
+                    "required": false
+                },
+                {
+                    "name": "isLoading",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 39,
                     "required": false
                 }
             ],
-            "outputsClass": [],
+            "outputsClass": [
+                {
+                    "name": "onSubmit",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Product",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 43,
+                    "required": false
+                }
+            ],
             "propertiesClass": [
                 {
                     "name": "_formBuilder",
@@ -3981,14 +4260,139 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 15,
+                    "line": 33,
                     "modifierKind": [
                         123,
                         148
                     ]
+                },
+                {
+                    "name": "destroyRef",
+                    "defaultValue": "inject(DestroyRef)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 35,
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "minDate",
+                    "defaultValue": "toInputDateFormat(getTodayMidnight())",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 34,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "productForm",
+                    "defaultValue": "this._formBuilder.group({\n    id: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],\n    name: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],\n    description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],\n    logo: ['', [Validators.required]],\n    releaseDate: ['', [Validators.required, futureOrTodayValidator()]],\n    revisionDate: [{ value: '', disabled: true }, [Validators.required]],\n  })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "FormGroup",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 45,
+                    "modifierKind": [
+                        148
+                    ]
                 }
             ],
-            "methodsClass": [],
+            "methodsClass": [
+                {
+                    "name": "fillForm",
+                    "args": [
+                        {
+                            "name": "product",
+                            "type": "Product",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 76,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "product",
+                            "type": "Product",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 54,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "resetForm",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 65,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "setupDateSync",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 92,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "setupIdValidator",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 106,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                }
+            ],
             "deprecated": false,
             "deprecationMessage": "",
             "hostBindings": [],
@@ -4011,13 +4415,16 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { CButtonComponent } from '@shared/components/c-button/c-button.component';\nimport { CInputFormComponent } from '@shared/components/c-input-form/c-input-form.component';\nimport { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';\nimport { FormBuilder, ReactiveFormsModule } from '@angular/forms';\n\n@Component({\n  selector: 'product-form',\n  standalone: true,\n  imports: [CInputFormComponent, CButtonComponent, ReactiveFormsModule],\n  templateUrl: './product-form.component.html',\n  styleUrl: './product-form.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class ProductFormComponent {\n  private readonly _formBuilder = inject(FormBuilder);\n\n  isEditMode = input<boolean>(false);\n}\n",
+            "sourceCode": "import { CButtonComponent } from '@shared/components/c-button/c-button.component';\nimport { CInputFormComponent } from '@shared/components/c-input-form/c-input-form.component';\nimport {\n  ChangeDetectionStrategy,\n  Component,\n  inject,\n  input,\n  output,\n  OnInit,\n  DestroyRef,\n} from '@angular/core';\nimport {\n  AsyncValidatorFn,\n  FormBuilder,\n  FormGroup,\n  ReactiveFormsModule,\n  Validators,\n} from '@angular/forms';\nimport { Product } from '@domains/products/domain/models/product-model';\nimport { addOneYear, getTodayMidnight, toInputDateFormat } from '@shared/utils/date.utils';\nimport { futureOrTodayValidator } from '@domains/products/validators/date.validator';\nimport { takeUntilDestroyed } from '@angular/core/rxjs-interop';\n\n@Component({\n  selector: 'product-form',\n  standalone: true,\n  imports: [CInputFormComponent, CButtonComponent, ReactiveFormsModule],\n  templateUrl: './product-form.component.html',\n  styleUrl: './product-form.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class ProductFormComponent implements OnInit {\n  private readonly _formBuilder = inject(FormBuilder);\n  readonly minDate = toInputDateFormat(getTodayMidnight());\n  private readonly destroyRef = inject(DestroyRef);\n  // Input props\n  isEditMode = input<boolean>(false);\n  initialValues = input<Product | null>(null);\n  isLoading = input<boolean>(false);\n  idValidator = input<AsyncValidatorFn | null>(null);\n\n  // Output events\n  onSubmit = output<Product>();\n\n  readonly productForm: FormGroup = this._formBuilder.group({\n    id: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],\n    name: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],\n    description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],\n    logo: ['', [Validators.required]],\n    releaseDate: ['', [Validators.required, futureOrTodayValidator()]],\n    revisionDate: [{ value: '', disabled: true }, [Validators.required]],\n  });\n\n  ngOnInit(): void {\n    const product = this.initialValues();\n    if (product) {\n      this.fillForm(product);\n    }\n    // Listen releaseDate changes\n    this.setupDateSync();\n    // Add ID validator\n    this.setupIdValidator();\n  }\n\n  resetForm() {\n    if (this.isEditMode()) {\n      const product = this.initialValues();\n      if (product) {\n        this.fillForm(product);\n      }\n      return;\n    }\n    this.productForm.reset();\n  }\n\n  private fillForm(product: Product) {\n    const { id, name, description, logoURL: logo, releaseDate, revisionDate } = product;\n    this.productForm.patchValue({\n      id,\n      name,\n      description,\n      logo,\n      releaseDate: toInputDateFormat(releaseDate),\n      revisionDate: toInputDateFormat(revisionDate),\n    });\n\n    if (this.isEditMode()) {\n      this.productForm.get('id')?.disable();\n    }\n  }\n\n  private setupDateSync(): void {\n    const releaseControl = this.productForm.get('releaseDate');\n    const revisionControl = this.productForm.get('revisionDate');\n    if (releaseControl && revisionControl) {\n      releaseControl.valueChanges\n        .pipe(takeUntilDestroyed(this.destroyRef))\n        .subscribe((value: string) => {\n          if (value && releaseControl.valid) {\n            revisionControl.setValue(addOneYear(value), { emitEvent: false });\n          }\n        });\n    }\n  }\n\n  private setupIdValidator() {\n    const validator = this.idValidator();\n    if (validator) {\n      this.productForm.get('id')?.setAsyncValidators(validator);\n    }\n  }\n}\n",
             "styleUrl": "./product-form.component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
             "extends": [],
-            "templateData": "<form class=\"product-form\">\n  <div class=\"product-form__grid\">\n    <!-- Campo: ID -->\n    <c-input-form id=\"id\" type=\"text\" label=\"ID\" placeholder=\"Ej. trj-1234\" formControlName=\"id\" />\n    <!-- Campo: Nombre -->\n    <c-input-form\n      id=\"name\"\n      type=\"text\"\n      label=\"Nombre\"\n      placeholder=\"Nombre del producto\"\n      formControlName=\"name\"\n    />\n    <!-- Campo: Descripción -->\n    <c-input-form\n      id=\"description\"\n      type=\"text\"\n      label=\"Descripción\"\n      placeholder=\"Descripción detallada\"\n      formControlName=\"description\"\n    />\n    <!-- Campo: Logo -->\n    <c-input-form\n      id=\"logo\"\n      type=\"text\"\n      label=\"Logo\"\n      placeholder=\"http://imagen.com/logo.png\"\n      formControlName=\"logo\"\n    />\n    <!-- Campo: Fecha Liberación -->\n    <c-input-form\n      id=\"releaseDate\"\n      type=\"date\"\n      label=\"Fecha de Liberación\"\n      formControlName=\"releaseDate\"\n    />\n    <!-- Campo: Fecha Revisión -->\n    <c-input-form\n      id=\"revisionDate\"\n      type=\"date\"\n      label=\"Fecha de Reestructuración\"\n      formControlName=\"revisionDate\"\n      [isDisabled]=\"true\"\n    />\n  </div>\n  <!-- Area de botones -->\n  <div class=\"product-form__actions\">\n    <c-button variant=\"secondary\">Reiniciar</c-button>\n    <c-button variant=\"primary\" type=\"submit\">Enviar</c-button>\n  </div>\n</form>\n"
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<div class=\"product-form-container\">\n  <h2 class=\"product-form-container__title\">\n    {{ isEditMode() ? 'Edición de Producto' : 'Formulario de Registro' }}\n  </h2>\n\n  <hr class=\"product-form-container__divider\" />\n\n  <form class=\"product-form\" [formGroup]=\"productForm\">\n    <div class=\"product-form__grid\">\n      <!-- Campo: ID -->\n      <c-input-form\n        [id]=\"'id'\"\n        [type]=\"'text'\"\n        [label]=\"'ID'\"\n        [placeholder]=\"'Ej. trj-1234'\"\n        formControlName=\"id\"\n        [maxLength]=\"10\"\n      />\n      <!-- Campo: Nombre -->\n      <c-input-form\n        [id]=\"'name'\"\n        [type]=\"'text'\"\n        [label]=\"'Nombre'\"\n        [placeholder]=\"'Nombre del producto'\"\n        formControlName=\"name\"\n        [maxLength]=\"100\"\n      />\n      <!-- Campo: Descripción -->\n      <c-input-form\n        [id]=\"'description'\"\n        [type]=\"'text'\"\n        [label]=\"'Descripción'\"\n        [placeholder]=\"'Descripción detallada'\"\n        formControlName=\"description\"\n        [maxLength]=\"200\"\n      />\n      <!-- Campo: Logo -->\n      <c-input-form\n        [id]=\"'logo'\"\n        [type]=\"'text'\"\n        [label]=\"'Logo'\"\n        [placeholder]=\"'http://imagen.com/logo.png'\"\n        formControlName=\"logo\"\n      />\n      <!-- Campo: Fecha Liberación -->\n      <c-input-form\n        [id]=\"'releaseDate'\"\n        [type]=\"'date'\"\n        [label]=\"'Fecha de Liberación'\"\n        formControlName=\"releaseDate\"\n        [minDate]=\"minDate\"\n      />\n      <!-- Campo: Fecha Revisión -->\n      <c-input-form\n        [id]=\"'revisionDate'\"\n        [type]=\"'date'\"\n        [label]=\"'Fecha de Reestructuración'\"\n        formControlName=\"revisionDate\"\n      />\n    </div>\n    <!-- Acciones -->\n    <div class=\"product-form__actions\">\n      <c-button variant=\"secondary\" (onClick)=\"resetForm()\">Reiniciar</c-button>\n      <c-button variant=\"primary\" type=\"submit\" [isDisabled]=\"productForm.invalid || isLoading()\"\n        >Enviar</c-button\n      >\n    </div>\n  </form>\n</div>\n"
         }
     ],
     "modules": [],
@@ -4091,7 +4498,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "ProductState",
-                "defaultValue": "{\n  products: [],\n  isLoading: false,\n  searchTerm: '',\n  currentPage: INITIAL_PAGE,\n  pageSize: PAGE_SIZE,\n  existId: false,\n}"
+                "defaultValue": "{\n  products: [],\n  isLoading: false,\n  searchTerm: '',\n  currentPage: INITIAL_PAGE,\n  pageSize: PAGE_SIZE,\n}"
             },
             {
                 "name": "NOTIFICATION_SHOW_TIME",
@@ -4141,7 +4548,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "unknown",
-                "defaultValue": "signalStore(\n  withState(initialState),\n  // Filtering\n  withComputed(({ products, searchTerm }) => {\n    const filteredProducts = computed(() => {\n      const query = searchTerm().toLowerCase().trim();\n      if (!query) return products();\n\n      return products().filter(\n        (product) =>\n          product.name.toLowerCase().includes(query) ||\n          product.description.toLowerCase().includes(query),\n      );\n    });\n    return { filteredProducts };\n  }),\n  // For pagination\n  withComputed(({ filteredProducts, currentPage, pageSize }) => {\n    const paginatedProducts = computed(() => {\n      const startIndex = (currentPage() - DEFAULT_TOTAL_PAGES) * pageSize();\n      return filteredProducts().slice(startIndex, startIndex + pageSize());\n    });\n    const totalResults = computed(() => filteredProducts().length);\n\n    const totalPages = computed(() => {\n      return Math.ceil(totalResults() / pageSize()) || DEFAULT_TOTAL_PAGES;\n    });\n    return { paginatedProducts, totalResults, totalPages };\n  }),\n  // Methods\n  withMethods(\n    (\n      store,\n      productRepository = inject(ProductRepository),\n      notificationService = inject(NotificationService),\n    ) => ({\n      loadProducts: rxMethod<void>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap(() =>\n            productRepository.getProducts().pipe(\n              tap((products) => {\n                patchState(store, { products, isLoading: false });\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al cargar productos');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      deleteProduct: rxMethod<string>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((productId) =>\n            productRepository.deleteProduct(productId).pipe(\n              tap((msj) => {\n                patchState(store, {\n                  products: store.products().filter((p) => p.id !== productId),\n                  isLoading: false,\n                });\n                notificationService.notify('success', msj);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al eliminar productos');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      addProduct: rxMethod<Product>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((newProduct) =>\n            productRepository.createProduct(newProduct).pipe(\n              tap(({ message, data: createdProduct }) => {\n                patchState(store, {\n                  products: [...store.products(), createdProduct],\n                  isLoading: false,\n                });\n                notificationService.notify('success', message);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al crear producto');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      verifyProductId: rxMethod<string>(\n        pipe(\n          tap(() => patchState(store, { existId: false, isLoading: true })),\n          switchMap((productId) =>\n            productRepository.verifyProductIDExists(productId).pipe(\n              tap((existId) => {\n                patchState(store, { existId, isLoading: false });\n              }),\n              catchError((err: HttpErrorResponse) => {\n                const errMsg = errorParser(err, 'Error inesperado al verificar producto');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      updateProduct: rxMethod<Product>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((updatedProduct) =>\n            productRepository.updateProduct(updatedProduct).pipe(\n              tap(({ message, data: responseProduct }) => {\n                patchState(store, {\n                  products: store\n                    .products()\n                    .map((p) => (p.id === responseProduct.id ? responseProduct : p)),\n                  isLoading: false,\n                });\n                notificationService.notify('success', message);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al actualizar producto');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      // Filter functionality\n      setSearchTerm(searchTerm: string) {\n        patchState(store, { searchTerm, currentPage: INITIAL_PAGE });\n      },\n      // Pagination functionality\n      setPageSize(pageSize: number): void {\n        patchState(store, { pageSize, currentPage: INITIAL_PAGE });\n      },\n      setCurrentPage(currentPage: number): void {\n        if (currentPage >= INITIAL_PAGE && currentPage <= store.totalPages()) {\n          patchState(store, { currentPage });\n        }\n      },\n    }),\n  ),\n)"
+                "defaultValue": "signalStore(\n  withState(initialState),\n  // Filtering\n  withComputed(({ products, searchTerm }) => {\n    const filteredProducts = computed(() => {\n      const query = searchTerm().toLowerCase().trim();\n      if (!query) return products();\n\n      return products().filter(\n        (product) =>\n          product.name.toLowerCase().includes(query) ||\n          product.description.toLowerCase().includes(query),\n      );\n    });\n    return { filteredProducts };\n  }),\n  // For pagination\n  withComputed(({ filteredProducts, currentPage, pageSize }) => {\n    const paginatedProducts = computed(() => {\n      const startIndex = (currentPage() - DEFAULT_TOTAL_PAGES) * pageSize();\n      return filteredProducts().slice(startIndex, startIndex + pageSize());\n    });\n    const totalResults = computed(() => filteredProducts().length);\n\n    const totalPages = computed(() => {\n      return Math.ceil(totalResults() / pageSize()) || DEFAULT_TOTAL_PAGES;\n    });\n    return { paginatedProducts, totalResults, totalPages };\n  }),\n  // Methods\n  withMethods(\n    (\n      store,\n      productRepository = inject(ProductRepository),\n      notificationService = inject(NotificationService),\n    ) => ({\n      loadProducts: rxMethod<void>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap(() =>\n            productRepository.getProducts().pipe(\n              tap((products) => {\n                patchState(store, { products, isLoading: false });\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al cargar productos');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      deleteProduct: rxMethod<string>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((productId) =>\n            productRepository.deleteProduct(productId).pipe(\n              tap((msj) => {\n                patchState(store, {\n                  products: store.products().filter((p) => p.id !== productId),\n                  isLoading: false,\n                });\n                notificationService.notify('success', msj);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al eliminar productos');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      addProduct: rxMethod<Product>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((newProduct) =>\n            productRepository.createProduct(newProduct).pipe(\n              tap(({ message, data: createdProduct }) => {\n                patchState(store, {\n                  products: [...store.products(), createdProduct],\n                  isLoading: false,\n                });\n                notificationService.notify('success', message);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al crear producto');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      updateProduct: rxMethod<Product>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((updatedProduct) =>\n            productRepository.updateProduct(updatedProduct).pipe(\n              tap(({ message, data: responseProduct }) => {\n                patchState(store, {\n                  products: store\n                    .products()\n                    .map((p) => (p.id === responseProduct.id ? responseProduct : p)),\n                  isLoading: false,\n                });\n                notificationService.notify('success', message);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al actualizar producto');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      // Filter functionality\n      setSearchTerm(searchTerm: string) {\n        patchState(store, { searchTerm, currentPage: INITIAL_PAGE });\n      },\n      // Pagination functionality\n      setPageSize(pageSize: number): void {\n        patchState(store, { pageSize, currentPage: INITIAL_PAGE });\n      },\n      setCurrentPage(currentPage: number): void {\n        if (currentPage >= INITIAL_PAGE && currentPage <= store.totalPages()) {\n          patchState(store, { currentPage });\n        }\n      },\n    }),\n  ),\n)"
             },
             {
                 "name": "routes",
@@ -4155,6 +4562,35 @@
             }
         ],
         "functions": [
+            {
+                "name": "addOneYear",
+                "file": "src/app/shared/utils/date.utils.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "<p>Takes a date string (YYYY-MM-DD), adds exactly one year to it, and returns the result in the same format.</p>\n",
+                "args": [
+                    {
+                        "name": "dateString",
+                        "type": "string",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "returnType": "string",
+                "jsdoctags": [
+                    {
+                        "name": "dateString",
+                        "type": "string",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
             {
                 "name": "errorParser",
                 "file": "src/app/domains/products/domain/state/product.store.ts",
@@ -4203,7 +4639,7 @@
                 "subtype": "function",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "description": "<p>Convierte una fecha a formato YYYY-MM-DD</p>\n",
+                "description": "<p>Convert a date to YYYY-MM-DD format</p>\n",
                 "args": [
                     {
                         "name": "date",
@@ -4216,8 +4652,8 @@
                 "jsdoctags": [
                     {
                         "name": {
-                            "pos": 247,
-                            "end": 251,
+                            "pos": 223,
+                            "end": 227,
                             "kind": 80,
                             "id": 0,
                             "flags": 16777216,
@@ -4228,8 +4664,8 @@
                         "deprecated": false,
                         "deprecationMessage": "",
                         "tagName": {
-                            "pos": 241,
-                            "end": 246,
+                            "pos": 217,
+                            "end": 222,
                             "kind": 80,
                             "id": 0,
                             "flags": 16777216,
@@ -4240,8 +4676,8 @@
                     },
                     {
                         "tagName": {
-                            "pos": 256,
-                            "end": 263,
+                            "pos": 232,
+                            "end": 239,
                             "kind": 80,
                             "id": 0,
                             "flags": 16777216,
@@ -4251,6 +4687,17 @@
                         "comment": "<p>YYYY-MM-DD string</p>\n"
                     }
                 ]
+            },
+            {
+                "name": "futureOrTodayValidator",
+                "file": "src/app/domains/products/validators/date.validator.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "<p>An Angular validation rule that ensures the selected date is today or later.</p>\n",
+                "args": [],
+                "returnType": "ValidatorFn"
             },
             {
                 "name": "generateUUID",
@@ -4264,13 +4711,64 @@
                 "returnType": "string"
             },
             {
+                "name": "getTodayMidnight",
+                "file": "src/app/shared/utils/date.utils.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "<p>Returns a Date object representing today at 12:00:00 AM</p>\n",
+                "args": [],
+                "returnType": "Date"
+            },
+            {
+                "name": "getTodayString",
+                "file": "src/app/shared/utils/date.utils.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "<p>Returns a YYYY-MM-DD string representing today</p>\n",
+                "args": [],
+                "returnType": "string"
+            },
+            {
+                "name": "isTodayOrFuture",
+                "file": "src/app/shared/utils/date.utils.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "<p>Simply check whether a date is today or later.</p>\n",
+                "args": [
+                    {
+                        "name": "dateValue",
+                        "type": "string",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "returnType": "boolean",
+                "jsdoctags": [
+                    {
+                        "name": "dateValue",
+                        "type": "string",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            {
                 "name": "parseDate",
                 "file": "src/app/shared/utils/date.utils.ts",
                 "ctype": "miscellaneous",
                 "subtype": "function",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "description": "<p>Convierte un string de fecha a un objeto fecha</p>\n",
+                "description": "<p>Convert a date string to a date object</p>\n",
                 "args": [
                     {
                         "name": "date",
@@ -4283,8 +4781,8 @@
                 "jsdoctags": [
                     {
                         "name": {
-                            "pos": 64,
-                            "end": 68,
+                            "pos": 56,
+                            "end": 60,
                             "kind": 80,
                             "id": 0,
                             "flags": 16777216,
@@ -4295,8 +4793,8 @@
                         "deprecated": false,
                         "deprecationMessage": "",
                         "tagName": {
-                            "pos": 58,
-                            "end": 63,
+                            "pos": 50,
+                            "end": 55,
                             "kind": 80,
                             "id": 0,
                             "flags": 16777216,
@@ -4307,15 +4805,100 @@
                     },
                     {
                         "tagName": {
-                            "pos": 73,
-                            "end": 80,
+                            "pos": 65,
+                            "end": 72,
                             "kind": 80,
                             "id": 0,
                             "flags": 16777216,
                             "transformFlags": 0,
                             "escapedText": "returns"
                         },
-                        "comment": "<p>objeto de fecha</p>\n"
+                        "comment": "<p>Date</p>\n"
+                    }
+                ]
+            },
+            {
+                "name": "toInputDateFormat",
+                "file": "src/app/shared/utils/date.utils.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "<p>Convert a date to a string in the YYYY-MM-DD format for “date” type controls</p>\n",
+                "args": [
+                    {
+                        "name": "date",
+                        "type": "Date",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "returnType": "string",
+                "jsdoctags": [
+                    {
+                        "name": {
+                            "pos": 451,
+                            "end": 455,
+                            "kind": 80,
+                            "id": 0,
+                            "flags": 16777216,
+                            "transformFlags": 0,
+                            "escapedText": "date"
+                        },
+                        "type": "Date",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "pos": 445,
+                            "end": 450,
+                            "kind": 80,
+                            "id": 0,
+                            "flags": 16777216,
+                            "transformFlags": 0,
+                            "escapedText": "param"
+                        },
+                        "comment": ""
+                    },
+                    {
+                        "tagName": {
+                            "pos": 460,
+                            "end": 467,
+                            "kind": 80,
+                            "id": 0,
+                            "flags": 16777216,
+                            "transformFlags": 0,
+                            "escapedText": "returns"
+                        },
+                        "comment": "<p>Date</p>\n"
+                    }
+                ]
+            },
+            {
+                "name": "uniqueProductIdValidator",
+                "file": "src/app/domains/products/validators/product-id.validator.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "<p>Asynchronous validator with debounce to check if a product ID already exists.</p>\n",
+                "args": [
+                    {
+                        "name": "productService",
+                        "type": "ProductRepository",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "returnType": "AsyncValidatorFn",
+                "jsdoctags": [
+                    {
+                        "name": "productService",
+                        "type": "ProductRepository",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
                     }
                 ]
             }
@@ -4410,7 +4993,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "ProductState",
-                    "defaultValue": "{\n  products: [],\n  isLoading: false,\n  searchTerm: '',\n  currentPage: INITIAL_PAGE,\n  pageSize: PAGE_SIZE,\n  existId: false,\n}"
+                    "defaultValue": "{\n  products: [],\n  isLoading: false,\n  searchTerm: '',\n  currentPage: INITIAL_PAGE,\n  pageSize: PAGE_SIZE,\n}"
                 },
                 {
                     "name": "PAGE_SIZE",
@@ -4430,7 +5013,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "unknown",
-                    "defaultValue": "signalStore(\n  withState(initialState),\n  // Filtering\n  withComputed(({ products, searchTerm }) => {\n    const filteredProducts = computed(() => {\n      const query = searchTerm().toLowerCase().trim();\n      if (!query) return products();\n\n      return products().filter(\n        (product) =>\n          product.name.toLowerCase().includes(query) ||\n          product.description.toLowerCase().includes(query),\n      );\n    });\n    return { filteredProducts };\n  }),\n  // For pagination\n  withComputed(({ filteredProducts, currentPage, pageSize }) => {\n    const paginatedProducts = computed(() => {\n      const startIndex = (currentPage() - DEFAULT_TOTAL_PAGES) * pageSize();\n      return filteredProducts().slice(startIndex, startIndex + pageSize());\n    });\n    const totalResults = computed(() => filteredProducts().length);\n\n    const totalPages = computed(() => {\n      return Math.ceil(totalResults() / pageSize()) || DEFAULT_TOTAL_PAGES;\n    });\n    return { paginatedProducts, totalResults, totalPages };\n  }),\n  // Methods\n  withMethods(\n    (\n      store,\n      productRepository = inject(ProductRepository),\n      notificationService = inject(NotificationService),\n    ) => ({\n      loadProducts: rxMethod<void>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap(() =>\n            productRepository.getProducts().pipe(\n              tap((products) => {\n                patchState(store, { products, isLoading: false });\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al cargar productos');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      deleteProduct: rxMethod<string>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((productId) =>\n            productRepository.deleteProduct(productId).pipe(\n              tap((msj) => {\n                patchState(store, {\n                  products: store.products().filter((p) => p.id !== productId),\n                  isLoading: false,\n                });\n                notificationService.notify('success', msj);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al eliminar productos');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      addProduct: rxMethod<Product>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((newProduct) =>\n            productRepository.createProduct(newProduct).pipe(\n              tap(({ message, data: createdProduct }) => {\n                patchState(store, {\n                  products: [...store.products(), createdProduct],\n                  isLoading: false,\n                });\n                notificationService.notify('success', message);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al crear producto');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      verifyProductId: rxMethod<string>(\n        pipe(\n          tap(() => patchState(store, { existId: false, isLoading: true })),\n          switchMap((productId) =>\n            productRepository.verifyProductIDExists(productId).pipe(\n              tap((existId) => {\n                patchState(store, { existId, isLoading: false });\n              }),\n              catchError((err: HttpErrorResponse) => {\n                const errMsg = errorParser(err, 'Error inesperado al verificar producto');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      updateProduct: rxMethod<Product>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((updatedProduct) =>\n            productRepository.updateProduct(updatedProduct).pipe(\n              tap(({ message, data: responseProduct }) => {\n                patchState(store, {\n                  products: store\n                    .products()\n                    .map((p) => (p.id === responseProduct.id ? responseProduct : p)),\n                  isLoading: false,\n                });\n                notificationService.notify('success', message);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al actualizar producto');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      // Filter functionality\n      setSearchTerm(searchTerm: string) {\n        patchState(store, { searchTerm, currentPage: INITIAL_PAGE });\n      },\n      // Pagination functionality\n      setPageSize(pageSize: number): void {\n        patchState(store, { pageSize, currentPage: INITIAL_PAGE });\n      },\n      setCurrentPage(currentPage: number): void {\n        if (currentPage >= INITIAL_PAGE && currentPage <= store.totalPages()) {\n          patchState(store, { currentPage });\n        }\n      },\n    }),\n  ),\n)"
+                    "defaultValue": "signalStore(\n  withState(initialState),\n  // Filtering\n  withComputed(({ products, searchTerm }) => {\n    const filteredProducts = computed(() => {\n      const query = searchTerm().toLowerCase().trim();\n      if (!query) return products();\n\n      return products().filter(\n        (product) =>\n          product.name.toLowerCase().includes(query) ||\n          product.description.toLowerCase().includes(query),\n      );\n    });\n    return { filteredProducts };\n  }),\n  // For pagination\n  withComputed(({ filteredProducts, currentPage, pageSize }) => {\n    const paginatedProducts = computed(() => {\n      const startIndex = (currentPage() - DEFAULT_TOTAL_PAGES) * pageSize();\n      return filteredProducts().slice(startIndex, startIndex + pageSize());\n    });\n    const totalResults = computed(() => filteredProducts().length);\n\n    const totalPages = computed(() => {\n      return Math.ceil(totalResults() / pageSize()) || DEFAULT_TOTAL_PAGES;\n    });\n    return { paginatedProducts, totalResults, totalPages };\n  }),\n  // Methods\n  withMethods(\n    (\n      store,\n      productRepository = inject(ProductRepository),\n      notificationService = inject(NotificationService),\n    ) => ({\n      loadProducts: rxMethod<void>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap(() =>\n            productRepository.getProducts().pipe(\n              tap((products) => {\n                patchState(store, { products, isLoading: false });\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al cargar productos');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      deleteProduct: rxMethod<string>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((productId) =>\n            productRepository.deleteProduct(productId).pipe(\n              tap((msj) => {\n                patchState(store, {\n                  products: store.products().filter((p) => p.id !== productId),\n                  isLoading: false,\n                });\n                notificationService.notify('success', msj);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al eliminar productos');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      addProduct: rxMethod<Product>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((newProduct) =>\n            productRepository.createProduct(newProduct).pipe(\n              tap(({ message, data: createdProduct }) => {\n                patchState(store, {\n                  products: [...store.products(), createdProduct],\n                  isLoading: false,\n                });\n                notificationService.notify('success', message);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al crear producto');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      updateProduct: rxMethod<Product>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((updatedProduct) =>\n            productRepository.updateProduct(updatedProduct).pipe(\n              tap(({ message, data: responseProduct }) => {\n                patchState(store, {\n                  products: store\n                    .products()\n                    .map((p) => (p.id === responseProduct.id ? responseProduct : p)),\n                  isLoading: false,\n                });\n                notificationService.notify('success', message);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al actualizar producto');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      // Filter functionality\n      setSearchTerm(searchTerm: string) {\n        patchState(store, { searchTerm, currentPage: INITIAL_PAGE });\n      },\n      // Pagination functionality\n      setPageSize(pageSize: number): void {\n        patchState(store, { pageSize, currentPage: INITIAL_PAGE });\n      },\n      setCurrentPage(currentPage: number): void {\n        if (currentPage >= INITIAL_PAGE && currentPage <= store.totalPages()) {\n          patchState(store, { currentPage });\n        }\n      },\n    }),\n  ),\n)"
                 }
             ],
             "src/environments/environment.development.ts": [
@@ -4507,6 +5090,256 @@
             ]
         },
         "groupedFunctions": {
+            "src/app/shared/utils/date.utils.ts": [
+                {
+                    "name": "addOneYear",
+                    "file": "src/app/shared/utils/date.utils.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "<p>Takes a date string (YYYY-MM-DD), adds exactly one year to it, and returns the result in the same format.</p>\n",
+                    "args": [
+                        {
+                            "name": "dateString",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "returnType": "string",
+                    "jsdoctags": [
+                        {
+                            "name": "dateString",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "formatDate",
+                    "file": "src/app/shared/utils/date.utils.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "<p>Convert a date to YYYY-MM-DD format</p>\n",
+                    "args": [
+                        {
+                            "name": "date",
+                            "type": "Date",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "returnType": "string",
+                    "jsdoctags": [
+                        {
+                            "name": {
+                                "pos": 223,
+                                "end": 227,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16777216,
+                                "transformFlags": 0,
+                                "escapedText": "date"
+                            },
+                            "type": "Date",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "pos": 217,
+                                "end": 222,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16777216,
+                                "transformFlags": 0,
+                                "escapedText": "param"
+                            },
+                            "comment": ""
+                        },
+                        {
+                            "tagName": {
+                                "pos": 232,
+                                "end": 239,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16777216,
+                                "transformFlags": 0,
+                                "escapedText": "returns"
+                            },
+                            "comment": "<p>YYYY-MM-DD string</p>\n"
+                        }
+                    ]
+                },
+                {
+                    "name": "getTodayMidnight",
+                    "file": "src/app/shared/utils/date.utils.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "<p>Returns a Date object representing today at 12:00:00 AM</p>\n",
+                    "args": [],
+                    "returnType": "Date"
+                },
+                {
+                    "name": "getTodayString",
+                    "file": "src/app/shared/utils/date.utils.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "<p>Returns a YYYY-MM-DD string representing today</p>\n",
+                    "args": [],
+                    "returnType": "string"
+                },
+                {
+                    "name": "isTodayOrFuture",
+                    "file": "src/app/shared/utils/date.utils.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "<p>Simply check whether a date is today or later.</p>\n",
+                    "args": [
+                        {
+                            "name": "dateValue",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "returnType": "boolean",
+                    "jsdoctags": [
+                        {
+                            "name": "dateValue",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "parseDate",
+                    "file": "src/app/shared/utils/date.utils.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "<p>Convert a date string to a date object</p>\n",
+                    "args": [
+                        {
+                            "name": "date",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "returnType": "Date",
+                    "jsdoctags": [
+                        {
+                            "name": {
+                                "pos": 56,
+                                "end": 60,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16777216,
+                                "transformFlags": 0,
+                                "escapedText": "date"
+                            },
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "pos": 50,
+                                "end": 55,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16777216,
+                                "transformFlags": 0,
+                                "escapedText": "param"
+                            },
+                            "comment": ""
+                        },
+                        {
+                            "tagName": {
+                                "pos": 65,
+                                "end": 72,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16777216,
+                                "transformFlags": 0,
+                                "escapedText": "returns"
+                            },
+                            "comment": "<p>Date</p>\n"
+                        }
+                    ]
+                },
+                {
+                    "name": "toInputDateFormat",
+                    "file": "src/app/shared/utils/date.utils.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "<p>Convert a date to a string in the YYYY-MM-DD format for “date” type controls</p>\n",
+                    "args": [
+                        {
+                            "name": "date",
+                            "type": "Date",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "returnType": "string",
+                    "jsdoctags": [
+                        {
+                            "name": {
+                                "pos": 451,
+                                "end": 455,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16777216,
+                                "transformFlags": 0,
+                                "escapedText": "date"
+                            },
+                            "type": "Date",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "pos": 445,
+                                "end": 450,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16777216,
+                                "transformFlags": 0,
+                                "escapedText": "param"
+                            },
+                            "comment": ""
+                        },
+                        {
+                            "tagName": {
+                                "pos": 460,
+                                "end": 467,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16777216,
+                                "transformFlags": 0,
+                                "escapedText": "returns"
+                            },
+                            "comment": "<p>Date</p>\n"
+                        }
+                    ]
+                }
+            ],
             "src/app/domains/products/domain/state/product.store.ts": [
                 {
                     "name": "errorParser",
@@ -4550,118 +5383,17 @@
                     ]
                 }
             ],
-            "src/app/shared/utils/date.utils.ts": [
+            "src/app/domains/products/validators/date.validator.ts": [
                 {
-                    "name": "formatDate",
-                    "file": "src/app/shared/utils/date.utils.ts",
+                    "name": "futureOrTodayValidator",
+                    "file": "src/app/domains/products/validators/date.validator.ts",
                     "ctype": "miscellaneous",
                     "subtype": "function",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "description": "<p>Convierte una fecha a formato YYYY-MM-DD</p>\n",
-                    "args": [
-                        {
-                            "name": "date",
-                            "type": "Date",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        }
-                    ],
-                    "returnType": "string",
-                    "jsdoctags": [
-                        {
-                            "name": {
-                                "pos": 247,
-                                "end": 251,
-                                "kind": 80,
-                                "id": 0,
-                                "flags": 16777216,
-                                "transformFlags": 0,
-                                "escapedText": "date"
-                            },
-                            "type": "Date",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "pos": 241,
-                                "end": 246,
-                                "kind": 80,
-                                "id": 0,
-                                "flags": 16777216,
-                                "transformFlags": 0,
-                                "escapedText": "param"
-                            },
-                            "comment": ""
-                        },
-                        {
-                            "tagName": {
-                                "pos": 256,
-                                "end": 263,
-                                "kind": 80,
-                                "id": 0,
-                                "flags": 16777216,
-                                "transformFlags": 0,
-                                "escapedText": "returns"
-                            },
-                            "comment": "<p>YYYY-MM-DD string</p>\n"
-                        }
-                    ]
-                },
-                {
-                    "name": "parseDate",
-                    "file": "src/app/shared/utils/date.utils.ts",
-                    "ctype": "miscellaneous",
-                    "subtype": "function",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "description": "<p>Convierte un string de fecha a un objeto fecha</p>\n",
-                    "args": [
-                        {
-                            "name": "date",
-                            "type": "string",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        }
-                    ],
-                    "returnType": "Date",
-                    "jsdoctags": [
-                        {
-                            "name": {
-                                "pos": 64,
-                                "end": 68,
-                                "kind": 80,
-                                "id": 0,
-                                "flags": 16777216,
-                                "transformFlags": 0,
-                                "escapedText": "date"
-                            },
-                            "type": "string",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "pos": 58,
-                                "end": 63,
-                                "kind": 80,
-                                "id": 0,
-                                "flags": 16777216,
-                                "transformFlags": 0,
-                                "escapedText": "param"
-                            },
-                            "comment": ""
-                        },
-                        {
-                            "tagName": {
-                                "pos": 73,
-                                "end": 80,
-                                "kind": 80,
-                                "id": 0,
-                                "flags": 16777216,
-                                "transformFlags": 0,
-                                "escapedText": "returns"
-                            },
-                            "comment": "<p>objeto de fecha</p>\n"
-                        }
-                    ]
+                    "description": "<p>An Angular validation rule that ensures the selected date is today or later.</p>\n",
+                    "args": [],
+                    "returnType": "ValidatorFn"
                 }
             ],
             "src/app/shared/utils/uuid.utils.ts": [
@@ -4675,6 +5407,37 @@
                     "description": "",
                     "args": [],
                     "returnType": "string"
+                }
+            ],
+            "src/app/domains/products/validators/product-id.validator.ts": [
+                {
+                    "name": "uniqueProductIdValidator",
+                    "file": "src/app/domains/products/validators/product-id.validator.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "<p>Asynchronous validator with debounce to check if a product ID already exists.</p>\n",
+                    "args": [
+                        {
+                            "name": "productService",
+                            "type": "ProductRepository",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "returnType": "AsyncValidatorFn",
+                    "jsdoctags": [
+                        {
+                            "name": "productService",
+                            "type": "ProductRepository",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
                 }
             ]
         },
@@ -4758,7 +5521,7 @@
         ]
     },
     "coverage": {
-        "count": 6,
+        "count": 16,
         "status": "low",
         "files": [
             {
@@ -4951,8 +5714,8 @@
                 "type": "interface",
                 "linktype": "interface",
                 "name": "ProductState",
-                "coveragePercent": 42,
-                "coverageCount": "3/7",
+                "coveragePercent": 33,
+                "coverageCount": "2/6",
                 "status": "medium"
             },
             {
@@ -5021,7 +5784,7 @@
                 "linktype": "component",
                 "name": "PProductOperationPageComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/1",
+                "coverageCount": "0/8",
                 "status": "low"
             },
             {
@@ -5030,7 +5793,7 @@
                 "linktype": "component",
                 "name": "PProductsListPageComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/10",
+                "coverageCount": "0/12",
                 "status": "low"
             },
             {
@@ -5059,8 +5822,28 @@
                 "linktype": "component",
                 "name": "ProductFormComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/15",
                 "status": "low"
+            },
+            {
+                "filePath": "src/app/domains/products/validators/date.validator.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
+                "name": "futureOrTodayValidator",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "src/app/domains/products/validators/product-id.validator.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
+                "name": "uniqueProductIdValidator",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
             },
             {
                 "filePath": "src/app/shared/components/c-alert/c-alert.component.ts",
@@ -5105,7 +5888,7 @@
                 "linktype": "component",
                 "name": "CInputFormComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/15",
+                "coverageCount": "0/20",
                 "status": "low"
             },
             {
@@ -5204,6 +5987,16 @@
                 "type": "function",
                 "linktype": "miscellaneous",
                 "linksubtype": "function",
+                "name": "addOneYear",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "src/app/shared/utils/date.utils.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
                 "name": "formatDate",
                 "coveragePercent": 100,
                 "coverageCount": "1/1",
@@ -5214,7 +6007,47 @@
                 "type": "function",
                 "linktype": "miscellaneous",
                 "linksubtype": "function",
+                "name": "getTodayMidnight",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "src/app/shared/utils/date.utils.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
+                "name": "getTodayString",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "src/app/shared/utils/date.utils.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
+                "name": "isTodayOrFuture",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "src/app/shared/utils/date.utils.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
                 "name": "parseDate",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "src/app/shared/utils/date.utils.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
+                "name": "toInputDateFormat",
                 "coveragePercent": 100,
                 "coverageCount": "1/1",
                 "status": "very-good"

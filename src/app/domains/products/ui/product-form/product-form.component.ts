@@ -73,6 +73,25 @@ export class ProductFormComponent implements OnInit {
     this.productForm.reset();
   }
 
+  getErrorMessage(controlName: string): string {
+    const control = this.productForm.get(controlName);
+    if (!control || !control.errors) return '';
+    const errors = control.errors;
+    if (errors['required']) return 'Este campo es requerido.';
+    if (errors['minlength'])
+      return `Debe tener al menos ${errors['minlength'].requiredLength} caracteres.`;
+    if (errors['maxlength'])
+      return `Debe tener como máximo ${errors['maxlength'].requiredLength} caracteres.`;
+    if (errors['invalidDate']) return 'La fecha debe ser igual o posterior al día de hoy.';
+    if (errors['idExists']) return 'ID no válido!';
+    return 'Campo inválido.';
+  }
+
+  isControlInvalid(controlName: string): boolean {
+    const control = this.productForm.get(controlName);
+    return !!(control && control.invalid && (control.touched || control.dirty));
+  }
+
   private fillForm(product: Product) {
     const { id, name, description, logoURL: logo, releaseDate, revisionDate } = product;
     this.productForm.patchValue({
