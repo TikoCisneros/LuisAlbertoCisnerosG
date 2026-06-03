@@ -3,7 +3,7 @@ import { RouterOutlet, Router, NavigationEnd, ActivatedRoute } from '@angular/ro
 
 import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map } from 'rxjs';
-import { CHeaderComponent } from '../components/c-header/c-header.component';
+import { CHeaderComponent } from '@shared/components/c-header/c-header.component';
 
 @Component({
   selector: 'l-main-layout',

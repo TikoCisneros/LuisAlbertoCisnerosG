@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { BASE_URL } from '@core/services/api-url.token';
 import { Product } from '@domains/products/bussiness/models/product-model';
-import { ProductDTO, ProductsApiResponseDTO } from '../dtos/product.dto';
+import { ProductDTO, ProductsApiResponseDTO } from '@domains/products/data-access/dtos/product.dto';
 import { ProductMapper } from '@domains/products/bussiness/mappers/product.mapper';
 
 @Injectable()

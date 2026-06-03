@@ -1,7 +1,7 @@
 import { Component, input, output } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { TableColumn } from './c-table.interface';
-import { CLogoComponent } from '../c-logo/c-logo.component';
+import { CLogoComponent } from '@shared/components/c-logo/c-logo.component';
 import { CTableActionsComponent } from './components/c-table-actions/c-table-actions.component';
 
 @Component({

@@ -5,7 +5,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 import { ProductHttpService } from './product-http.service';
 import { BASE_URL } from '@core/services/api-url.token';
-import { ProductDTO } from '../dtos/product.dto';
+import { ProductDTO } from '@domains/products/data-access/dtos/product.dto';
 import { Product } from '@domains/products/bussiness/models/product-model';
 
 describe('Pruebas de ProductHttpService', () => {
