@@ -1,0 +1,26 @@
+@use 'design-system' as ds;
+
+.product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+
+    @include ds.respond-to('md') {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    border-top: 1px solid ds.$border-color;
+    padding-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+}

@@ -48,12 +48,12 @@
         },
         {
             "name": "Product",
-            "id": "interface-Product-5527f6cd008f292c442b99a6b625e1e9dc812af807847d3dc3b2536073efe252c11db3dd42808b58d86af01d71d6767e3c07ef3a3a7602ef0af67202182ee88f",
+            "id": "interface-Product-e88de09b28906cb72b024b3b114532d1516d0c29816fe8043d988028fe3bf1d10bfcb1459c48286cf0032520d2c44b3ee24bb1e1eca9d4be14e1858cbb5b01b1",
             "file": "src/app/domains/products/domain/models/product-model.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "export interface Product {\n  readonly id: string;\n  readonly name: string;\n  readonly description: string;\n  readonly logoURL: string;\n  readonly releaseDate: Date;\n  readonly revisionDate: Date;\n}\n\nexport class ProductErrors extends Error {\n  constructor(\n    public readonly code: 'FETCH_FAILED' | 'CREATE_FAILED' | 'DELETE_FAILED',\n    message: string,\n  ) {\n    super(message);\n    this.name = 'ProductDomainErrors';\n  }\n}\n",
+            "sourceCode": "export interface Product {\n  readonly id: string;\n  readonly name: string;\n  readonly description: string;\n  readonly logoURL: string;\n  readonly releaseDate: Date;\n  readonly revisionDate: Date;\n}\n\nexport interface ProductResponse {\n  readonly message: string;\n  readonly data: Product;\n}\n\nexport class ProductErrors extends Error {\n  constructor(\n    public readonly code: 'FETCH_FAILED' | 'CREATE_FAILED' | 'DELETE_FAILED' | 'UPDATE_FAILED',\n    message: string,\n  ) {\n    super(message);\n    this.name = 'ProductDomainErrors';\n  }\n}\n",
             "properties": [
                 {
                     "name": "description",
@@ -233,6 +233,47 @@
             "extends": []
         },
         {
+            "name": "ProductResponse",
+            "id": "interface-ProductResponse-e88de09b28906cb72b024b3b114532d1516d0c29816fe8043d988028fe3bf1d10bfcb1459c48286cf0032520d2c44b3ee24bb1e1eca9d4be14e1858cbb5b01b1",
+            "file": "src/app/domains/products/domain/models/product-model.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface Product {\n  readonly id: string;\n  readonly name: string;\n  readonly description: string;\n  readonly logoURL: string;\n  readonly releaseDate: Date;\n  readonly revisionDate: Date;\n}\n\nexport interface ProductResponse {\n  readonly message: string;\n  readonly data: Product;\n}\n\nexport class ProductErrors extends Error {\n  constructor(\n    public readonly code: 'FETCH_FAILED' | 'CREATE_FAILED' | 'DELETE_FAILED' | 'UPDATE_FAILED',\n    message: string,\n  ) {\n    super(message);\n    this.name = 'ProductDomainErrors';\n  }\n}\n",
+            "properties": [
+                {
+                    "name": "data",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Product",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 12,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "message",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 11,
+                    "modifierKind": [
+                        148
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "methods": [],
+            "extends": []
+        },
+        {
             "name": "ProductsApiErrorsDTO",
             "id": "interface-ProductsApiErrorsDTO-e2bcc31c82f2fd6b65c0fbd8e6e429f5f233d8413ace70810c305c47e5bb3ba824c85a81cd1a8f2b76781196115f46398d7cee9a703e8c6b87f3633d58446941",
             "file": "src/app/domains/products/data-access/dtos/product.dto.ts",
@@ -344,12 +385,12 @@
         },
         {
             "name": "ProductState",
-            "id": "interface-ProductState-4572efa693bcca4cdf6af6db7618f59cc5c00379b74d76e2f098ef50719c928629c2c9ea017a837049babfcd4bb611ae221b6dc357a4e10fdb6c3afb81ebaa41",
+            "id": "interface-ProductState-753203a5801042d84a9b6cd2cc5b9f57f52cff2cd5789505681cd01fda6304549dfff82f3a199ceace831621a7cdce9fc95a18e325ef57e3480160de36a9ef0d",
             "file": "src/app/domains/products/domain/state/product.store.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { computed, inject } from '@angular/core';\nimport { signalStore, withState, withMethods, patchState, withComputed } from '@ngrx/signals';\nimport { rxMethod } from '@ngrx/signals/rxjs-interop';\nimport { pipe, switchMap, tap, catchError, of } from 'rxjs';\nimport { Product, ProductErrors } from '../models/product-model';\nimport { ProductRepository } from '@domains/products/domain/repositories/product.repository';\n\nconst INITIAL_PAGE = 1 as const;\nconst DEFAULT_TOTAL_PAGES = 1 as const;\nconst PAGE_SIZE = 5 as const;\nexport interface ProductState {\n  products: Product[];\n  isLoading: boolean;\n  /** Stores error messages */\n  error: string | null;\n  /** Search section */\n  searchTerm: string;\n  /** Pagination section */\n  currentPage: number;\n  pageSize: number;\n}\n\nconst initialState: ProductState = {\n  products: [],\n  isLoading: false,\n  error: null,\n  searchTerm: '',\n  currentPage: INITIAL_PAGE,\n  pageSize: PAGE_SIZE,\n};\n\nexport const ProductStore = signalStore(\n  withState(initialState),\n  // Filtering\n  withComputed(({ products, searchTerm }) => {\n    const filteredProducts = computed(() => {\n      const query = searchTerm().toLowerCase().trim();\n      if (!query) return products();\n\n      return products().filter(\n        (product) =>\n          product.name.toLowerCase().includes(query) ||\n          product.description.toLowerCase().includes(query),\n      );\n    });\n    return { filteredProducts };\n  }),\n  // For pagination\n  withComputed(({ filteredProducts, currentPage, pageSize }) => {\n    const paginatedProducts = computed(() => {\n      const startIndex = (currentPage() - DEFAULT_TOTAL_PAGES) * pageSize();\n      return filteredProducts().slice(startIndex, startIndex + pageSize());\n    });\n    const totalResults = computed(() => filteredProducts().length);\n\n    const totalPages = computed(() => {\n      return Math.ceil(totalResults() / pageSize()) || DEFAULT_TOTAL_PAGES;\n    });\n    return { paginatedProducts, totalResults, totalPages };\n  }),\n  // Methods\n  withMethods((store, productRepository = inject(ProductRepository)) => ({\n    loadProducts: rxMethod<void>(\n      pipe(\n        tap(() => patchState(store, { error: null, isLoading: true })),\n        switchMap(() =>\n          productRepository.getProducts().pipe(\n            tap((products) => {\n              patchState(store, { products, isLoading: false });\n            }),\n            catchError((err) => {\n              patchState(store, { error: err.message, isLoading: false });\n              return of(null);\n            }),\n          ),\n        ),\n      ),\n    ),\n    deleteProduct: rxMethod<string>(\n      pipe(\n        tap(() => patchState(store, { error: null, isLoading: true })),\n        switchMap((productId) =>\n          productRepository.deleteProduct(productId).pipe(\n            tap(() => {\n              patchState(store, {\n                products: store.products().filter((p) => p.id !== productId),\n                isLoading: false,\n              });\n            }),\n            catchError((err) => {\n              patchState(store, { error: err.message, isLoading: false });\n              return of(null);\n            }),\n          ),\n        ),\n      ),\n    ),\n    // Filter functionality\n    setSearchTerm(searchTerm: string) {\n      patchState(store, { searchTerm, currentPage: INITIAL_PAGE });\n    },\n    // Pagination functionality\n    setPageSize(pageSize: number): void {\n      patchState(store, { pageSize, currentPage: INITIAL_PAGE });\n    },\n    setCurrentPage(currentPage: number): void {\n      if (currentPage >= INITIAL_PAGE && currentPage <= store.totalPages()) {\n        patchState(store, { currentPage });\n      }\n    },\n  })),\n);\n",
+            "sourceCode": "import { computed, inject } from '@angular/core';\nimport { signalStore, withState, withMethods, patchState, withComputed } from '@ngrx/signals';\nimport { rxMethod } from '@ngrx/signals/rxjs-interop';\nimport { pipe, switchMap, tap, catchError, of } from 'rxjs';\nimport { Product, ProductErrors } from '../models/product-model';\nimport { ProductRepository } from '@domains/products/domain/repositories/product.repository';\nimport { NotificationService } from '@core/notifications/services/notification.service';\nimport { HttpErrorResponse } from '@angular/common/http';\n\nconst INITIAL_PAGE = 1 as const;\nconst DEFAULT_TOTAL_PAGES = 1 as const;\nconst PAGE_SIZE = 5 as const;\nexport interface ProductState {\n  products: Product[];\n  isLoading: boolean;\n  /** Search section */\n  searchTerm: string;\n  /** Pagination section */\n  currentPage: number;\n  pageSize: number;\n  /** Verification section */\n  existId: boolean;\n}\n\nconst initialState: ProductState = {\n  products: [],\n  isLoading: false,\n  searchTerm: '',\n  currentPage: INITIAL_PAGE,\n  pageSize: PAGE_SIZE,\n  existId: false,\n};\n\nfunction errorParser(error: unknown, fallback: string) {\n  // Verificación estricta del tipo de error\n  const errMsg = error instanceof ProductErrors ? error.message : fallback;\n  return errMsg;\n}\n\nexport const ProductStore = signalStore(\n  withState(initialState),\n  // Filtering\n  withComputed(({ products, searchTerm }) => {\n    const filteredProducts = computed(() => {\n      const query = searchTerm().toLowerCase().trim();\n      if (!query) return products();\n\n      return products().filter(\n        (product) =>\n          product.name.toLowerCase().includes(query) ||\n          product.description.toLowerCase().includes(query),\n      );\n    });\n    return { filteredProducts };\n  }),\n  // For pagination\n  withComputed(({ filteredProducts, currentPage, pageSize }) => {\n    const paginatedProducts = computed(() => {\n      const startIndex = (currentPage() - DEFAULT_TOTAL_PAGES) * pageSize();\n      return filteredProducts().slice(startIndex, startIndex + pageSize());\n    });\n    const totalResults = computed(() => filteredProducts().length);\n\n    const totalPages = computed(() => {\n      return Math.ceil(totalResults() / pageSize()) || DEFAULT_TOTAL_PAGES;\n    });\n    return { paginatedProducts, totalResults, totalPages };\n  }),\n  // Methods\n  withMethods(\n    (\n      store,\n      productRepository = inject(ProductRepository),\n      notificationService = inject(NotificationService),\n    ) => ({\n      loadProducts: rxMethod<void>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap(() =>\n            productRepository.getProducts().pipe(\n              tap((products) => {\n                patchState(store, { products, isLoading: false });\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al cargar productos');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      deleteProduct: rxMethod<string>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((productId) =>\n            productRepository.deleteProduct(productId).pipe(\n              tap((msj) => {\n                patchState(store, {\n                  products: store.products().filter((p) => p.id !== productId),\n                  isLoading: false,\n                });\n                notificationService.notify('success', msj);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al eliminar productos');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      addProduct: rxMethod<Product>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((newProduct) =>\n            productRepository.createProduct(newProduct).pipe(\n              tap(({ message, data: createdProduct }) => {\n                patchState(store, {\n                  products: [...store.products(), createdProduct],\n                  isLoading: false,\n                });\n                notificationService.notify('success', message);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al crear producto');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      verifyProductId: rxMethod<string>(\n        pipe(\n          tap(() => patchState(store, { existId: false, isLoading: true })),\n          switchMap((productId) =>\n            productRepository.verifyProductIDExists(productId).pipe(\n              tap((existId) => {\n                patchState(store, { existId, isLoading: false });\n              }),\n              catchError((err: HttpErrorResponse) => {\n                const errMsg = errorParser(err, 'Error inesperado al verificar producto');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      updateProduct: rxMethod<Product>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((updatedProduct) =>\n            productRepository.updateProduct(updatedProduct).pipe(\n              tap(({ message, data: responseProduct }) => {\n                patchState(store, {\n                  products: store\n                    .products()\n                    .map((p) => (p.id === responseProduct.id ? responseProduct : p)),\n                  isLoading: false,\n                });\n                notificationService.notify('success', message);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al actualizar producto');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      // Filter functionality\n      setSearchTerm(searchTerm: string) {\n        patchState(store, { searchTerm, currentPage: INITIAL_PAGE });\n      },\n      // Pagination functionality\n      setPageSize(pageSize: number): void {\n        patchState(store, { pageSize, currentPage: INITIAL_PAGE });\n      },\n      setCurrentPage(currentPage: number): void {\n        if (currentPage >= INITIAL_PAGE && currentPage <= store.totalPages()) {\n          patchState(store, { currentPage });\n        }\n      },\n    }),\n  ),\n);\n",
             "properties": [
                 {
                     "name": "currentPage",
@@ -363,15 +404,15 @@
                     "rawdescription": "\nPagination section"
                 },
                 {
-                    "name": "error",
+                    "name": "existId",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "string | null",
+                    "type": "boolean",
                     "indexKey": "",
                     "optional": false,
-                    "description": "<p>Stores error messages</p>\n",
-                    "line": 15,
-                    "rawdescription": "\nStores error messages"
+                    "description": "<p>Verification section</p>\n",
+                    "line": 22,
+                    "rawdescription": "\nVerification section"
                 },
                 {
                     "name": "isLoading",
@@ -381,7 +422,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 13
+                    "line": 15
                 },
                 {
                     "name": "pageSize",
@@ -401,7 +442,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 12
+                    "line": 14
                 },
                 {
                     "name": "searchTerm",
@@ -613,7 +654,7 @@
         },
         {
             "name": "NotificationService",
-            "id": "injectable-NotificationService-cdd87d06c9e44f88c714c261bfb4ceba79b0a2145af9304af1f01f29294ed48faf709d6abcba23dcbc64f887bbaddcbfea58094dbe41593efc03870b27ed52b7",
+            "id": "injectable-NotificationService-4f92ffdb3cdef92de3f281c282f0672442dcfde59458c31e99e1c7401c28393bfa2f148bde20c16426dfd32c172e545f0a1f81bf885c80c29eaf11ae2b02d00b",
             "file": "src/app/core/notifications/services/notification.service.ts",
             "properties": [
                 {
@@ -625,7 +666,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 10,
+                    "line": 11,
                     "modifierKind": [
                         123,
                         148
@@ -640,7 +681,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 12,
+                    "line": 13,
                     "modifierKind": [
                         148
                     ]
@@ -662,7 +703,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 14,
+                    "line": 15,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -702,7 +743,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 20,
+                    "line": 21,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -735,13 +776,13 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { computed, Injectable, signal } from '@angular/core';\nimport { NotificationType, Notification } from '../models/notification.model';\n\nconst NOTIFICATION_SHOW_TIME = 4000 as const;\n\n@Injectable({\n  providedIn: 'root',\n})\nexport class NotificationService {\n  private readonly _notifications = signal<Notification[]>([]);\n\n  readonly notifications = computed(() => this._notifications());\n\n  hideNotification(id: string) {\n    this._notifications.update((current) =>\n      current.filter((notification) => notification.id !== id),\n    );\n  }\n\n  notify(type: NotificationType, message: string) {\n    const notification = {\n      id: generateUUID(),\n      type,\n      message,\n    };\n    this._notifications.update((current) => [...current, notification]);\n\n    setTimeout(() => this.hideNotification(notification.id), NOTIFICATION_SHOW_TIME);\n  }\n}\n",
+            "sourceCode": "import { computed, Injectable, signal } from '@angular/core';\nimport { NotificationType, Notification } from '../models/notification.model';\nimport { generateUUID } from '@shared/utils/uuid.utils';\n\nconst NOTIFICATION_SHOW_TIME = 4000 as const;\n\n@Injectable({\n  providedIn: 'root',\n})\nexport class NotificationService {\n  private readonly _notifications = signal<Notification[]>([]);\n\n  readonly notifications = computed(() => this._notifications());\n\n  hideNotification(id: string) {\n    this._notifications.update((current) =>\n      current.filter((notification) => notification.id !== id),\n    );\n  }\n\n  notify(type: NotificationType, message: string) {\n    const notification = {\n      id: generateUUID(),\n      type,\n      message,\n    };\n\n    console.log(notification);\n    this._notifications.update((current) => [...current, notification]);\n\n    setTimeout(() => this.hideNotification(notification.id), NOTIFICATION_SHOW_TIME);\n  }\n}\n",
             "extends": [],
             "type": "injectable"
         },
         {
             "name": "ProductHttpRepository",
-            "id": "injectable-ProductHttpRepository-60e2cf43b62315b4813e4b9483c8fe1c13421ff2c03d85fc57e28c93507d16fab32dfe54f8c6beb00616505c6ec96aa5b5a5f59477d2f3099935fa4bd5b98022",
+            "id": "injectable-ProductHttpRepository-51a04bc04cbb0114bdd78e675245089c94fe37d99417205f1fd3cbd6902c97e9232bf0e7843625bac4e6f8957340c5b6734163df759447c8b613d73e2c98d431",
             "file": "src/app/domains/products/data-access/repositories/product-http.repository.ts",
             "properties": [
                 {
@@ -753,7 +794,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 17,
+                    "line": 22,
                     "modifierKind": [
                         123,
                         148
@@ -768,7 +809,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 16,
+                    "line": 21,
                     "modifierKind": [
                         123,
                         148
@@ -783,7 +824,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 18,
+                    "line": 23,
                     "modifierKind": [
                         123,
                         148
@@ -804,9 +845,9 @@
                         }
                     ],
                     "optional": false,
-                    "returnType": "Observable<Product>",
+                    "returnType": "Observable<ProductResponse>",
                     "typeParameters": [],
-                    "line": 35,
+                    "line": 40,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -838,7 +879,7 @@
                     "optional": false,
                     "returnType": "Observable<string>",
                     "typeParameters": [],
-                    "line": 47,
+                    "line": 75,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -870,7 +911,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 23,
+                    "line": 28,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n\nHelper function used to extract the error message, from the HttpErrorResponse.\n",
@@ -898,7 +939,7 @@
                     "optional": false,
                     "returnType": "Observable<Product[]>",
                     "typeParameters": [],
-                    "line": 27,
+                    "line": 32,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -915,9 +956,9 @@
                         }
                     ],
                     "optional": false,
-                    "returnType": "Observable<Product>",
+                    "returnType": "Observable<ProductResponse>",
                     "typeParameters": [],
-                    "line": 41,
+                    "line": 56,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -949,7 +990,7 @@
                     "optional": false,
                     "returnType": "Observable<boolean>",
                     "typeParameters": [],
-                    "line": 55,
+                    "line": 84,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -971,7 +1012,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { Injectable, inject } from '@angular/core';\nimport { HttpClient, HttpErrorResponse } from '@angular/common/http';\nimport { Observable, catchError, map, of, throwError } from 'rxjs';\nimport { BASE_URL } from '@core/services/api-url.token';\nimport { Product, ProductErrors } from '@domains/products/domain/models/product-model';\nimport {\n  ProductDTO,\n  ProductsApiErrorsDTO,\n  ProductsApiResponseDTO,\n} from '@domains/products/data-access/dtos/product.dto';\nimport { ProductMapper } from '@domains/products/domain/mappers/product.mapper';\nimport { ProductRepository } from '@domains/products/domain/repositories/product.repository';\n\n@Injectable()\nexport class ProductHttpRepository implements ProductRepository {\n  private readonly http = inject(HttpClient);\n  private readonly baseUrl = inject(BASE_URL);\n  private readonly productURL = `${this.baseUrl}/products`;\n\n  /**\n   * Helper function used to extract the error message, from the HttpErrorResponse.\n   */\n  private extractErrorMessage(err: HttpErrorResponse): string {\n    return (err.error as ProductsApiErrorsDTO)?.message || err.message || 'Error desconocido';\n  }\n\n  getProducts(): Observable<Product[]> {\n    return this.http.get<ProductsApiResponseDTO>(this.productURL).pipe(\n      map(({ data }) => ProductMapper.dtosToDomainList(data)),\n      catchError((err: HttpErrorResponse) => {\n        return throwError(() => new ProductErrors('FETCH_FAILED', this.extractErrorMessage(err)));\n      }),\n    );\n  }\n  createProduct(product: Product): Observable<Product> {\n    return this.http\n      .post<ProductDTO>(this.productURL, ProductMapper.domainToDto(product))\n      .pipe(map((dto) => ProductMapper.dtoToDomain(dto)));\n  }\n\n  updateProduct(product: Product): Observable<Product> {\n    return this.http\n      .put<ProductDTO>(`${this.productURL}/${product.id}`, ProductMapper.domainToDto(product))\n      .pipe(map((dto) => ProductMapper.dtoToDomain(dto)));\n  }\n\n  deleteProduct(productId: string): Observable<string> {\n    return this.http.delete(`${this.productURL}/${productId}`, { responseType: 'text' }).pipe(\n      catchError((err: HttpErrorResponse) => {\n        return throwError(() => new ProductErrors('DELETE_FAILED', this.extractErrorMessage(err)));\n      }),\n    );\n  }\n\n  verifyProductIDExists(id: string): Observable<boolean> {\n    return this.http.get<boolean>(`${this.productURL}/verification/${id}`);\n  }\n}\n",
+            "sourceCode": "import { Injectable, inject } from '@angular/core';\nimport { HttpClient, HttpErrorResponse } from '@angular/common/http';\nimport { Observable, catchError, map, of, throwError } from 'rxjs';\nimport { BASE_URL } from '@core/services/api-url.token';\nimport {\n  Product,\n  ProductErrors,\n  ProductResponse,\n} from '@domains/products/domain/models/product-model';\nimport {\n  ProductDTO,\n  ProductsApiErrorsDTO,\n  ProductsApiResponseDTO,\n  ProductsApiSuccessDTO,\n} from '@domains/products/data-access/dtos/product.dto';\nimport { ProductMapper } from '@domains/products/domain/mappers/product.mapper';\nimport { ProductRepository } from '@domains/products/domain/repositories/product.repository';\n\n@Injectable()\nexport class ProductHttpRepository implements ProductRepository {\n  private readonly http = inject(HttpClient);\n  private readonly baseUrl = inject(BASE_URL);\n  private readonly productURL = `${this.baseUrl}/products`;\n\n  /**\n   * Helper function used to extract the error message, from the HttpErrorResponse.\n   */\n  private extractErrorMessage(err: HttpErrorResponse): string {\n    return (err.error as ProductsApiErrorsDTO)?.message || err.message || 'Error desconocido';\n  }\n\n  getProducts(): Observable<Product[]> {\n    return this.http.get<ProductsApiResponseDTO>(this.productURL).pipe(\n      map(({ data }) => ProductMapper.dtosToDomainList(data)),\n      catchError((err: HttpErrorResponse) => {\n        return throwError(() => new ProductErrors('FETCH_FAILED', this.extractErrorMessage(err)));\n      }),\n    );\n  }\n  createProduct(product: Product): Observable<ProductResponse> {\n    return this.http\n      .post<ProductsApiSuccessDTO>(this.productURL, ProductMapper.domainToDto(product))\n      .pipe(\n        map(({ message, data }) => ({\n          message,\n          data: ProductMapper.dtoToDomain(data!),\n        })),\n        catchError((err: HttpErrorResponse) => {\n          return throwError(\n            () => new ProductErrors('CREATE_FAILED', this.extractErrorMessage(err)),\n          );\n        }),\n      );\n  }\n\n  updateProduct(product: Product): Observable<ProductResponse> {\n    return this.http\n      .put<ProductsApiSuccessDTO>(\n        `${this.productURL}/${product.id}`,\n        ProductMapper.domainToDto(product),\n      )\n      .pipe(\n        map(({ message, data }) => ({\n          message,\n          data: ProductMapper.dtoToDomain(data!),\n        })),\n        catchError((err: HttpErrorResponse) => {\n          return throwError(\n            () => new ProductErrors('UPDATE_FAILED', this.extractErrorMessage(err)),\n          );\n        }),\n      );\n  }\n\n  deleteProduct(productId: string): Observable<string> {\n    return this.http.delete<ProductsApiSuccessDTO>(`${this.productURL}/${productId}`).pipe(\n      map((res) => res.message),\n      catchError((err: HttpErrorResponse) => {\n        return throwError(() => new ProductErrors('DELETE_FAILED', this.extractErrorMessage(err)));\n      }),\n    );\n  }\n\n  verifyProductIDExists(id: string): Observable<boolean> {\n    return this.http.get<boolean>(`${this.productURL}/verification/${id}`);\n  }\n}\n",
             "extends": [],
             "type": "injectable"
         }
@@ -981,12 +1022,12 @@
     "classes": [
         {
             "name": "ProductErrors",
-            "id": "class-ProductErrors-5527f6cd008f292c442b99a6b625e1e9dc812af807847d3dc3b2536073efe252c11db3dd42808b58d86af01d71d6767e3c07ef3a3a7602ef0af67202182ee88f",
+            "id": "class-ProductErrors-e88de09b28906cb72b024b3b114532d1516d0c29816fe8043d988028fe3bf1d10bfcb1459c48286cf0032520d2c44b3ee24bb1e1eca9d4be14e1858cbb5b01b1",
             "file": "src/app/domains/products/domain/models/product-model.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "class",
-            "sourceCode": "export interface Product {\n  readonly id: string;\n  readonly name: string;\n  readonly description: string;\n  readonly logoURL: string;\n  readonly releaseDate: Date;\n  readonly revisionDate: Date;\n}\n\nexport class ProductErrors extends Error {\n  constructor(\n    public readonly code: 'FETCH_FAILED' | 'CREATE_FAILED' | 'DELETE_FAILED',\n    message: string,\n  ) {\n    super(message);\n    this.name = 'ProductDomainErrors';\n  }\n}\n",
+            "sourceCode": "export interface Product {\n  readonly id: string;\n  readonly name: string;\n  readonly description: string;\n  readonly logoURL: string;\n  readonly releaseDate: Date;\n  readonly revisionDate: Date;\n}\n\nexport interface ProductResponse {\n  readonly message: string;\n  readonly data: Product;\n}\n\nexport class ProductErrors extends Error {\n  constructor(\n    public readonly code: 'FETCH_FAILED' | 'CREATE_FAILED' | 'DELETE_FAILED' | 'UPDATE_FAILED',\n    message: string,\n  ) {\n    super(message);\n    this.name = 'ProductDomainErrors';\n  }\n}\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -995,7 +1036,7 @@
                 "args": [
                     {
                         "name": "code",
-                        "type": "\"FETCH_FAILED\" | \"CREATE_FAILED\" | \"DELETE_FAILED\"",
+                        "type": "\"FETCH_FAILED\" | \"CREATE_FAILED\" | \"DELETE_FAILED\" | \"UPDATE_FAILED\"",
                         "optional": false,
                         "dotDotDotToken": false,
                         "deprecated": false,
@@ -1010,11 +1051,11 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 10,
+                "line": 15,
                 "jsdoctags": [
                     {
                         "name": "code",
-                        "type": "\"FETCH_FAILED\" | \"CREATE_FAILED\" | \"DELETE_FAILED\"",
+                        "type": "\"FETCH_FAILED\" | \"CREATE_FAILED\" | \"DELETE_FAILED\" | \"UPDATE_FAILED\"",
                         "optional": false,
                         "dotDotDotToken": false,
                         "deprecated": false,
@@ -1043,11 +1084,11 @@
                     "name": "code",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "\"FETCH_FAILED\" | \"CREATE_FAILED\" | \"DELETE_FAILED\"",
+                    "type": "\"FETCH_FAILED\" | \"CREATE_FAILED\" | \"DELETE_FAILED\" | \"UPDATE_FAILED\"",
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 12,
+                    "line": 17,
                     "modifierKind": [
                         125,
                         148
@@ -1187,12 +1228,12 @@
         },
         {
             "name": "ProductRepository",
-            "id": "class-ProductRepository-7e35a4816c447c4785cbb7c1d2fcf7685d6ffc349f066ad562baed04e59ba3aef42e07265aa907e45d06510072c4d7f43463779d0bad2b2ede7b7ee40d26b548",
+            "id": "class-ProductRepository-3ef07682a97fd595f980c0e572e737a63dfc9d762c286871fa63200ec9bae5b665b6005fec68861c526d0a61fd8ae0e0730715fc3f5d62551240613604366bc3",
             "file": "src/app/domains/products/domain/repositories/product.repository.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "class",
-            "sourceCode": "import { Observable } from 'rxjs';\nimport { Product } from '../models/product-model';\n\nexport abstract class ProductRepository {\n  abstract getProducts(): Observable<Product[]>;\n  abstract createProduct(product: Product): Observable<Product>;\n  abstract updateProduct(product: Product): Observable<Product>;\n  abstract deleteProduct(productId: string): Observable<string>;\n  abstract verifyProductIDExists(id: string): Observable<boolean>;\n}\n",
+            "sourceCode": "import { Observable } from 'rxjs';\nimport { Product, ProductResponse } from '../models/product-model';\n\nexport abstract class ProductRepository {\n  abstract getProducts(): Observable<Product[]>;\n  abstract createProduct(product: Product): Observable<ProductResponse>;\n  abstract updateProduct(product: Product): Observable<ProductResponse>;\n  abstract deleteProduct(productId: string): Observable<string>;\n  abstract verifyProductIDExists(id: string): Observable<boolean>;\n}\n",
             "inputsClass": [],
             "outputsClass": [],
             "properties": [],
@@ -1210,7 +1251,7 @@
                         }
                     ],
                     "optional": false,
-                    "returnType": "Observable<Product>",
+                    "returnType": "Observable<ProductResponse>",
                     "typeParameters": [],
                     "line": 6,
                     "deprecated": false,
@@ -1293,7 +1334,7 @@
                         }
                     ],
                     "optional": false,
-                    "returnType": "Observable<Product>",
+                    "returnType": "Observable<ProductResponse>",
                     "typeParameters": [],
                     "line": 7,
                     "deprecated": false,
@@ -1860,7 +1901,7 @@
         },
         {
             "name": "CInputFormComponent",
-            "id": "component-CInputFormComponent-edd0effa3adac90690f12839aa6fda7c9a9981828bf0b522ada696a448ccb0c9972ee84fb5a166128bcd8f81be091fe649e71517d398eecadee8cf987dbc87b7",
+            "id": "component-CInputFormComponent-5f966415b076b692cd5c793fad47f62794f952eea53d3bb6734d0436fc019f365ca0b384b1a22dff4f413707d5369a18d156f683223fe41bdb6c345ed7f3eb78",
             "file": "src/app/shared/components/c-input-form/c-input-form.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -1903,6 +1944,18 @@
                     "optional": false,
                     "description": "",
                     "line": 22,
+                    "required": false
+                },
+                {
+                    "name": "isDisabled",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 26,
                     "required": false
                 },
                 {
@@ -1957,17 +2010,6 @@
             "outputsClass": [],
             "propertiesClass": [
                 {
-                    "name": "isDisabled",
-                    "defaultValue": "signal<boolean>(false)",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "unknown",
-                    "indexKey": "",
-                    "optional": false,
-                    "description": "",
-                    "line": 29
-                },
-                {
                     "name": "onChangeHandler",
                     "defaultValue": "() => {...}",
                     "deprecated": false,
@@ -1998,7 +2040,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 28
+                    "line": 29
                 }
             ],
             "methodsClass": [
@@ -2121,38 +2163,6 @@
                     ]
                 },
                 {
-                    "name": "setDisabledState",
-                    "args": [
-                        {
-                            "name": "isDisabled",
-                            "type": "boolean",
-                            "optional": false,
-                            "dotDotDotToken": false,
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        }
-                    ],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 53,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "jsdoctags": [
-                        {
-                            "name": "isDisabled",
-                            "type": "boolean",
-                            "optional": false,
-                            "dotDotDotToken": false,
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        }
-                    ]
-                },
-                {
                     "name": "writeValue",
                     "args": [
                         {
@@ -2194,7 +2204,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, input, signal, forwardRef, ChangeDetectionStrategy } from '@angular/core';\nimport { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';\n\n@Component({\n  selector: 'c-input-form',\n  standalone: true,\n  providers: [\n    {\n      provide: NG_VALUE_ACCESSOR,\n      useExisting: forwardRef(() => CInputFormComponent),\n      multi: true,\n    },\n  ],\n  templateUrl: './c-input-form.component.html',\n  styleUrl: './c-input-form.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class CInputFormComponent implements ControlValueAccessor {\n  // Configuración del input\n  placeholder = input<string>('');\n  type = input<'text' | 'date'>('text');\n  id = input<string>('');\n  label = input<string>('');\n  isInvalid = input<boolean>(false);\n  errorMessage = input<string>('');\n\n  // Estado interno\n  value = signal<string>('');\n  isDisabled = signal<boolean>(false);\n\n  // Funciones callback de ControlValueAccessor\n  onChangeHandler: (value: string) => void = () => {};\n  onTouchedHandler: () => void = () => {};\n  onInputHandler(event: Event): void {\n    const inputEl = event.target as HTMLInputElement;\n    this.value.set(inputEl.value);\n    this.onChangeHandler(inputEl.value);\n  }\n\n  // ControlValueAccessor interface implementation\n  writeValue(value: string | null | undefined): void {\n    this.value.set(value || '');\n  }\n\n  registerOnChange(fn: (value: string) => void): void {\n    this.onChangeHandler = fn;\n  }\n\n  registerOnTouched(fn: () => void): void {\n    this.onTouchedHandler = fn;\n  }\n\n  setDisabledState(isDisabled: boolean): void {\n    this.isDisabled.set(isDisabled);\n  }\n}\n",
+            "sourceCode": "import { Component, input, signal, forwardRef, ChangeDetectionStrategy } from '@angular/core';\nimport { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';\n\n@Component({\n  selector: 'c-input-form',\n  standalone: true,\n  providers: [\n    {\n      provide: NG_VALUE_ACCESSOR,\n      useExisting: forwardRef(() => CInputFormComponent),\n      multi: true,\n    },\n  ],\n  templateUrl: './c-input-form.component.html',\n  styleUrl: './c-input-form.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class CInputFormComponent implements ControlValueAccessor {\n  // Configuración del input\n  placeholder = input<string>('');\n  type = input<'text' | 'date'>('text');\n  id = input<string>('');\n  label = input<string>('');\n  isInvalid = input<boolean>(false);\n  errorMessage = input<string>('');\n  isDisabled = input<boolean>(false);\n\n  // Estado interno\n  value = signal<string>('');\n\n  // Funciones callback de ControlValueAccessor\n  onChangeHandler: (value: string) => void = () => {};\n  onTouchedHandler: () => void = () => {};\n  onInputHandler(event: Event): void {\n    const inputEl = event.target as HTMLInputElement;\n    this.value.set(inputEl.value);\n    this.onChangeHandler(inputEl.value);\n  }\n\n  // ControlValueAccessor interface implementation\n  writeValue(value: string | null | undefined): void {\n    this.value.set(value || '');\n  }\n\n  registerOnChange(fn: (value: string) => void): void {\n    this.onChangeHandler = fn;\n  }\n\n  registerOnTouched(fn: () => void): void {\n    this.onTouchedHandler = fn;\n  }\n}\n",
             "styleUrl": "./c-input-form.component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
@@ -3927,6 +3937,87 @@
                 "OnInit"
             ],
             "templateData": "<div class=\"p-product-list-container\">\n  <div class=\"p-product-list-header\">\n    <div class=\"p-product-list-header__search-bar\">\n      <c-input-search\n        [placeholder]=\"'Buscar...'\"\n        [value]=\"store.searchTerm()\"\n        (onValueChange)=\"store.setSearchTerm($event)\"\n      ></c-input-search>\n    </div>\n\n    <c-button>Agregar</c-button>\n  </div>\n  <div class=\"p-product-list-table\">\n    <c-table\n      [data]=\"store.paginatedProducts()\"\n      [columns]=\"tableColumns\"\n      [showActions]=\"true\"\n      [isLoading]=\"store.isLoading()\"\n      (onDelete)=\"onDeleteProduct($event)\"\n    ></c-table>\n    @if (!store.isLoading()) {\n      <c-pagination\n        [totalResults]=\"store.totalResults()\"\n        [pageSize]=\"store.pageSize()\"\n        [currentPage]=\"store.currentPage()\"\n        (onPageChange)=\"store.setCurrentPage($event)\"\n        (onPageSizeChange)=\"store.setPageSize($event)\"\n      ></c-pagination>\n    }\n  </div>\n</div>\n<c-modal\n  [isOpen]=\"!!productToDelete()\"\n  [bodyText]=\"'¿Estás seguro de eliminar el producto ' + productToDelete()?.name + '?'\"\n  [confirmText]=\"'Eliminar'\"\n  [cancelText]=\"'Cancelar'\"\n  [isLoading]=\"store.isLoading()\"\n  (onConfirm)=\"onDeleteProductConfirm()\"\n  (onCancel)=\"onCloseModal()\"\n></c-modal>\n"
+        },
+        {
+            "name": "ProductFormComponent",
+            "id": "component-ProductFormComponent-df6234f1f467bf5dc8c4a32625f267ffbecf33b3bf4b0504206034ef13ea6f3d81852f4495b01e15555dfbd117dee1270072255b9faafed18ac6d9487dfb694a",
+            "file": "src/app/domains/products/ui/product-form/product-form.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "product-form",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./product-form.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "isEditMode",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 17,
+                    "required": false
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "_formBuilder",
+                    "defaultValue": "inject(FormBuilder)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 15,
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CInputFormComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "CButtonComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "ReactiveFormsModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { CButtonComponent } from '@shared/components/c-button/c-button.component';\nimport { CInputFormComponent } from '@shared/components/c-input-form/c-input-form.component';\nimport { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';\nimport { FormBuilder, ReactiveFormsModule } from '@angular/forms';\n\n@Component({\n  selector: 'product-form',\n  standalone: true,\n  imports: [CInputFormComponent, CButtonComponent, ReactiveFormsModule],\n  templateUrl: './product-form.component.html',\n  styleUrl: './product-form.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class ProductFormComponent {\n  private readonly _formBuilder = inject(FormBuilder);\n\n  isEditMode = input<boolean>(false);\n}\n",
+            "styleUrl": "./product-form.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<form class=\"product-form\">\n  <div class=\"product-form__grid\">\n    <!-- Campo: ID -->\n    <c-input-form id=\"id\" type=\"text\" label=\"ID\" placeholder=\"Ej. trj-1234\" formControlName=\"id\" />\n    <!-- Campo: Nombre -->\n    <c-input-form\n      id=\"name\"\n      type=\"text\"\n      label=\"Nombre\"\n      placeholder=\"Nombre del producto\"\n      formControlName=\"name\"\n    />\n    <!-- Campo: Descripción -->\n    <c-input-form\n      id=\"description\"\n      type=\"text\"\n      label=\"Descripción\"\n      placeholder=\"Descripción detallada\"\n      formControlName=\"description\"\n    />\n    <!-- Campo: Logo -->\n    <c-input-form\n      id=\"logo\"\n      type=\"text\"\n      label=\"Logo\"\n      placeholder=\"http://imagen.com/logo.png\"\n      formControlName=\"logo\"\n    />\n    <!-- Campo: Fecha Liberación -->\n    <c-input-form\n      id=\"releaseDate\"\n      type=\"date\"\n      label=\"Fecha de Liberación\"\n      formControlName=\"releaseDate\"\n    />\n    <!-- Campo: Fecha Revisión -->\n    <c-input-form\n      id=\"revisionDate\"\n      type=\"date\"\n      label=\"Fecha de Reestructuración\"\n      formControlName=\"revisionDate\"\n      [isDisabled]=\"true\"\n    />\n  </div>\n  <!-- Area de botones -->\n  <div class=\"product-form__actions\">\n    <c-button variant=\"secondary\">Reiniciar</c-button>\n    <c-button variant=\"primary\" type=\"submit\">Enviar</c-button>\n  </div>\n</form>\n"
         }
     ],
     "modules": [],
@@ -4000,7 +4091,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "ProductState",
-                "defaultValue": "{\n  products: [],\n  isLoading: false,\n  error: null,\n  searchTerm: '',\n  currentPage: INITIAL_PAGE,\n  pageSize: PAGE_SIZE,\n}"
+                "defaultValue": "{\n  products: [],\n  isLoading: false,\n  searchTerm: '',\n  currentPage: INITIAL_PAGE,\n  pageSize: PAGE_SIZE,\n  existId: false,\n}"
             },
             {
                 "name": "NOTIFICATION_SHOW_TIME",
@@ -4050,7 +4141,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "unknown",
-                "defaultValue": "signalStore(\n  withState(initialState),\n  // Filtering\n  withComputed(({ products, searchTerm }) => {\n    const filteredProducts = computed(() => {\n      const query = searchTerm().toLowerCase().trim();\n      if (!query) return products();\n\n      return products().filter(\n        (product) =>\n          product.name.toLowerCase().includes(query) ||\n          product.description.toLowerCase().includes(query),\n      );\n    });\n    return { filteredProducts };\n  }),\n  // For pagination\n  withComputed(({ filteredProducts, currentPage, pageSize }) => {\n    const paginatedProducts = computed(() => {\n      const startIndex = (currentPage() - DEFAULT_TOTAL_PAGES) * pageSize();\n      return filteredProducts().slice(startIndex, startIndex + pageSize());\n    });\n    const totalResults = computed(() => filteredProducts().length);\n\n    const totalPages = computed(() => {\n      return Math.ceil(totalResults() / pageSize()) || DEFAULT_TOTAL_PAGES;\n    });\n    return { paginatedProducts, totalResults, totalPages };\n  }),\n  // Methods\n  withMethods((store, productRepository = inject(ProductRepository)) => ({\n    loadProducts: rxMethod<void>(\n      pipe(\n        tap(() => patchState(store, { error: null, isLoading: true })),\n        switchMap(() =>\n          productRepository.getProducts().pipe(\n            tap((products) => {\n              patchState(store, { products, isLoading: false });\n            }),\n            catchError((err) => {\n              patchState(store, { error: err.message, isLoading: false });\n              return of(null);\n            }),\n          ),\n        ),\n      ),\n    ),\n    deleteProduct: rxMethod<string>(\n      pipe(\n        tap(() => patchState(store, { error: null, isLoading: true })),\n        switchMap((productId) =>\n          productRepository.deleteProduct(productId).pipe(\n            tap(() => {\n              patchState(store, {\n                products: store.products().filter((p) => p.id !== productId),\n                isLoading: false,\n              });\n            }),\n            catchError((err) => {\n              patchState(store, { error: err.message, isLoading: false });\n              return of(null);\n            }),\n          ),\n        ),\n      ),\n    ),\n    // Filter functionality\n    setSearchTerm(searchTerm: string) {\n      patchState(store, { searchTerm, currentPage: INITIAL_PAGE });\n    },\n    // Pagination functionality\n    setPageSize(pageSize: number): void {\n      patchState(store, { pageSize, currentPage: INITIAL_PAGE });\n    },\n    setCurrentPage(currentPage: number): void {\n      if (currentPage >= INITIAL_PAGE && currentPage <= store.totalPages()) {\n        patchState(store, { currentPage });\n      }\n    },\n  })),\n)"
+                "defaultValue": "signalStore(\n  withState(initialState),\n  // Filtering\n  withComputed(({ products, searchTerm }) => {\n    const filteredProducts = computed(() => {\n      const query = searchTerm().toLowerCase().trim();\n      if (!query) return products();\n\n      return products().filter(\n        (product) =>\n          product.name.toLowerCase().includes(query) ||\n          product.description.toLowerCase().includes(query),\n      );\n    });\n    return { filteredProducts };\n  }),\n  // For pagination\n  withComputed(({ filteredProducts, currentPage, pageSize }) => {\n    const paginatedProducts = computed(() => {\n      const startIndex = (currentPage() - DEFAULT_TOTAL_PAGES) * pageSize();\n      return filteredProducts().slice(startIndex, startIndex + pageSize());\n    });\n    const totalResults = computed(() => filteredProducts().length);\n\n    const totalPages = computed(() => {\n      return Math.ceil(totalResults() / pageSize()) || DEFAULT_TOTAL_PAGES;\n    });\n    return { paginatedProducts, totalResults, totalPages };\n  }),\n  // Methods\n  withMethods(\n    (\n      store,\n      productRepository = inject(ProductRepository),\n      notificationService = inject(NotificationService),\n    ) => ({\n      loadProducts: rxMethod<void>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap(() =>\n            productRepository.getProducts().pipe(\n              tap((products) => {\n                patchState(store, { products, isLoading: false });\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al cargar productos');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      deleteProduct: rxMethod<string>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((productId) =>\n            productRepository.deleteProduct(productId).pipe(\n              tap((msj) => {\n                patchState(store, {\n                  products: store.products().filter((p) => p.id !== productId),\n                  isLoading: false,\n                });\n                notificationService.notify('success', msj);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al eliminar productos');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      addProduct: rxMethod<Product>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((newProduct) =>\n            productRepository.createProduct(newProduct).pipe(\n              tap(({ message, data: createdProduct }) => {\n                patchState(store, {\n                  products: [...store.products(), createdProduct],\n                  isLoading: false,\n                });\n                notificationService.notify('success', message);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al crear producto');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      verifyProductId: rxMethod<string>(\n        pipe(\n          tap(() => patchState(store, { existId: false, isLoading: true })),\n          switchMap((productId) =>\n            productRepository.verifyProductIDExists(productId).pipe(\n              tap((existId) => {\n                patchState(store, { existId, isLoading: false });\n              }),\n              catchError((err: HttpErrorResponse) => {\n                const errMsg = errorParser(err, 'Error inesperado al verificar producto');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      updateProduct: rxMethod<Product>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((updatedProduct) =>\n            productRepository.updateProduct(updatedProduct).pipe(\n              tap(({ message, data: responseProduct }) => {\n                patchState(store, {\n                  products: store\n                    .products()\n                    .map((p) => (p.id === responseProduct.id ? responseProduct : p)),\n                  isLoading: false,\n                });\n                notificationService.notify('success', message);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al actualizar producto');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      // Filter functionality\n      setSearchTerm(searchTerm: string) {\n        patchState(store, { searchTerm, currentPage: INITIAL_PAGE });\n      },\n      // Pagination functionality\n      setPageSize(pageSize: number): void {\n        patchState(store, { pageSize, currentPage: INITIAL_PAGE });\n      },\n      setCurrentPage(currentPage: number): void {\n        if (currentPage >= INITIAL_PAGE && currentPage <= store.totalPages()) {\n          patchState(store, { currentPage });\n        }\n      },\n    }),\n  ),\n)"
             },
             {
                 "name": "routes",
@@ -4064,6 +4155,47 @@
             }
         ],
         "functions": [
+            {
+                "name": "errorParser",
+                "file": "src/app/domains/products/domain/state/product.store.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "args": [
+                    {
+                        "name": "error",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "fallback",
+                        "type": "string",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "jsdoctags": [
+                    {
+                        "name": "error",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "fallback",
+                        "type": "string",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
             {
                 "name": "formatDate",
                 "file": "src/app/shared/utils/date.utils.ts",
@@ -4278,7 +4410,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "ProductState",
-                    "defaultValue": "{\n  products: [],\n  isLoading: false,\n  error: null,\n  searchTerm: '',\n  currentPage: INITIAL_PAGE,\n  pageSize: PAGE_SIZE,\n}"
+                    "defaultValue": "{\n  products: [],\n  isLoading: false,\n  searchTerm: '',\n  currentPage: INITIAL_PAGE,\n  pageSize: PAGE_SIZE,\n  existId: false,\n}"
                 },
                 {
                     "name": "PAGE_SIZE",
@@ -4298,7 +4430,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "unknown",
-                    "defaultValue": "signalStore(\n  withState(initialState),\n  // Filtering\n  withComputed(({ products, searchTerm }) => {\n    const filteredProducts = computed(() => {\n      const query = searchTerm().toLowerCase().trim();\n      if (!query) return products();\n\n      return products().filter(\n        (product) =>\n          product.name.toLowerCase().includes(query) ||\n          product.description.toLowerCase().includes(query),\n      );\n    });\n    return { filteredProducts };\n  }),\n  // For pagination\n  withComputed(({ filteredProducts, currentPage, pageSize }) => {\n    const paginatedProducts = computed(() => {\n      const startIndex = (currentPage() - DEFAULT_TOTAL_PAGES) * pageSize();\n      return filteredProducts().slice(startIndex, startIndex + pageSize());\n    });\n    const totalResults = computed(() => filteredProducts().length);\n\n    const totalPages = computed(() => {\n      return Math.ceil(totalResults() / pageSize()) || DEFAULT_TOTAL_PAGES;\n    });\n    return { paginatedProducts, totalResults, totalPages };\n  }),\n  // Methods\n  withMethods((store, productRepository = inject(ProductRepository)) => ({\n    loadProducts: rxMethod<void>(\n      pipe(\n        tap(() => patchState(store, { error: null, isLoading: true })),\n        switchMap(() =>\n          productRepository.getProducts().pipe(\n            tap((products) => {\n              patchState(store, { products, isLoading: false });\n            }),\n            catchError((err) => {\n              patchState(store, { error: err.message, isLoading: false });\n              return of(null);\n            }),\n          ),\n        ),\n      ),\n    ),\n    deleteProduct: rxMethod<string>(\n      pipe(\n        tap(() => patchState(store, { error: null, isLoading: true })),\n        switchMap((productId) =>\n          productRepository.deleteProduct(productId).pipe(\n            tap(() => {\n              patchState(store, {\n                products: store.products().filter((p) => p.id !== productId),\n                isLoading: false,\n              });\n            }),\n            catchError((err) => {\n              patchState(store, { error: err.message, isLoading: false });\n              return of(null);\n            }),\n          ),\n        ),\n      ),\n    ),\n    // Filter functionality\n    setSearchTerm(searchTerm: string) {\n      patchState(store, { searchTerm, currentPage: INITIAL_PAGE });\n    },\n    // Pagination functionality\n    setPageSize(pageSize: number): void {\n      patchState(store, { pageSize, currentPage: INITIAL_PAGE });\n    },\n    setCurrentPage(currentPage: number): void {\n      if (currentPage >= INITIAL_PAGE && currentPage <= store.totalPages()) {\n        patchState(store, { currentPage });\n      }\n    },\n  })),\n)"
+                    "defaultValue": "signalStore(\n  withState(initialState),\n  // Filtering\n  withComputed(({ products, searchTerm }) => {\n    const filteredProducts = computed(() => {\n      const query = searchTerm().toLowerCase().trim();\n      if (!query) return products();\n\n      return products().filter(\n        (product) =>\n          product.name.toLowerCase().includes(query) ||\n          product.description.toLowerCase().includes(query),\n      );\n    });\n    return { filteredProducts };\n  }),\n  // For pagination\n  withComputed(({ filteredProducts, currentPage, pageSize }) => {\n    const paginatedProducts = computed(() => {\n      const startIndex = (currentPage() - DEFAULT_TOTAL_PAGES) * pageSize();\n      return filteredProducts().slice(startIndex, startIndex + pageSize());\n    });\n    const totalResults = computed(() => filteredProducts().length);\n\n    const totalPages = computed(() => {\n      return Math.ceil(totalResults() / pageSize()) || DEFAULT_TOTAL_PAGES;\n    });\n    return { paginatedProducts, totalResults, totalPages };\n  }),\n  // Methods\n  withMethods(\n    (\n      store,\n      productRepository = inject(ProductRepository),\n      notificationService = inject(NotificationService),\n    ) => ({\n      loadProducts: rxMethod<void>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap(() =>\n            productRepository.getProducts().pipe(\n              tap((products) => {\n                patchState(store, { products, isLoading: false });\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al cargar productos');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      deleteProduct: rxMethod<string>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((productId) =>\n            productRepository.deleteProduct(productId).pipe(\n              tap((msj) => {\n                patchState(store, {\n                  products: store.products().filter((p) => p.id !== productId),\n                  isLoading: false,\n                });\n                notificationService.notify('success', msj);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al eliminar productos');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      addProduct: rxMethod<Product>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((newProduct) =>\n            productRepository.createProduct(newProduct).pipe(\n              tap(({ message, data: createdProduct }) => {\n                patchState(store, {\n                  products: [...store.products(), createdProduct],\n                  isLoading: false,\n                });\n                notificationService.notify('success', message);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al crear producto');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      verifyProductId: rxMethod<string>(\n        pipe(\n          tap(() => patchState(store, { existId: false, isLoading: true })),\n          switchMap((productId) =>\n            productRepository.verifyProductIDExists(productId).pipe(\n              tap((existId) => {\n                patchState(store, { existId, isLoading: false });\n              }),\n              catchError((err: HttpErrorResponse) => {\n                const errMsg = errorParser(err, 'Error inesperado al verificar producto');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      updateProduct: rxMethod<Product>(\n        pipe(\n          tap(() => patchState(store, { isLoading: true })),\n          switchMap((updatedProduct) =>\n            productRepository.updateProduct(updatedProduct).pipe(\n              tap(({ message, data: responseProduct }) => {\n                patchState(store, {\n                  products: store\n                    .products()\n                    .map((p) => (p.id === responseProduct.id ? responseProduct : p)),\n                  isLoading: false,\n                });\n                notificationService.notify('success', message);\n              }),\n              catchError((err) => {\n                const errMsg = errorParser(err, 'Error inesperado al actualizar producto');\n                patchState(store, { isLoading: false });\n                notificationService.notify('error', errMsg);\n                return of(null);\n              }),\n            ),\n          ),\n        ),\n      ),\n      // Filter functionality\n      setSearchTerm(searchTerm: string) {\n        patchState(store, { searchTerm, currentPage: INITIAL_PAGE });\n      },\n      // Pagination functionality\n      setPageSize(pageSize: number): void {\n        patchState(store, { pageSize, currentPage: INITIAL_PAGE });\n      },\n      setCurrentPage(currentPage: number): void {\n        if (currentPage >= INITIAL_PAGE && currentPage <= store.totalPages()) {\n          patchState(store, { currentPage });\n        }\n      },\n    }),\n  ),\n)"
                 }
             ],
             "src/environments/environment.development.ts": [
@@ -4375,6 +4507,49 @@
             ]
         },
         "groupedFunctions": {
+            "src/app/domains/products/domain/state/product.store.ts": [
+                {
+                    "name": "errorParser",
+                    "file": "src/app/domains/products/domain/state/product.store.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "args": [
+                        {
+                            "name": "error",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "fallback",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "error",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "fallback",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
             "src/app/shared/utils/date.utils.ts": [
                 {
                     "name": "formatDate",
@@ -4754,6 +4929,15 @@
                 "status": "low"
             },
             {
+                "filePath": "src/app/domains/products/domain/models/product-model.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "ProductResponse",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/domains/products/domain/repositories/product.repository.ts",
                 "type": "class",
                 "linktype": "classe",
@@ -4770,6 +4954,16 @@
                 "coveragePercent": 42,
                 "coverageCount": "3/7",
                 "status": "medium"
+            },
+            {
+                "filePath": "src/app/domains/products/domain/state/product.store.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
+                "name": "errorParser",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
             },
             {
                 "filePath": "src/app/domains/products/domain/state/product.store.ts",
@@ -4860,6 +5054,15 @@
                 "status": "low"
             },
             {
+                "filePath": "src/app/domains/products/ui/product-form/product-form.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ProductFormComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/shared/components/c-alert/c-alert.component.ts",
                 "type": "component",
                 "linktype": "component",
@@ -4902,7 +5105,7 @@
                 "linktype": "component",
                 "name": "CInputFormComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/16",
+                "coverageCount": "0/15",
                 "status": "low"
             },
             {

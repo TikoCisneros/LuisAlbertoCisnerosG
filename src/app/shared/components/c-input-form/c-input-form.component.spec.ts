@@ -80,9 +80,10 @@ describe('CInputFormComponent', () => {
   it('should update its disabled state based on the form control status', async () => {
     const { fixture } = await render(TestFormWrapperComponent);
     fixture.componentInstance.testForm.get('name')?.disable();
+    await fixture.whenStable();
     fixture.detectChanges();
 
-    const inputEl = screen.getByRole('textbox') as HTMLInputElement;
+    const inputEl = fixture.nativeElement.querySelector('input') as HTMLInputElement;
     expect(inputEl.disabled).toBe(true);
   });
 

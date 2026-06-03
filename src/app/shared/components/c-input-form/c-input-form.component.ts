@@ -1,4 +1,4 @@
-import { Component, input, signal, forwardRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, signal, computed, forwardRef, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -23,10 +23,16 @@ export class CInputFormComponent implements ControlValueAccessor {
   label = input<string>('');
   isInvalid = input<boolean>(false);
   errorMessage = input<string>('');
+  isDisabled = input<boolean>(false);
 
   // Estado interno
   value = signal<string>('');
-  isDisabled = signal<boolean>(false);
+  isDisabledState = false;
+  get disabled(): boolean {
+    return this.isDisabled() || this.isDisabledState;
+  }
+
+  private readonly cdr = inject(ChangeDetectorRef);
 
   // Funciones callback de ControlValueAccessor
   onChangeHandler: (value: string) => void = () => {};
@@ -51,6 +57,7 @@ export class CInputFormComponent implements ControlValueAccessor {
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.isDisabled.set(isDisabled);
+    this.isDisabledState = isDisabled;
+    this.cdr.detectChanges();
   }
 }

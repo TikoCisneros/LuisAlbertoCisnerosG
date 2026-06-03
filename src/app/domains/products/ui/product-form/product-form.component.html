@@ -1,0 +1,55 @@
+<form class="product-form" [formGroup]="productForm">
+  <div class="product-form__grid">
+    <!-- Campo: ID -->
+    <c-input-form
+      [id]="'id'"
+      [type]="'text'"
+      [label]="'ID'"
+      [placeholder]="'Ej. trj-1234'"
+      formControlName="id"
+    />
+    <!-- Campo: Nombre -->
+    <c-input-form
+      [id]="'name'"
+      [type]="'text'"
+      [label]="'Nombre'"
+      [placeholder]="'Nombre del producto'"
+      formControlName="name"
+    />
+    <!-- Campo: Descripción -->
+    <c-input-form
+      [id]="'description'"
+      [type]="'text'"
+      [label]="'Descripción'"
+      [placeholder]="'Descripción detallada'"
+      formControlName="description"
+    />
+    <!-- Campo: Logo -->
+    <c-input-form
+      [id]="'logo'"
+      [type]="'text'"
+      [label]="'Logo'"
+      [placeholder]="'http://imagen.com/logo.png'"
+      formControlName="logo"
+    />
+    <!-- Campo: Fecha Liberación -->
+    <c-input-form
+      [id]="'releaseDate'"
+      [type]="'date'"
+      [label]="'Fecha de Liberación'"
+      formControlName="releaseDate"
+    />
+    <!-- Campo: Fecha Revisión -->
+    <c-input-form
+      [id]="'revisionDate'"
+      [type]="'date'"
+      [label]="'Fecha de Reestructuración'"
+      formControlName="revisionDate"
+    />
+  </div>
+  <!-- Acciones -->
+  <div class="product-form__actions">
+    <c-button variant="secondary">Reiniciar</c-button>
+    <c-button variant="primary" type="submit">Enviar</c-button>
+  </div>
+</form>
