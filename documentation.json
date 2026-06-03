@@ -3,12 +3,12 @@
     "interfaces": [
         {
             "name": "Product",
-            "id": "interface-Product-b5faa6669045d26cf02d10f624e28616c2587ed5d212897f7dc11b3386bef6001f4a4663bbbb3f8402865f688a861052700eb28f756d45a3eec8a1132583c55d",
-            "file": "src/app/domains/products/business/models/product-model.ts",
+            "id": "interface-Product-5527f6cd008f292c442b99a6b625e1e9dc812af807847d3dc3b2536073efe252c11db3dd42808b58d86af01d71d6767e3c07ef3a3a7602ef0af67202182ee88f",
+            "file": "src/app/domains/products/domain/models/product-model.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "export interface Product {\n  readonly id: string;\n  readonly name: string;\n  readonly description: string;\n  readonly logoURL: string;\n  readonly releaseDate: Date;\n  readonly revisionDate: Date;\n}\n",
+            "sourceCode": "export interface Product {\n  readonly id: string;\n  readonly name: string;\n  readonly description: string;\n  readonly logoURL: string;\n  readonly releaseDate: Date;\n  readonly revisionDate: Date;\n}\n\nexport class ProductErrors extends Error {\n  constructor(\n    public readonly code: 'FETCH_FAILED' | 'CREATE_FAILED' | 'DELETE_FAILED',\n    message: string,\n  ) {\n    super(message);\n    this.name = 'ProductDomainErrors';\n  }\n}\n",
             "properties": [
                 {
                     "name": "description",
@@ -96,12 +96,12 @@
         },
         {
             "name": "ProductDTO",
-            "id": "interface-ProductDTO-442cca3933e0c92bc933fee56d3671de26fb1971ff85799bdaaa7dd13ae6169ad31cdea3ef20ca6619198a200289158089c9913b6a13408d26f8d9305bf7ef51",
+            "id": "interface-ProductDTO-e2bcc31c82f2fd6b65c0fbd8e6e429f5f233d8413ace70810c305c47e5bb3ba824c85a81cd1a8f2b76781196115f46398d7cee9a703e8c6b87f3633d58446941",
             "file": "src/app/domains/products/data-access/dtos/product.dto.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "export interface ProductDTO {\n  readonly id: string;\n  readonly name: string;\n  readonly description: string;\n  readonly logo: string;\n  readonly date_release: string;\n  readonly date_revision: string;\n}\n\nexport interface ProductsApiResponseDTO {\n  readonly data: ProductDTO[];\n}\n\nexport interface ProductsApiErrorsDTO {\n  readonly name: string;\n  readonly message: string;\n}\n",
+            "sourceCode": "export interface ProductDTO {\n  readonly id: string;\n  readonly name: string;\n  readonly description: string;\n  readonly logo: string;\n  readonly date_release: string;\n  readonly date_revision: string;\n}\n\nexport interface ProductsApiResponseDTO {\n  readonly data: ProductDTO[];\n}\n\nexport interface ProductsApiErrorsDTO {\n  readonly name: string;\n  readonly message: string;\n}\n\nexport interface ProductsApiSuccessDTO {\n  readonly message: string;\n  readonly data?: ProductDTO;\n}\n",
             "properties": [
                 {
                     "name": "date_release",
@@ -189,12 +189,12 @@
         },
         {
             "name": "ProductsApiErrorsDTO",
-            "id": "interface-ProductsApiErrorsDTO-442cca3933e0c92bc933fee56d3671de26fb1971ff85799bdaaa7dd13ae6169ad31cdea3ef20ca6619198a200289158089c9913b6a13408d26f8d9305bf7ef51",
+            "id": "interface-ProductsApiErrorsDTO-e2bcc31c82f2fd6b65c0fbd8e6e429f5f233d8413ace70810c305c47e5bb3ba824c85a81cd1a8f2b76781196115f46398d7cee9a703e8c6b87f3633d58446941",
             "file": "src/app/domains/products/data-access/dtos/product.dto.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "export interface ProductDTO {\n  readonly id: string;\n  readonly name: string;\n  readonly description: string;\n  readonly logo: string;\n  readonly date_release: string;\n  readonly date_revision: string;\n}\n\nexport interface ProductsApiResponseDTO {\n  readonly data: ProductDTO[];\n}\n\nexport interface ProductsApiErrorsDTO {\n  readonly name: string;\n  readonly message: string;\n}\n",
+            "sourceCode": "export interface ProductDTO {\n  readonly id: string;\n  readonly name: string;\n  readonly description: string;\n  readonly logo: string;\n  readonly date_release: string;\n  readonly date_revision: string;\n}\n\nexport interface ProductsApiResponseDTO {\n  readonly data: ProductDTO[];\n}\n\nexport interface ProductsApiErrorsDTO {\n  readonly name: string;\n  readonly message: string;\n}\n\nexport interface ProductsApiSuccessDTO {\n  readonly message: string;\n  readonly data?: ProductDTO;\n}\n",
             "properties": [
                 {
                     "name": "message",
@@ -230,12 +230,12 @@
         },
         {
             "name": "ProductsApiResponseDTO",
-            "id": "interface-ProductsApiResponseDTO-442cca3933e0c92bc933fee56d3671de26fb1971ff85799bdaaa7dd13ae6169ad31cdea3ef20ca6619198a200289158089c9913b6a13408d26f8d9305bf7ef51",
+            "id": "interface-ProductsApiResponseDTO-e2bcc31c82f2fd6b65c0fbd8e6e429f5f233d8413ace70810c305c47e5bb3ba824c85a81cd1a8f2b76781196115f46398d7cee9a703e8c6b87f3633d58446941",
             "file": "src/app/domains/products/data-access/dtos/product.dto.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "export interface ProductDTO {\n  readonly id: string;\n  readonly name: string;\n  readonly description: string;\n  readonly logo: string;\n  readonly date_release: string;\n  readonly date_revision: string;\n}\n\nexport interface ProductsApiResponseDTO {\n  readonly data: ProductDTO[];\n}\n\nexport interface ProductsApiErrorsDTO {\n  readonly name: string;\n  readonly message: string;\n}\n",
+            "sourceCode": "export interface ProductDTO {\n  readonly id: string;\n  readonly name: string;\n  readonly description: string;\n  readonly logo: string;\n  readonly date_release: string;\n  readonly date_revision: string;\n}\n\nexport interface ProductsApiResponseDTO {\n  readonly data: ProductDTO[];\n}\n\nexport interface ProductsApiErrorsDTO {\n  readonly name: string;\n  readonly message: string;\n}\n\nexport interface ProductsApiSuccessDTO {\n  readonly message: string;\n  readonly data?: ProductDTO;\n}\n",
             "properties": [
                 {
                     "name": "data",
@@ -257,14 +257,66 @@
             "extends": []
         },
         {
-            "name": "ProductState",
-            "id": "interface-ProductState-45392b25ce7bbe95147aec231a95b7600c80185498183057429ceb9802192298c2921e87f76f91899d3fc4fff225780a4c0fa74e86cb089178da2654e37f6452",
-            "file": "src/app/domains/products/business/state/product.store.ts",
+            "name": "ProductsApiSuccessDTO",
+            "id": "interface-ProductsApiSuccessDTO-e2bcc31c82f2fd6b65c0fbd8e6e429f5f233d8413ace70810c305c47e5bb3ba824c85a81cd1a8f2b76781196115f46398d7cee9a703e8c6b87f3633d58446941",
+            "file": "src/app/domains/products/data-access/dtos/product.dto.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { computed, inject } from '@angular/core';\nimport { signalStore, withState, withMethods, patchState, withComputed } from '@ngrx/signals';\nimport { rxMethod } from '@ngrx/signals/rxjs-interop';\nimport { pipe, switchMap, tap, catchError, of } from 'rxjs';\nimport { HttpErrorResponse } from '@angular/common/http';\nimport { Product } from '../models/product-model';\nimport { ProductsApiErrorsDTO } from '@domains/products/data-access/dtos/product.dto';\nimport { ProductHttpService } from '@domains/products/data-access/services/product-http.service';\n\nexport interface ProductState {\n  products: Product[];\n  isLoading: boolean;\n  /** Stores error messages */\n  error: string | null;\n  /** Search section */\n  searchTerm: string;\n}\n\nconst initialState: ProductState = {\n  products: [],\n  isLoading: false,\n  error: null,\n  searchTerm: '',\n};\n\n/**\n * Helper function used to extract the error message, from the HttpErrorResponse.\n */\nconst getErrorMessage = (err: HttpErrorResponse, fallback: string): string => {\n  return (err.error as ProductsApiErrorsDTO)?.message || fallback;\n};\n\nexport const ProductStore = signalStore(\n  withState(initialState),\n  // Filtering\n  withComputed(({ products, searchTerm }) => {\n    const filteredProducts = computed(() => {\n      const query = searchTerm().toLowerCase().trim();\n      if (!query) return products();\n\n      return products().filter(\n        (product) =>\n          product.name.toLowerCase().includes(query) ||\n          product.description.toLowerCase().includes(query),\n      );\n    });\n    return { filteredProducts };\n  }),\n  // Methods\n  withMethods((store, httpService = inject(ProductHttpService)) => ({\n    loadProducts: rxMethod<void>(\n      pipe(\n        tap(() => patchState(store, { error: null, isLoading: true })),\n        switchMap(() =>\n          httpService.getProducts().pipe(\n            tap((products) => {\n              patchState(store, { products, isLoading: false });\n            }),\n            catchError((err: HttpErrorResponse) => {\n              const errMsg = getErrorMessage(err, 'Error al cargar productos');\n              patchState(store, { error: errMsg, isLoading: false });\n              return of(null);\n            }),\n          ),\n        ),\n      ),\n    ),\n    // Filter functionality\n    setSearchTerm(searchTerm: string) {\n      patchState(store, { searchTerm });\n    },\n  })),\n);\n",
+            "sourceCode": "export interface ProductDTO {\n  readonly id: string;\n  readonly name: string;\n  readonly description: string;\n  readonly logo: string;\n  readonly date_release: string;\n  readonly date_revision: string;\n}\n\nexport interface ProductsApiResponseDTO {\n  readonly data: ProductDTO[];\n}\n\nexport interface ProductsApiErrorsDTO {\n  readonly name: string;\n  readonly message: string;\n}\n\nexport interface ProductsApiSuccessDTO {\n  readonly message: string;\n  readonly data?: ProductDTO;\n}\n",
             "properties": [
+                {
+                    "name": "data",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ProductDTO",
+                    "indexKey": "",
+                    "optional": true,
+                    "description": "",
+                    "line": 21,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "message",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 20,
+                    "modifierKind": [
+                        148
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "methods": [],
+            "extends": []
+        },
+        {
+            "name": "ProductState",
+            "id": "interface-ProductState-4572efa693bcca4cdf6af6db7618f59cc5c00379b74d76e2f098ef50719c928629c2c9ea017a837049babfcd4bb611ae221b6dc357a4e10fdb6c3afb81ebaa41",
+            "file": "src/app/domains/products/domain/state/product.store.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { computed, inject } from '@angular/core';\nimport { signalStore, withState, withMethods, patchState, withComputed } from '@ngrx/signals';\nimport { rxMethod } from '@ngrx/signals/rxjs-interop';\nimport { pipe, switchMap, tap, catchError, of } from 'rxjs';\nimport { Product, ProductErrors } from '../models/product-model';\nimport { ProductRepository } from '@domains/products/domain/repositories/product.repository';\n\nconst INITIAL_PAGE = 1 as const;\nconst DEFAULT_TOTAL_PAGES = 1 as const;\nconst PAGE_SIZE = 5 as const;\nexport interface ProductState {\n  products: Product[];\n  isLoading: boolean;\n  /** Stores error messages */\n  error: string | null;\n  /** Search section */\n  searchTerm: string;\n  /** Pagination section */\n  currentPage: number;\n  pageSize: number;\n}\n\nconst initialState: ProductState = {\n  products: [],\n  isLoading: false,\n  error: null,\n  searchTerm: '',\n  currentPage: INITIAL_PAGE,\n  pageSize: PAGE_SIZE,\n};\n\nexport const ProductStore = signalStore(\n  withState(initialState),\n  // Filtering\n  withComputed(({ products, searchTerm }) => {\n    const filteredProducts = computed(() => {\n      const query = searchTerm().toLowerCase().trim();\n      if (!query) return products();\n\n      return products().filter(\n        (product) =>\n          product.name.toLowerCase().includes(query) ||\n          product.description.toLowerCase().includes(query),\n      );\n    });\n    return { filteredProducts };\n  }),\n  // For pagination\n  withComputed(({ filteredProducts, currentPage, pageSize }) => {\n    const paginatedProducts = computed(() => {\n      const startIndex = (currentPage() - DEFAULT_TOTAL_PAGES) * pageSize();\n      return filteredProducts().slice(startIndex, startIndex + pageSize());\n    });\n    const totalResults = computed(() => filteredProducts().length);\n\n    const totalPages = computed(() => {\n      return Math.ceil(totalResults() / pageSize()) || DEFAULT_TOTAL_PAGES;\n    });\n    return { paginatedProducts, totalResults, totalPages };\n  }),\n  // Methods\n  withMethods((store, productRepository = inject(ProductRepository)) => ({\n    loadProducts: rxMethod<void>(\n      pipe(\n        tap(() => patchState(store, { error: null, isLoading: true })),\n        switchMap(() =>\n          productRepository.getProducts().pipe(\n            tap((products) => {\n              patchState(store, { products, isLoading: false });\n            }),\n            catchError((err) => {\n              patchState(store, { error: err.message, isLoading: false });\n              return of(null);\n            }),\n          ),\n        ),\n      ),\n    ),\n    deleteProduct: rxMethod<string>(\n      pipe(\n        tap(() => patchState(store, { error: null, isLoading: true })),\n        switchMap((productId) =>\n          productRepository.deleteProduct(productId).pipe(\n            tap(() => {\n              patchState(store, {\n                products: store.products().filter((p) => p.id !== productId),\n                isLoading: false,\n              });\n            }),\n            catchError((err) => {\n              patchState(store, { error: err.message, isLoading: false });\n              return of(null);\n            }),\n          ),\n        ),\n      ),\n    ),\n    // Filter functionality\n    setSearchTerm(searchTerm: string) {\n      patchState(store, { searchTerm, currentPage: INITIAL_PAGE });\n    },\n    // Pagination functionality\n    setPageSize(pageSize: number): void {\n      patchState(store, { pageSize, currentPage: INITIAL_PAGE });\n    },\n    setCurrentPage(currentPage: number): void {\n      if (currentPage >= INITIAL_PAGE && currentPage <= store.totalPages()) {\n        patchState(store, { currentPage });\n      }\n    },\n  })),\n);\n",
+            "properties": [
+                {
+                    "name": "currentPage",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Pagination section</p>\n",
+                    "line": 19,
+                    "rawdescription": "\nPagination section"
+                },
                 {
                     "name": "error",
                     "deprecated": false,
@@ -273,7 +325,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>Stores error messages</p>\n",
-                    "line": 14,
+                    "line": 15,
                     "rawdescription": "\nStores error messages"
                 },
                 {
@@ -284,7 +336,17 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 12
+                    "line": 13
+                },
+                {
+                    "name": "pageSize",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 20
                 },
                 {
                     "name": "products",
@@ -294,7 +356,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 11
+                    "line": 12
                 },
                 {
                     "name": "searchTerm",
@@ -304,7 +366,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>Search section</p>\n",
-                    "line": 16,
+                    "line": 17,
                     "rawdescription": "\nSearch section"
                 }
             ],
@@ -396,9 +458,9 @@
     ],
     "injectables": [
         {
-            "name": "ProductHttpService",
-            "id": "injectable-ProductHttpService-5194dc800091120efe6e73aa0c1f24609f438e7dd83adc550450eda7f7a8c7997e5cab7379d99fef284c7a7c522802a20158906721c8744f9ed3745b7c256cf7",
-            "file": "src/app/domains/products/data-access/services/product-http.service.ts",
+            "name": "ProductHttpRepository",
+            "id": "injectable-ProductHttpRepository-60e2cf43b62315b4813e4b9483c8fe1c13421ff2c03d85fc57e28c93507d16fab32dfe54f8c6beb00616505c6ec96aa5b5a5f59477d2f3099935fa4bd5b98022",
+            "file": "src/app/domains/products/data-access/repositories/product-http.repository.ts",
             "properties": [
                 {
                     "name": "baseUrl",
@@ -409,7 +471,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 12,
+                    "line": 17,
                     "modifierKind": [
                         123,
                         148
@@ -424,7 +486,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 11,
+                    "line": 16,
                     "modifierKind": [
                         123,
                         148
@@ -439,7 +501,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 13,
+                    "line": 18,
                     "modifierKind": [
                         123,
                         148
@@ -462,7 +524,7 @@
                     "optional": false,
                     "returnType": "Observable<Product>",
                     "typeParameters": [],
-                    "line": 20,
+                    "line": 35,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -492,9 +554,9 @@
                         }
                     ],
                     "optional": false,
-                    "returnType": "Observable<void>",
+                    "returnType": "Observable<string>",
                     "typeParameters": [],
-                    "line": 32,
+                    "line": 47,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -512,12 +574,49 @@
                     ]
                 },
                 {
+                    "name": "extractErrorMessage",
+                    "args": [
+                        {
+                            "name": "err",
+                            "type": "HttpErrorResponse",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 23,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nHelper function used to extract the error message, from the HttpErrorResponse.\n",
+                    "description": "<p>Helper function used to extract the error message, from the HttpErrorResponse.</p>\n",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "err",
+                            "type": "HttpErrorResponse",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
                     "name": "getProducts",
                     "args": [],
                     "optional": false,
                     "returnType": "Observable<Product[]>",
                     "typeParameters": [],
-                    "line": 15,
+                    "line": 27,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -536,7 +635,7 @@
                     "optional": false,
                     "returnType": "Observable<Product>",
                     "typeParameters": [],
-                    "line": 26,
+                    "line": 41,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -568,7 +667,7 @@
                     "optional": false,
                     "returnType": "Observable<boolean>",
                     "typeParameters": [],
-                    "line": 36,
+                    "line": 55,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -590,7 +689,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { Injectable, inject } from '@angular/core';\nimport { HttpClient } from '@angular/common/http';\nimport { Observable, map } from 'rxjs';\nimport { BASE_URL } from '@core/services/api-url.token';\nimport { Product } from '@domains/products/business/models/product-model';\nimport { ProductDTO, ProductsApiResponseDTO } from '@domains/products/data-access/dtos/product.dto';\nimport { ProductMapper } from '@domains/products/business/mappers/product.mapper';\n\n@Injectable()\nexport class ProductHttpService {\n  private readonly http = inject(HttpClient);\n  private readonly baseUrl = inject(BASE_URL);\n  private readonly productURL = `${this.baseUrl}/products`;\n\n  getProducts(): Observable<Product[]> {\n    return this.http\n      .get<ProductsApiResponseDTO>(this.productURL)\n      .pipe(map(({ data }) => ProductMapper.dtosToDomainList(data)));\n  }\n  createProduct(product: Product): Observable<Product> {\n    return this.http\n      .post<ProductDTO>(this.productURL, ProductMapper.domainToDto(product))\n      .pipe(map((dto) => ProductMapper.dtoToDomain(dto)));\n  }\n\n  updateProduct(product: Product): Observable<Product> {\n    return this.http\n      .put<ProductDTO>(`${this.productURL}/${product.id}`, ProductMapper.domainToDto(product))\n      .pipe(map((dto) => ProductMapper.dtoToDomain(dto)));\n  }\n\n  deleteProduct(productId: string): Observable<void> {\n    return this.http.delete<void>(`${this.productURL}/${productId}`);\n  }\n\n  verifyProductIDExists(id: string): Observable<boolean> {\n    return this.http.get<boolean>(`${this.productURL}/verification/${id}`);\n  }\n}\n",
+            "sourceCode": "import { Injectable, inject } from '@angular/core';\nimport { HttpClient, HttpErrorResponse } from '@angular/common/http';\nimport { Observable, catchError, map, of, throwError } from 'rxjs';\nimport { BASE_URL } from '@core/services/api-url.token';\nimport { Product, ProductErrors } from '@domains/products/domain/models/product-model';\nimport {\n  ProductDTO,\n  ProductsApiErrorsDTO,\n  ProductsApiResponseDTO,\n} from '@domains/products/data-access/dtos/product.dto';\nimport { ProductMapper } from '@domains/products/domain/mappers/product.mapper';\nimport { ProductRepository } from '@domains/products/domain/repositories/product.repository';\n\n@Injectable()\nexport class ProductHttpRepository implements ProductRepository {\n  private readonly http = inject(HttpClient);\n  private readonly baseUrl = inject(BASE_URL);\n  private readonly productURL = `${this.baseUrl}/products`;\n\n  /**\n   * Helper function used to extract the error message, from the HttpErrorResponse.\n   */\n  private extractErrorMessage(err: HttpErrorResponse): string {\n    return (err.error as ProductsApiErrorsDTO)?.message || err.message || 'Error desconocido';\n  }\n\n  getProducts(): Observable<Product[]> {\n    return this.http.get<ProductsApiResponseDTO>(this.productURL).pipe(\n      map(({ data }) => ProductMapper.dtosToDomainList(data)),\n      catchError((err: HttpErrorResponse) => {\n        return throwError(() => new ProductErrors('FETCH_FAILED', this.extractErrorMessage(err)));\n      }),\n    );\n  }\n  createProduct(product: Product): Observable<Product> {\n    return this.http\n      .post<ProductDTO>(this.productURL, ProductMapper.domainToDto(product))\n      .pipe(map((dto) => ProductMapper.dtoToDomain(dto)));\n  }\n\n  updateProduct(product: Product): Observable<Product> {\n    return this.http\n      .put<ProductDTO>(`${this.productURL}/${product.id}`, ProductMapper.domainToDto(product))\n      .pipe(map((dto) => ProductMapper.dtoToDomain(dto)));\n  }\n\n  deleteProduct(productId: string): Observable<string> {\n    return this.http.delete(`${this.productURL}/${productId}`, { responseType: 'text' }).pipe(\n      catchError((err: HttpErrorResponse) => {\n        return throwError(() => new ProductErrors('DELETE_FAILED', this.extractErrorMessage(err)));\n      }),\n    );\n  }\n\n  verifyProductIDExists(id: string): Observable<boolean> {\n    return this.http.get<boolean>(`${this.productURL}/verification/${id}`);\n  }\n}\n",
             "extends": [],
             "type": "injectable"
         }
@@ -599,13 +698,96 @@
     "interceptors": [],
     "classes": [
         {
-            "name": "ProductMapper",
-            "id": "class-ProductMapper-38a821d045e17002b2bd00aa2200d13655f0bbe54b6f8bbaa40463e7597aca8eaf7ec4a99abe63cb54fff1e6b324b21cc31710090e51c1d81c1b66091268407c",
-            "file": "src/app/domains/products/business/mappers/product.mapper.ts",
+            "name": "ProductErrors",
+            "id": "class-ProductErrors-5527f6cd008f292c442b99a6b625e1e9dc812af807847d3dc3b2536073efe252c11db3dd42808b58d86af01d71d6767e3c07ef3a3a7602ef0af67202182ee88f",
+            "file": "src/app/domains/products/domain/models/product-model.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "class",
-            "sourceCode": "import { Product } from '@domains/products/business/models/product-model';\nimport { ProductDTO } from '@domains/products/data-access/dtos/product.dto';\nimport { parseDate, formatDate } from '@shared/utils/date.utils';\n\nexport class ProductMapper {\n  static dtoToDomain({\n    id,\n    logo,\n    description,\n    name,\n    date_release,\n    date_revision,\n  }: ProductDTO): Product {\n    return {\n      id,\n      name,\n      description,\n      logoURL: logo,\n      releaseDate: parseDate(date_release),\n      revisionDate: parseDate(date_revision),\n    };\n  }\n\n  static domainToDto({\n    id,\n    logoURL,\n    description,\n    name,\n    releaseDate,\n    revisionDate,\n  }: Product): ProductDTO {\n    return {\n      id,\n      name,\n      description,\n      logo: logoURL,\n      date_release: formatDate(releaseDate),\n      date_revision: formatDate(revisionDate),\n    };\n  }\n\n  static dtosToDomainList(dtos: ProductDTO[]): Product[] {\n    return dtos.map((dto) => this.dtoToDomain(dto));\n  }\n}\n",
+            "sourceCode": "export interface Product {\n  readonly id: string;\n  readonly name: string;\n  readonly description: string;\n  readonly logoURL: string;\n  readonly releaseDate: Date;\n  readonly revisionDate: Date;\n}\n\nexport class ProductErrors extends Error {\n  constructor(\n    public readonly code: 'FETCH_FAILED' | 'CREATE_FAILED' | 'DELETE_FAILED',\n    message: string,\n  ) {\n    super(message);\n    this.name = 'ProductDomainErrors';\n  }\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "code",
+                        "type": "\"FETCH_FAILED\" | \"CREATE_FAILED\" | \"DELETE_FAILED\"",
+                        "optional": false,
+                        "dotDotDotToken": false,
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "message",
+                        "type": "string",
+                        "optional": false,
+                        "dotDotDotToken": false,
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 10,
+                "jsdoctags": [
+                    {
+                        "name": "code",
+                        "type": "\"FETCH_FAILED\" | \"CREATE_FAILED\" | \"DELETE_FAILED\"",
+                        "optional": false,
+                        "dotDotDotToken": false,
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "message",
+                        "type": "string",
+                        "optional": false,
+                        "dotDotDotToken": false,
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "inputsClass": [],
+            "outputsClass": [],
+            "properties": [
+                {
+                    "name": "code",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "\"FETCH_FAILED\" | \"CREATE_FAILED\" | \"DELETE_FAILED\"",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 12,
+                    "modifierKind": [
+                        125,
+                        148
+                    ]
+                }
+            ],
+            "methods": [],
+            "indexSignatures": [],
+            "extends": [
+                "Error"
+            ],
+            "hostBindings": [],
+            "hostListeners": []
+        },
+        {
+            "name": "ProductMapper",
+            "id": "class-ProductMapper-0a6c12b8c30743df5c534f2ade70c0f914ee071fe9ebc9061d13e7e1aab0187537c59e5eef2e40702cdfe23da3243332ad49bbfe0f7c6ef4ebed1bf51c812b70",
+            "file": "src/app/domains/products/domain/mappers/product.mapper.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "class",
+            "sourceCode": "import { Product } from '@domains/products/domain/models/product-model';\nimport { ProductDTO } from '@domains/products/data-access/dtos/product.dto';\nimport { parseDate, formatDate } from '@shared/utils/date.utils';\n\nexport class ProductMapper {\n  static dtoToDomain({\n    id,\n    logo,\n    description,\n    name,\n    date_release,\n    date_revision,\n  }: ProductDTO): Product {\n    return {\n      id,\n      name,\n      description,\n      logoURL: logo,\n      releaseDate: parseDate(date_release),\n      revisionDate: parseDate(date_revision),\n    };\n  }\n\n  static domainToDto({\n    id,\n    logoURL,\n    description,\n    name,\n    releaseDate,\n    revisionDate,\n  }: Product): ProductDTO {\n    return {\n      id,\n      name,\n      description,\n      logo: logoURL,\n      date_release: formatDate(releaseDate),\n      date_revision: formatDate(revisionDate),\n    };\n  }\n\n  static dtosToDomainList(dtos: ProductDTO[]): Product[] {\n    return dtos.map((dto) => this.dtoToDomain(dto));\n  }\n}\n",
             "inputsClass": [],
             "outputsClass": [],
             "properties": [],
@@ -705,6 +887,177 @@
                         {
                             "name": "",
                             "type": "ProductDTO",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "extends": [],
+            "hostBindings": [],
+            "hostListeners": []
+        },
+        {
+            "name": "ProductRepository",
+            "id": "class-ProductRepository-7e35a4816c447c4785cbb7c1d2fcf7685d6ffc349f066ad562baed04e59ba3aef42e07265aa907e45d06510072c4d7f43463779d0bad2b2ede7b7ee40d26b548",
+            "file": "src/app/domains/products/domain/repositories/product.repository.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "class",
+            "sourceCode": "import { Observable } from 'rxjs';\nimport { Product } from '../models/product-model';\n\nexport abstract class ProductRepository {\n  abstract getProducts(): Observable<Product[]>;\n  abstract createProduct(product: Product): Observable<Product>;\n  abstract updateProduct(product: Product): Observable<Product>;\n  abstract deleteProduct(productId: string): Observable<string>;\n  abstract verifyProductIDExists(id: string): Observable<boolean>;\n}\n",
+            "inputsClass": [],
+            "outputsClass": [],
+            "properties": [],
+            "methods": [
+                {
+                    "name": "createProduct",
+                    "args": [
+                        {
+                            "name": "product",
+                            "type": "Product",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Observable<Product>",
+                    "typeParameters": [],
+                    "line": 6,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        128
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "product",
+                            "type": "Product",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "deleteProduct",
+                    "args": [
+                        {
+                            "name": "productId",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Observable<string>",
+                    "typeParameters": [],
+                    "line": 8,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        128
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "productId",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getProducts",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "Observable<Product[]>",
+                    "typeParameters": [],
+                    "line": 5,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        128
+                    ]
+                },
+                {
+                    "name": "updateProduct",
+                    "args": [
+                        {
+                            "name": "product",
+                            "type": "Product",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Observable<Product>",
+                    "typeParameters": [],
+                    "line": 7,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        128
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "product",
+                            "type": "Product",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "verifyProductIDExists",
+                    "args": [
+                        {
+                            "name": "id",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Observable<boolean>",
+                    "typeParameters": [],
+                    "line": 9,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        128
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "id",
+                            "type": "string",
                             "optional": false,
                             "dotDotDotToken": false,
                             "deprecated": false,
@@ -901,12 +1254,108 @@
             }
         },
         {
+            "name": "CAlertComponent",
+            "id": "component-CAlertComponent-d954025d67c69d1754c85845d93b498749e3e2e6abf53d585fe3c446a78cf3b9e1a14d59d67c649ebbd1b45b2f3788ba6c768b348e9cafeb54a3a19749b0055c",
+            "file": "src/app/shared/components/c-alert/c-alert.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "c-alert",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./c-alert.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "message",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 11,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": true
+                },
+                {
+                    "name": "type",
+                    "defaultValue": "'info'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "\"info\" | \"success\" | \"error\" | \"warning\"",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 12,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "dismiss",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "void",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 13,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "onDismiss",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 15,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';\n\n@Component({\n  selector: 'c-alert',\n  standalone: true,\n  templateUrl: './c-alert.component.html',\n  styleUrl: './c-alert.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class CAlertComponent {\n  readonly message = input.required<string>();\n  readonly type = input<'info' | 'success' | 'error' | 'warning'>('info');\n  readonly dismiss = output<void>();\n\n  onDismiss(): void {\n    this.dismiss.emit();\n  }\n}\n",
+            "styleUrl": "./c-alert.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<div class=\"c-alert\" [class]=\"'c-alert--' + type()\" (click)=\"onDismiss()\">\n  {{ message() }}\n</div>\n"
+        },
+        {
             "name": "CButtonComponent",
-            "id": "component-CButtonComponent-01e1d25cd15b4092d49b5f662cbd3a9e38d4c0caa9a7ca221be70b47c876b10fbe79eeb9ba81bf64a098eb05c75d37838e702ddf7c046daa8be19a9ac6e5af70",
+            "id": "component-CButtonComponent-1b368df1cb9f70b89b0a12a0dd9d850fce7613ab9eb556f2c2d7f01bb6364494eb6f093ebecf707969a829a4c2190c2b967260f724d2f296dfd95606fc2a355c",
             "file": "src/app/shared/components/c-button/c-button.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
             "entryComponents": [],
+            "host": {},
             "inputs": [],
             "outputs": [],
             "providers": [],
@@ -928,7 +1377,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 16,
+                    "line": 20,
                     "required": false
                 },
                 {
@@ -940,7 +1389,19 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 14,
+                    "line": 17,
+                    "required": false
+                },
+                {
+                    "name": "isFullWidth",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 19,
                     "required": false
                 },
                 {
@@ -952,7 +1413,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 15,
+                    "line": 18,
                     "required": false
                 },
                 {
@@ -964,7 +1425,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 13,
+                    "line": 16,
                     "required": false
                 }
             ],
@@ -977,7 +1438,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 17,
+                    "line": 21,
                     "required": false
                 }
             ],
@@ -998,7 +1459,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 19,
+                    "line": 23,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1025,13 +1486,13 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';\n\ntype ButtonVariant = 'primary' | 'secondary' | 'icon';\n\n@Component({\n  selector: 'c-button',\n  standalone: true,\n  templateUrl: './c-button.component.html',\n  styleUrl: './c-button.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class CButtonComponent {\n  variant = input<ButtonVariant>('primary');\n  isDisabled = input<boolean>(false);\n  isLoading = input<boolean>(false);\n  ariaLabel = input<string | null>(null, { alias: 'aria-label' });\n  onClick = output<MouseEvent>();\n\n  clickHandler(event: MouseEvent): void {\n    event.stopPropagation();\n    if (this.isLoading()) {\n      event.preventDefault();\n      return;\n    }\n    this.onClick.emit(event);\n  }\n}\n",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';\n\ntype ButtonVariant = 'primary' | 'secondary' | 'icon';\n\n@Component({\n  selector: 'c-button',\n  standalone: true,\n  host: {\n    '[class.c-button-host--full-width]': 'isFullWidth()',\n  },\n  templateUrl: './c-button.component.html',\n  styleUrl: './c-button.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class CButtonComponent {\n  variant = input<ButtonVariant>('primary');\n  isDisabled = input<boolean>(false);\n  isLoading = input<boolean>(false);\n  isFullWidth = input<boolean>(false);\n  ariaLabel = input<string | null>(null, { alias: 'aria-label' });\n  onClick = output<MouseEvent>();\n\n  clickHandler(event: MouseEvent): void {\n    event.stopPropagation();\n    if (this.isLoading()) {\n      event.preventDefault();\n      return;\n    }\n    this.onClick.emit(event);\n  }\n}\n",
             "styleUrl": "./c-button.component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
             "extends": [],
-            "templateData": "<button\n  [class]=\"'c-button c-button--' + variant()\"\n  [disabled]=\"isDisabled()\"\n  [attr.aria-label]=\"ariaLabel()\"\n  (click)=\"clickHandler($event)\"\n>\n  @if (isLoading()) {\n    <span class=\"c-button__spinner\"></span>\n  } @else {\n    <ng-content></ng-content>\n  }\n</button>\n"
+            "templateData": "<button\n  [class]=\"'c-button c-button--' + variant()\"\n  [class.c-button--full-width]=\"isFullWidth()\"\n  [disabled]=\"isDisabled() || isLoading()\"\n  [attr.aria-label]=\"ariaLabel()\"\n  (click)=\"clickHandler($event)\"\n>\n  @if (isLoading()) {\n    <span class=\"c-button__spinner\"></span>\n  } @else {\n    <ng-content></ng-content>\n  }\n</button>\n"
         },
         {
             "name": "CHeaderComponent",
@@ -1668,8 +2129,156 @@
             "templateData": "@if (src() && !imageError()) {\n  <img\n    [src]=\"src()\"\n    alt=\"logo\"\n    class=\"c-logo__img\"\n    (error)=\"onImgError()\"\n  />\n} @else {\n  <span class=\"c-logo__fallback\">\n    {{ initials() }}\n  </span>\n}\n"
         },
         {
+            "name": "CModalComponent",
+            "id": "component-CModalComponent-d73e98968ebc4344ee4f4839c1c20d12d0f0eb45b6b0a02f6fd2a317fe1eadf6d07e274c9e9539b544f9860580c9174314ce3752e50e3c6ca8d5c94b18e74286",
+            "file": "src/app/shared/components/c-modal/c-modal.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "c-modal",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./c-modal.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "bodyText",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 14,
+                    "required": false
+                },
+                {
+                    "name": "cancelText",
+                    "defaultValue": "'Cancelar'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 16,
+                    "required": false
+                },
+                {
+                    "name": "confirmText",
+                    "defaultValue": "'Confirmar'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 15,
+                    "required": false
+                },
+                {
+                    "name": "isLoading",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 17,
+                    "required": false
+                },
+                {
+                    "name": "isOpen",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 13,
+                    "required": true
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "onCancel",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "void",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 20,
+                    "required": false
+                },
+                {
+                    "name": "onConfirm",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "void",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 19,
+                    "required": false
+                }
+            ],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "onCancelHandler",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 28,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "onConfirmHandler",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 22,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CButtonComponent",
+                    "type": "component"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';\nimport { CButtonComponent } from '@shared/components/c-button/c-button.component';\n\n@Component({\n  selector: 'c-modal',\n  standalone: true,\n  imports: [CButtonComponent],\n  templateUrl: './c-modal.component.html',\n  styleUrl: './c-modal.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class CModalComponent {\n  isOpen = input.required<boolean>();\n  bodyText = input<string>('');\n  confirmText = input<string>('Confirmar');\n  cancelText = input<string>('Cancelar');\n  isLoading = input<boolean>(false);\n\n  onConfirm = output<void>();\n  onCancel = output<void>();\n\n  onConfirmHandler(): void {\n    if (!this.isLoading()) {\n      this.onConfirm.emit();\n    }\n  }\n\n  onCancelHandler(): void {\n    this.onCancel.emit();\n  }\n}\n",
+            "styleUrl": "./c-modal.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "@if (isOpen()) {\n  <div class=\"c-modal-overlay\" (click)=\"!isLoading() && onCancelHandler()\">\n    <div class=\"c-modal-box\" (click)=\"$event.stopPropagation()\">\n      <div class=\"c-modal-box__content\">\n        <p class=\"c-modal-box__body-text\">{{ bodyText() }}</p>\n      </div>\n\n      <div class=\"c-modal-box__actions\">\n        <c-button\n          variant=\"secondary\"\n          class=\"c-modal-box__action-btn\"\n          [isDisabled]=\"isLoading()\"\n          [isFullWidth]=\"true\"\n          (onClick)=\"onCancelHandler()\"\n        >\n          {{ cancelText() }}\n        </c-button>\n        <c-button\n          variant=\"primary\"\n          class=\"c-modal-box__action-btn\"\n          [isLoading]=\"isLoading()\"\n          [isFullWidth]=\"true\"\n          (onClick)=\"onConfirmHandler()\"\n        >\n          {{ confirmText() }}\n        </c-button>\n      </div>\n    </div>\n  </div>\n}\n"
+        },
+        {
             "name": "CPaginationComponent",
-            "id": "component-CPaginationComponent-d05f95332085c72d7e338b934014e04334ca7b2ec3768002154ab12a9a51952ff3b795ea5cd2f5d613b0c16830d2102bfcc1f72c18d3b00d334a84da75f6c26d",
+            "id": "component-CPaginationComponent-c057b408de8be87082f0cd2b0a0341a6ab156f76ce498e4b885fd7e2de2f54b891db25e7906639f93bdb2a67454277b971ddf8a618fe4437feb3c9d33e085060",
             "file": "src/app/shared/components/c-pagination/c-pagination.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1725,7 +2334,7 @@
             ],
             "outputsClass": [
                 {
-                    "name": "pageChange",
+                    "name": "onPageChange",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "number",
@@ -1736,7 +2345,7 @@
                     "required": false
                 },
                 {
-                    "name": "pageSizeChange",
+                    "name": "onPageSizeChange",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "number",
@@ -1762,7 +2371,7 @@
             ],
             "methodsClass": [
                 {
-                    "name": "onPageChange",
+                    "name": "onPageChangeHandler",
                     "args": [
                         {
                             "name": "page",
@@ -1794,7 +2403,7 @@
                     ]
                 },
                 {
-                    "name": "onPageSizeChange",
+                    "name": "onPageSizeChangeHandler",
                     "args": [
                         {
                             "name": "event",
@@ -1843,13 +2452,77 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, computed, input, output } from '@angular/core';\nimport { NgIcon, provideIcons } from '@ng-icons/core';\nimport { matNavigateBefore, matNavigateNext } from '@ng-icons/material-icons/baseline';\nimport { CButtonComponent } from '../c-button/c-button.component';\n\n@Component({\n  selector: 'c-pagination',\n  standalone: true,\n  imports: [NgIcon, CButtonComponent],\n  providers: [provideIcons({ matNavigateBefore, matNavigateNext })],\n  templateUrl: './c-pagination.component.html',\n  styleUrl: './c-pagination.component.scss',\n})\nexport class CPaginationComponent {\n  totalResults = input.required<number>();\n  pageSize = input.required<number>();\n  currentPage = input.required<number>();\n\n  pageChange = output<number>();\n  pageSizeChange = output<number>();\n\n  totalPages = computed(() => {\n    return Math.ceil(this.totalResults() / this.pageSize()) || 1;\n  });\n\n  onPageChange(page: number): void {\n    if (page >= 1 && page <= this.totalPages()) {\n      this.pageChange.emit(page);\n    }\n  }\n\n  onPageSizeChange(event: Event): void {\n    const selectElement = event.target as HTMLSelectElement;\n    this.pageSizeChange.emit(Number(selectElement.value));\n  }\n}\n",
+            "sourceCode": "import { Component, computed, input, output } from '@angular/core';\nimport { NgIcon, provideIcons } from '@ng-icons/core';\nimport { matNavigateBefore, matNavigateNext } from '@ng-icons/material-icons/baseline';\nimport { CButtonComponent } from '../c-button/c-button.component';\n\n@Component({\n  selector: 'c-pagination',\n  standalone: true,\n  imports: [NgIcon, CButtonComponent],\n  providers: [provideIcons({ matNavigateBefore, matNavigateNext })],\n  templateUrl: './c-pagination.component.html',\n  styleUrl: './c-pagination.component.scss',\n})\nexport class CPaginationComponent {\n  totalResults = input.required<number>();\n  pageSize = input.required<number>();\n  currentPage = input.required<number>();\n\n  onPageChange = output<number>();\n  onPageSizeChange = output<number>();\n\n  totalPages = computed(() => {\n    return Math.ceil(this.totalResults() / this.pageSize()) || 1;\n  });\n\n  onPageChangeHandler(page: number) {\n    if (page >= 1 && page <= this.totalPages()) {\n      this.onPageChange.emit(page);\n    }\n  }\n\n  onPageSizeChangeHandler(event: Event) {\n    const selectElement = event.target as HTMLSelectElement;\n    this.onPageSizeChange.emit(Number(selectElement.value));\n  }\n}\n",
             "styleUrl": "./c-pagination.component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
             "extends": [],
-            "templateData": "<div class=\"c-pagination\">\n  <!-- 1. Results count on the left -->\n  <span class=\"c-pagination__count\">\n    {{ totalResults() }} {{ totalResults() === 1 ? 'Resultado' : 'Resultados' }}\n  </span>\n\n  <!-- 2. Page navigation in the center (only displayed if totalPages > 1) -->\n  @if (totalPages() > 1) {\n    <div class=\"c-pagination-nav\">\n      <c-button\n        variant=\"icon\"\n        [isDisabled]=\"currentPage() === 1\"\n        (onClick)=\"onPageChange(currentPage() - 1)\"\n        aria-label=\"Página anterior\"\n      >\n        <ng-icon name=\"matNavigateBefore\" />\n      </c-button>\n\n      <span class=\"c-pagination-nav__info\"> Pág. {{ currentPage() }} de {{ totalPages() }} </span>\n\n      <c-button\n        variant=\"icon\"\n        [isDisabled]=\"currentPage() === totalPages()\"\n        (onClick)=\"onPageChange(currentPage() + 1)\"\n        aria-label=\"Página siguiente\"\n      >\n        <ng-icon name=\"matNavigateNext\" />\n      </c-button>\n    </div>\n  }\n\n  <!-- 3. Records per page selector on the right -->\n  <div class=\"c-pagination__select-wrapper\">\n    <select\n      class=\"c-pagination-select\"\n      [value]=\"pageSize()\"\n      (change)=\"onPageSizeChange($event)\"\n      aria-label=\"Cantidad de registros por página\"\n    >\n      <option [value]=\"5\">5</option>\n      <option [value]=\"10\">10</option>\n      <option [value]=\"20\">20</option>\n    </select>\n  </div>\n</div>\n"
+            "templateData": "<div class=\"c-pagination\">\n  <!-- 1. Results count on the left -->\n  <span class=\"c-pagination__count\">\n    {{ totalResults() }} {{ totalResults() === 1 ? 'Resultado' : 'Resultados' }}\n  </span>\n\n  <!-- 2. Page navigation in the center (only displayed if totalPages > 1) -->\n  @if (totalPages() > 1) {\n    <div class=\"c-pagination-nav\">\n      <c-button\n        variant=\"icon\"\n        [isDisabled]=\"currentPage() === 1\"\n        (onClick)=\"onPageChangeHandler(currentPage() - 1)\"\n        aria-label=\"Página anterior\"\n      >\n        <ng-icon name=\"matNavigateBefore\" />\n      </c-button>\n\n      <span class=\"c-pagination-nav__info\"> Pág. {{ currentPage() }} de {{ totalPages() }} </span>\n\n      <c-button\n        variant=\"icon\"\n        [isDisabled]=\"currentPage() === totalPages()\"\n        (onClick)=\"onPageChangeHandler(currentPage() + 1)\"\n        aria-label=\"Página siguiente\"\n      >\n        <ng-icon name=\"matNavigateNext\" />\n      </c-button>\n    </div>\n  }\n\n  <!-- 3. Records per page selector on the right -->\n  @if (totalPages() > 1) {\n    <div class=\"c-pagination__select-wrapper\">\n      <select\n        class=\"c-pagination-select\"\n        [value]=\"pageSize()\"\n        (change)=\"onPageSizeChangeHandler($event)\"\n        aria-label=\"Cantidad de registros por página\"\n      >\n        <option [value]=\"5\">5</option>\n        <option [value]=\"10\">10</option>\n        <option [value]=\"20\">20</option>\n      </select>\n    </div>\n  }\n</div>\n"
+        },
+        {
+            "name": "CSkeletonComponent",
+            "id": "component-CSkeletonComponent-4e9707480b0d95494929c9c6faf9fac30a12dae0e05532c4ee99e413d0e4d55656057e7c0d915229bee2f4c1b9bfb31277b41ee85cf907abef312658c0561999",
+            "file": "src/app/shared/components/c-skeleton/c-skeleton.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "c-skeleton",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./c-skeleton.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "height",
+                    "defaultValue": "'1rem'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 12,
+                    "required": false
+                },
+                {
+                    "name": "width",
+                    "defaultValue": "'100%'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 11,
+                    "required": false
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, input } from '@angular/core';\n\n@Component({\n  selector: 'c-skeleton',\n  standalone: true,\n  templateUrl: './c-skeleton.component.html',\n  styleUrl: './c-skeleton.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class CSkeletonComponent {\n  width = input<string>('100%');\n  height = input<string>('1rem');\n}\n",
+            "styleUrl": "./c-skeleton.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<div\n  class=\"c-skeleton\"\n  [style.width]=\"width()\"\n  [style.height]=\"height()\"\n></div>\n"
         },
         {
             "name": "CTableActionsComponent",
@@ -2074,7 +2747,7 @@
         },
         {
             "name": "CTableComponent",
-            "id": "component-CTableComponent-b25dbae1193e9831d12f1279ee8c3502e1ceb2e44bf009b2117b7d3d6a1db358a820412e52e9da9f076607c15a96ee40b892a797f2cb31c56f86eb612e31e04a",
+            "id": "component-CTableComponent-eb90eb9d29ca5432a8f63a27d464b55611015db882a52023d288b2a69d8f660846d741f76226f7f8ee104aade9c2928a0e7138f0a19b7828ac2c286abd7f5d04",
             "file": "src/app/shared/components/c-table/c-table.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -2098,7 +2771,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 17,
+                    "line": 18,
                     "required": true
                 },
                 {
@@ -2109,8 +2782,20 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 16,
+                    "line": 17,
                     "required": true
+                },
+                {
+                    "name": "isLoading",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 20,
+                    "required": false
                 },
                 {
                     "name": "showActions",
@@ -2121,7 +2806,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 18,
+                    "line": 19,
                     "required": false
                 }
             ],
@@ -2134,7 +2819,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 22,
+                    "line": 24,
                     "required": false
                 },
                 {
@@ -2145,7 +2830,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 21,
+                    "line": 23,
                     "required": false
                 }
             ],
@@ -2166,7 +2851,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 40,
+                    "line": 42,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2198,7 +2883,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 36,
+                    "line": 38,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2238,7 +2923,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 24,
+                    "line": 26,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2281,7 +2966,7 @@
                     "optional": false,
                     "returnType": "unknown",
                     "typeParameters": [],
-                    "line": 32,
+                    "line": 34,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2316,18 +3001,22 @@
                 {
                     "name": "CTableActionsComponent",
                     "type": "component"
+                },
+                {
+                    "name": "CSkeletonComponent",
+                    "type": "component"
                 }
             ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, input, output } from '@angular/core';\nimport { DatePipe } from '@angular/common';\nimport { TableColumn } from './c-table.interface';\nimport { CLogoComponent } from '@shared/components/c-logo/c-logo.component';\nimport { CTableActionsComponent } from './components/c-table-actions/c-table-actions.component';\n\n@Component({\n  selector: 'c-table',\n  standalone: true,\n  imports: [DatePipe, CLogoComponent, CTableActionsComponent],\n  templateUrl: './c-table.component.html',\n  styleUrl: './c-table.component.scss',\n})\nexport class CTableComponent<T> {\n  // Configuraciones\n  data = input.required<T[]>();\n  columns = input.required<TableColumn<T>[]>();\n  showActions = input<boolean>(false);\n\n  // Eventos\n  onEdit = output<T>();\n  onDelete = output<T>();\n\n  resolveValue(item: any, key: string): any {\n    const value = item[key];\n    if (value instanceof Date && isNaN(value.getTime())) {\n      return null;\n    }\n    return value;\n  }\n\n  trackByFn(item: T): unknown {\n    return (item as any)?.['id'] || item;\n  }\n\n  onEditHandler(item: T) {\n    this.onEdit.emit(item);\n  }\n\n  onDeleteHandler(item: T) {\n    this.onDelete.emit(item);\n  }\n}\n",
+            "sourceCode": "import { Component, input, output } from '@angular/core';\nimport { DatePipe } from '@angular/common';\nimport { TableColumn } from './c-table.interface';\nimport { CLogoComponent } from '@shared/components/c-logo/c-logo.component';\nimport { CTableActionsComponent } from './components/c-table-actions/c-table-actions.component';\nimport { CSkeletonComponent } from '@shared/components/c-skeleton/c-skeleton.component';\n\n@Component({\n  selector: 'c-table',\n  standalone: true,\n  imports: [DatePipe, CLogoComponent, CTableActionsComponent, CSkeletonComponent],\n  templateUrl: './c-table.component.html',\n  styleUrl: './c-table.component.scss',\n})\nexport class CTableComponent<T> {\n  // Configuraciones\n  data = input.required<T[]>();\n  columns = input.required<TableColumn<T>[]>();\n  showActions = input<boolean>(false);\n  isLoading = input<boolean>(false);\n\n  // Eventos\n  onEdit = output<T>();\n  onDelete = output<T>();\n\n  resolveValue(item: any, key: string): any {\n    const value = item[key];\n    if (value instanceof Date && isNaN(value.getTime())) {\n      return null;\n    }\n    return value;\n  }\n\n  trackByFn(item: T): unknown {\n    return (item as any)?.['id'] || item;\n  }\n\n  onEditHandler(item: T) {\n    this.onEdit.emit(item);\n  }\n\n  onDeleteHandler(item: T) {\n    this.onDelete.emit(item);\n  }\n}\n",
             "styleUrl": "./c-table.component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
             "extends": [],
-            "templateData": "<div class=\"c-table-container\">\n  <table class=\"c-table\">\n    <thead>\n      <tr class=\"c-table__row c-table__row--header\">\n        @for (col of columns(); track col.key) {\n          <th class=\"c-table__cell c-table__cell--header\">\n            {{ col.header }}\n          </th>\n        }\n        @if (showActions()) {\n          <th class=\"c-table__cell c-table__cell--header\"></th>\n        }\n      </tr>\n    </thead>\n    <tbody>\n      @for (item of data(); track trackByFn(item)) {\n        <tr class=\"c-table__row\">\n          @for (col of columns(); track col.key) {\n            <td class=\"c-table__cell\">\n              <!-- Case 1: image -->\n              @if (col.type === 'image') {\n                <c-logo\n                  [src]=\"resolveValue(item, col.key)\"\n                  [fallbackName]=\"resolveValue(item, 'name') || resolveValue(item, 'id') || ''\"\n                ></c-logo>\n              }\n\n              <!-- Case 2: Date -->\n              @else if (col.type === 'date') {\n                {{ resolveValue(item, col.key) | date: col.dateFormat || 'dd/MM/yyyy' }}\n              }\n\n              <!-- Case 3: Default text -->\n              @else {\n                <span [class.c-table__cell--bold]=\"col.key === 'name'\">\n                  {{ resolveValue(item, col.key) }}\n                </span>\n              }\n            </td>\n          }\n\n          <!-- Actions column (⋮) -->\n          @if (showActions()) {\n            <td class=\"c-table__cell c-table__cell--actions\">\n              <c-table-actions\n                [item]=\"item\"\n                (onEdit)=\"onEditHandler($event)\"\n                (onDelete)=\"onDeleteHandler($event)\"\n              ></c-table-actions>\n            </td>\n          }\n        </tr>\n      } @empty {\n        <tr class=\"c-table__row\">\n          <td\n            [attr.colspan]=\"columns().length + (showActions() ? 1 : 0)\"\n            class=\"c-table__cell c-table__cell--empty\"\n          >\n            No se encontraron registros.\n          </td>\n        </tr>\n      }\n    </tbody>\n  </table>\n</div>\n"
+            "templateData": "<div class=\"c-table-container\">\n  <table class=\"c-table\">\n    <thead>\n      <tr class=\"c-table__row c-table__row--header\">\n        @for (col of columns(); track col.key) {\n          <th class=\"c-table__cell c-table__cell--header\">\n            {{ col.header }}\n          </th>\n        }\n        @if (showActions()) {\n          <th class=\"c-table__cell c-table__cell--header\"></th>\n        }\n      </tr>\n    </thead>\n    <tbody>\n      @if (isLoading()) {\n        @for (row of [1, 2, 3]; track row) {\n          <tr class=\"c-table__row c-table__row--loading\">\n            @for (col of columns(); track col.key) {\n              <td class=\"c-table__cell\">\n                @if (col.type === 'image') {\n                  <div class=\"c-table__skeleton-avatar\">\n                    <c-skeleton width=\"40px\" height=\"40px\"></c-skeleton>\n                  </div>\n                } @else {\n                  <c-skeleton width=\"80%\" height=\"1rem\"></c-skeleton>\n                }\n              </td>\n            }\n            @if (showActions()) {\n              <td class=\"c-table__cell\"></td>\n            }\n          </tr>\n        }\n      } @else {\n        @for (item of data(); track trackByFn(item)) {\n          <tr class=\"c-table__row\">\n            @for (col of columns(); track col.key) {\n              <td class=\"c-table__cell\">\n                <!-- Case 1: image -->\n                @if (col.type === 'image') {\n                  <c-logo\n                    [src]=\"resolveValue(item, col.key)\"\n                    [fallbackName]=\"resolveValue(item, 'name') || resolveValue(item, 'id') || ''\"\n                  ></c-logo>\n                }\n\n                <!-- Case 2: Date -->\n                @else if (col.type === 'date') {\n                  {{ resolveValue(item, col.key) | date: col.dateFormat || 'dd/MM/yyyy' }}\n                }\n\n                <!-- Case 3: Default text -->\n                @else {\n                  <span [class.c-table__cell--bold]=\"col.key === 'name'\">\n                    {{ resolveValue(item, col.key) }}\n                  </span>\n                }\n              </td>\n            }\n\n            <!-- Actions column (⋮) -->\n            @if (showActions()) {\n              <td class=\"c-table__cell c-table__cell--actions\">\n                <c-table-actions\n                  [item]=\"item\"\n                  (onEdit)=\"onEditHandler($event)\"\n                  (onDelete)=\"onDeleteHandler($event)\"\n                ></c-table-actions>\n              </td>\n            }\n          </tr>\n        } @empty {\n          <tr class=\"c-table__row\">\n            <td\n              [attr.colspan]=\"columns().length + (showActions() ? 1 : 0)\"\n              class=\"c-table__cell c-table__cell--empty\"\n            >\n              No se encontraron registros.\n            </td>\n          </tr>\n        }\n      }\n    </tbody>\n  </table>\n</div>\n"
         },
         {
             "name": "HeaderComponent",
@@ -2642,7 +3331,7 @@
         },
         {
             "name": "PProductsListPageComponent",
-            "id": "component-PProductsListPageComponent-7965fb5f6978c7d9ef724b2ccdbc2ca58deb5fda5f2052b797c3ec3329171e0e83f89ff3e7c8b5d35d494ae25d2bc7970172504f71ec3fb2194251e07d95572c",
+            "id": "component-PProductsListPageComponent-f815b2d896716dada3df874efbd7b1aff689510bbf7808cf9854d32859e0be0a4fef72de490cc9c02971d863e5766062644e63076fb584113badc7327244793f",
             "file": "src/app/domains/products/feature/p-products-list-page/p-products-list-page.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -2654,8 +3343,7 @@
                     "name": "ProductStore"
                 },
                 {
-                    "name": "ProductHttpService",
-                    "type": "injectable"
+                    "name": "ProductHttpRepository"
                 }
             ],
             "selector": "p-products-list-page",
@@ -2670,6 +3358,28 @@
             "outputsClass": [],
             "propertiesClass": [
                 {
+                    "name": "isDeleting",
+                    "defaultValue": "signal<boolean>(false)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 40
+                },
+                {
+                    "name": "productToDelete",
+                    "defaultValue": "signal<Product | null>(null)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 39
+                },
+                {
                     "name": "store",
                     "defaultValue": "inject(ProductStore)",
                     "deprecated": false,
@@ -2678,7 +3388,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 28,
+                    "line": 36,
                     "modifierKind": [
                         148
                     ]
@@ -2692,7 +3402,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 29,
+                    "line": 37,
                     "modifierKind": [
                         148
                     ]
@@ -2705,7 +3415,59 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 31,
+                    "line": 50,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "onCloseModal",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 68,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "onDeleteProduct",
+                    "args": [
+                        {
+                            "name": "product",
+                            "type": "Product",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 56,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "product",
+                            "type": "Product",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "onDeleteProductConfirm",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 60,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -2727,21 +3489,37 @@
                 {
                     "name": "CTableComponent",
                     "type": "component"
+                },
+                {
+                    "name": "CPaginationComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "CModalComponent",
+                    "type": "component"
                 }
             ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';\nimport { CInputSearchComponent } from '@shared/components/c-input-search/c-input-search.component';\nimport { CButtonComponent } from '@shared/components/c-button/c-button.component';\nimport { TableColumn } from '@shared/components/c-table/c-table.interface';\nimport { Product } from '@domains/products/business/models/product-model';\nimport { CTableComponent } from '@shared/components/c-table/c-table.component';\nimport { ProductStore } from '@domains/products/business/state/product.store';\nimport { ProductHttpService } from '@domains/products/data-access/services/product-http.service';\n\nconst PRODUCT_TABLE_COLUMNS: TableColumn<Product>[] = [\n  { key: 'logoURL', header: 'Logo', type: 'image' },\n  { key: 'name', header: 'Nombre del producto' },\n  { key: 'description', header: 'Descripción' },\n  { key: 'releaseDate', header: 'Fecha de liberación', type: 'date' },\n  { key: 'revisionDate', header: 'Fecha de reestructuración', type: 'date' },\n];\n\n@Component({\n  selector: 'p-products-list-page',\n  standalone: true,\n  imports: [CInputSearchComponent, CButtonComponent, CTableComponent],\n  providers: [ProductStore, ProductHttpService],\n  templateUrl: './p-products-list-page.component.html',\n  styleUrl: './p-products-list-page.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class PProductsListPageComponent implements OnInit {\n  readonly store = inject(ProductStore);\n  readonly tableColumns = PRODUCT_TABLE_COLUMNS;\n\n  ngOnInit() {\n    if (this.store.products().length === 0) {\n      this.store.loadProducts();\n    }\n  }\n}\n",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, effect, inject, OnInit, signal } from '@angular/core';\nimport { CInputSearchComponent } from '@shared/components/c-input-search/c-input-search.component';\nimport { CButtonComponent } from '@shared/components/c-button/c-button.component';\nimport { TableColumn } from '@shared/components/c-table/c-table.interface';\nimport { Product } from '@domains/products/domain/models/product-model';\nimport { CTableComponent } from '@shared/components/c-table/c-table.component';\nimport { ProductStore } from '@domains/products/domain/state/product.store';\nimport { ProductHttpRepository } from '@domains/products/data-access/repositories/product-http.repository';\nimport { CPaginationComponent } from '@shared/components/c-pagination/c-pagination.component';\nimport { CModalComponent } from '@shared/components/c-modal/c-modal.component';\n\nconst PRODUCT_TABLE_COLUMNS: TableColumn<Product>[] = [\n  { key: 'logoURL', header: 'Logo', type: 'image' },\n  { key: 'name', header: 'Nombre del producto' },\n  { key: 'description', header: 'Descripción' },\n  { key: 'releaseDate', header: 'Fecha de liberación', type: 'date' },\n  { key: 'revisionDate', header: 'Fecha de reestructuración', type: 'date' },\n];\n\n@Component({\n  selector: 'p-products-list-page',\n  standalone: true,\n  imports: [\n    CInputSearchComponent,\n    CButtonComponent,\n    CTableComponent,\n    CPaginationComponent,\n    CModalComponent,\n  ],\n  providers: [ProductStore, ProductHttpRepository],\n  templateUrl: './p-products-list-page.component.html',\n  styleUrl: './p-products-list-page.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class PProductsListPageComponent implements OnInit {\n  readonly store = inject(ProductStore);\n  readonly tableColumns = PRODUCT_TABLE_COLUMNS;\n\n  productToDelete = signal<Product | null>(null);\n  isDeleting = signal<boolean>(false);\n\n  constructor() {\n    effect(() => {\n      if (this.isDeleting() && !this.store.isLoading()) {\n        this.onCloseModal();\n      }\n    });\n  }\n\n  ngOnInit() {\n    if (this.store.products().length === 0) {\n      this.store.loadProducts();\n    }\n  }\n\n  onDeleteProduct(product: Product): void {\n    this.productToDelete.set(product);\n  }\n\n  onDeleteProductConfirm() {\n    const product = this.productToDelete();\n    if (product) {\n      this.isDeleting.set(true);\n      this.store.deleteProduct(product.id);\n    }\n  }\n\n  onCloseModal() {\n    this.productToDelete.set(null);\n    this.isDeleting.set(false);\n  }\n}\n",
             "styleUrl": "./p-products-list-page.component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 40
+            },
             "extends": [],
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<div class=\"p-product-list-container\">\n  <div class=\"p-product-list-header\">\n    <div class=\"p-product-list-header__search-bar\">\n      <c-input-search\n        [placeholder]=\"'Buscar...'\"\n        [value]=\"store.searchTerm()\"\n        (onValueChange)=\"store.setSearchTerm($event)\"\n      ></c-input-search>\n    </div>\n\n    <c-button>Agregar</c-button>\n  </div>\n  <div class=\"p-product-list-table\">\n    @if (!store.isLoading()) {\n      <c-table [data]=\"store.filteredProducts()\" [columns]=\"tableColumns\" [showActions]=\"true\"></c-table>\n    }\n  </div>\n</div>\n"
+            "templateData": "<div class=\"p-product-list-container\">\n  <div class=\"p-product-list-header\">\n    <div class=\"p-product-list-header__search-bar\">\n      <c-input-search\n        [placeholder]=\"'Buscar...'\"\n        [value]=\"store.searchTerm()\"\n        (onValueChange)=\"store.setSearchTerm($event)\"\n      ></c-input-search>\n    </div>\n\n    <c-button>Agregar</c-button>\n  </div>\n  <div class=\"p-product-list-table\">\n    <c-table\n      [data]=\"store.paginatedProducts()\"\n      [columns]=\"tableColumns\"\n      [showActions]=\"true\"\n      [isLoading]=\"store.isLoading()\"\n      (onDelete)=\"onDeleteProduct($event)\"\n    ></c-table>\n    @if (!store.isLoading()) {\n      <c-pagination\n        [totalResults]=\"store.totalResults()\"\n        [pageSize]=\"store.pageSize()\"\n        [currentPage]=\"store.currentPage()\"\n        (onPageChange)=\"store.setCurrentPage($event)\"\n        (onPageSizeChange)=\"store.setPageSize($event)\"\n      ></c-pagination>\n    }\n  </div>\n</div>\n<c-modal\n  [isOpen]=\"!!productToDelete()\"\n  [bodyText]=\"'¿Estás seguro de eliminar el producto ' + productToDelete()?.name + '?'\"\n  [confirmText]=\"'Eliminar'\"\n  [cancelText]=\"'Cancelar'\"\n  [isLoading]=\"store.isLoading()\"\n  (onConfirm)=\"onDeleteProductConfirm()\"\n  (onCancel)=\"onCloseModal()\"\n></c-modal>\n"
         }
     ],
     "modules": [],
@@ -2768,6 +3546,16 @@
                 "defaultValue": "new InjectionToken<string>('BASE_URL', {\n  providedIn: 'root',\n  factory: () => environment.BASE_URL,\n})"
             },
             {
+                "name": "DEFAULT_TOTAL_PAGES",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/domains/products/domain/state/product.store.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "unknown",
+                "defaultValue": "1 as const"
+            },
+            {
                 "name": "environment",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -2788,26 +3576,34 @@
                 "defaultValue": "{\n  BASE_URL: '/api',\n  production: true,\n}"
             },
             {
-                "name": "getErrorMessage",
+                "name": "INITIAL_PAGE",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/domains/products/business/state/product.store.ts",
+                "file": "src/app/domains/products/domain/state/product.store.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "unknown",
-                "defaultValue": "(err: HttpErrorResponse, fallback: string): string => {\n  return (err.error as ProductsApiErrorsDTO)?.message || fallback;\n}",
-                "rawdescription": "Helper function used to extract the error message, from the HttpErrorResponse.",
-                "description": "<p>Helper function used to extract the error message, from the HttpErrorResponse.</p>\n"
+                "defaultValue": "1 as const"
             },
             {
                 "name": "initialState",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/domains/products/business/state/product.store.ts",
+                "file": "src/app/domains/products/domain/state/product.store.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "ProductState",
-                "defaultValue": "{\n  products: [],\n  isLoading: false,\n  error: null,\n  searchTerm: '',\n}"
+                "defaultValue": "{\n  products: [],\n  isLoading: false,\n  error: null,\n  searchTerm: '',\n  currentPage: INITIAL_PAGE,\n  pageSize: PAGE_SIZE,\n}"
+            },
+            {
+                "name": "PAGE_SIZE",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/domains/products/domain/state/product.store.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "unknown",
+                "defaultValue": "5 as const"
             },
             {
                 "name": "PRODUCT_TABLE_COLUMNS",
@@ -2833,11 +3629,11 @@
                 "name": "ProductStore",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/domains/products/business/state/product.store.ts",
+                "file": "src/app/domains/products/domain/state/product.store.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "unknown",
-                "defaultValue": "signalStore(\n  withState(initialState),\n  // Filtering\n  withComputed(({ products, searchTerm }) => {\n    const filteredProducts = computed(() => {\n      const query = searchTerm().toLowerCase().trim();\n      if (!query) return products();\n\n      return products().filter(\n        (product) =>\n          product.name.toLowerCase().includes(query) ||\n          product.description.toLowerCase().includes(query),\n      );\n    });\n    return { filteredProducts };\n  }),\n  // Methods\n  withMethods((store, httpService = inject(ProductHttpService)) => ({\n    loadProducts: rxMethod<void>(\n      pipe(\n        tap(() => patchState(store, { error: null, isLoading: true })),\n        switchMap(() =>\n          httpService.getProducts().pipe(\n            tap((products) => {\n              patchState(store, { products, isLoading: false });\n            }),\n            catchError((err: HttpErrorResponse) => {\n              const errMsg = getErrorMessage(err, 'Error al cargar productos');\n              patchState(store, { error: errMsg, isLoading: false });\n              return of(null);\n            }),\n          ),\n        ),\n      ),\n    ),\n    // Filter functionality\n    setSearchTerm(searchTerm: string) {\n      patchState(store, { searchTerm });\n    },\n  })),\n)"
+                "defaultValue": "signalStore(\n  withState(initialState),\n  // Filtering\n  withComputed(({ products, searchTerm }) => {\n    const filteredProducts = computed(() => {\n      const query = searchTerm().toLowerCase().trim();\n      if (!query) return products();\n\n      return products().filter(\n        (product) =>\n          product.name.toLowerCase().includes(query) ||\n          product.description.toLowerCase().includes(query),\n      );\n    });\n    return { filteredProducts };\n  }),\n  // For pagination\n  withComputed(({ filteredProducts, currentPage, pageSize }) => {\n    const paginatedProducts = computed(() => {\n      const startIndex = (currentPage() - DEFAULT_TOTAL_PAGES) * pageSize();\n      return filteredProducts().slice(startIndex, startIndex + pageSize());\n    });\n    const totalResults = computed(() => filteredProducts().length);\n\n    const totalPages = computed(() => {\n      return Math.ceil(totalResults() / pageSize()) || DEFAULT_TOTAL_PAGES;\n    });\n    return { paginatedProducts, totalResults, totalPages };\n  }),\n  // Methods\n  withMethods((store, productRepository = inject(ProductRepository)) => ({\n    loadProducts: rxMethod<void>(\n      pipe(\n        tap(() => patchState(store, { error: null, isLoading: true })),\n        switchMap(() =>\n          productRepository.getProducts().pipe(\n            tap((products) => {\n              patchState(store, { products, isLoading: false });\n            }),\n            catchError((err) => {\n              patchState(store, { error: err.message, isLoading: false });\n              return of(null);\n            }),\n          ),\n        ),\n      ),\n    ),\n    deleteProduct: rxMethod<string>(\n      pipe(\n        tap(() => patchState(store, { error: null, isLoading: true })),\n        switchMap((productId) =>\n          productRepository.deleteProduct(productId).pipe(\n            tap(() => {\n              patchState(store, {\n                products: store.products().filter((p) => p.id !== productId),\n                isLoading: false,\n              });\n            }),\n            catchError((err) => {\n              patchState(store, { error: err.message, isLoading: false });\n              return of(null);\n            }),\n          ),\n        ),\n      ),\n    ),\n    // Filter functionality\n    setSearchTerm(searchTerm: string) {\n      patchState(store, { searchTerm, currentPage: INITIAL_PAGE });\n    },\n    // Pagination functionality\n    setPageSize(pageSize: number): void {\n      patchState(store, { pageSize, currentPage: INITIAL_PAGE });\n    },\n    setCurrentPage(currentPage: number): void {\n      if (currentPage >= INITIAL_PAGE && currentPage <= store.totalPages()) {\n        patchState(store, { currentPage });\n      }\n    },\n  })),\n)"
             },
             {
                 "name": "routes",
@@ -2847,7 +3643,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Routes",
-                "defaultValue": "[\n  {\n    path: '',\n    redirectTo: 'products',\n    pathMatch: 'full',\n  },\n  {\n    path: 'products',\n    loadChildren: () => \"import('./domains/products/products.routes').then((m) => m.PRODUCTS_ROUTES)\",\n  },\n  {\n    path: '**',\n    redirectTo: 'products',\n  },\n]"
+                "defaultValue": "[\n  {\n    path: '',\n    redirectTo: 'products',\n    pathMatch: 'full',\n  },\n  {\n    path: 'products',\n    loadChildren: () => \"import('./domains/products/products.routes').then((m) => m.PRODUCTS_ROUTES)\",\n    providers: [\n      {\n        provide: ProductRepository,\n        useClass: ProductHttpRepository,\n      },\n    ],\n  },\n  {\n    path: '**',\n    redirectTo: 'products',\n  },\n]"
             }
         ],
         "functions": [
@@ -3014,6 +3810,58 @@
                     "defaultValue": "new InjectionToken<string>('BASE_URL', {\n  providedIn: 'root',\n  factory: () => environment.BASE_URL,\n})"
                 }
             ],
+            "src/app/domains/products/domain/state/product.store.ts": [
+                {
+                    "name": "DEFAULT_TOTAL_PAGES",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/domains/products/domain/state/product.store.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "defaultValue": "1 as const"
+                },
+                {
+                    "name": "INITIAL_PAGE",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/domains/products/domain/state/product.store.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "defaultValue": "1 as const"
+                },
+                {
+                    "name": "initialState",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/domains/products/domain/state/product.store.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ProductState",
+                    "defaultValue": "{\n  products: [],\n  isLoading: false,\n  error: null,\n  searchTerm: '',\n  currentPage: INITIAL_PAGE,\n  pageSize: PAGE_SIZE,\n}"
+                },
+                {
+                    "name": "PAGE_SIZE",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/domains/products/domain/state/product.store.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "defaultValue": "5 as const"
+                },
+                {
+                    "name": "ProductStore",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/domains/products/domain/state/product.store.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "defaultValue": "signalStore(\n  withState(initialState),\n  // Filtering\n  withComputed(({ products, searchTerm }) => {\n    const filteredProducts = computed(() => {\n      const query = searchTerm().toLowerCase().trim();\n      if (!query) return products();\n\n      return products().filter(\n        (product) =>\n          product.name.toLowerCase().includes(query) ||\n          product.description.toLowerCase().includes(query),\n      );\n    });\n    return { filteredProducts };\n  }),\n  // For pagination\n  withComputed(({ filteredProducts, currentPage, pageSize }) => {\n    const paginatedProducts = computed(() => {\n      const startIndex = (currentPage() - DEFAULT_TOTAL_PAGES) * pageSize();\n      return filteredProducts().slice(startIndex, startIndex + pageSize());\n    });\n    const totalResults = computed(() => filteredProducts().length);\n\n    const totalPages = computed(() => {\n      return Math.ceil(totalResults() / pageSize()) || DEFAULT_TOTAL_PAGES;\n    });\n    return { paginatedProducts, totalResults, totalPages };\n  }),\n  // Methods\n  withMethods((store, productRepository = inject(ProductRepository)) => ({\n    loadProducts: rxMethod<void>(\n      pipe(\n        tap(() => patchState(store, { error: null, isLoading: true })),\n        switchMap(() =>\n          productRepository.getProducts().pipe(\n            tap((products) => {\n              patchState(store, { products, isLoading: false });\n            }),\n            catchError((err) => {\n              patchState(store, { error: err.message, isLoading: false });\n              return of(null);\n            }),\n          ),\n        ),\n      ),\n    ),\n    deleteProduct: rxMethod<string>(\n      pipe(\n        tap(() => patchState(store, { error: null, isLoading: true })),\n        switchMap((productId) =>\n          productRepository.deleteProduct(productId).pipe(\n            tap(() => {\n              patchState(store, {\n                products: store.products().filter((p) => p.id !== productId),\n                isLoading: false,\n              });\n            }),\n            catchError((err) => {\n              patchState(store, { error: err.message, isLoading: false });\n              return of(null);\n            }),\n          ),\n        ),\n      ),\n    ),\n    // Filter functionality\n    setSearchTerm(searchTerm: string) {\n      patchState(store, { searchTerm, currentPage: INITIAL_PAGE });\n    },\n    // Pagination functionality\n    setPageSize(pageSize: number): void {\n      patchState(store, { pageSize, currentPage: INITIAL_PAGE });\n    },\n    setCurrentPage(currentPage: number): void {\n      if (currentPage >= INITIAL_PAGE && currentPage <= store.totalPages()) {\n        patchState(store, { currentPage });\n      }\n    },\n  })),\n)"
+                }
+            ],
             "src/environments/environment.development.ts": [
                 {
                     "name": "environment",
@@ -3036,40 +3884,6 @@
                     "deprecationMessage": "",
                     "type": "object",
                     "defaultValue": "{\n  BASE_URL: '/api',\n  production: true,\n}"
-                }
-            ],
-            "src/app/domains/products/business/state/product.store.ts": [
-                {
-                    "name": "getErrorMessage",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/app/domains/products/business/state/product.store.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "unknown",
-                    "defaultValue": "(err: HttpErrorResponse, fallback: string): string => {\n  return (err.error as ProductsApiErrorsDTO)?.message || fallback;\n}",
-                    "rawdescription": "Helper function used to extract the error message, from the HttpErrorResponse.",
-                    "description": "<p>Helper function used to extract the error message, from the HttpErrorResponse.</p>\n"
-                },
-                {
-                    "name": "initialState",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/app/domains/products/business/state/product.store.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "ProductState",
-                    "defaultValue": "{\n  products: [],\n  isLoading: false,\n  error: null,\n  searchTerm: '',\n}"
-                },
-                {
-                    "name": "ProductStore",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/app/domains/products/business/state/product.store.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "unknown",
-                    "defaultValue": "signalStore(\n  withState(initialState),\n  // Filtering\n  withComputed(({ products, searchTerm }) => {\n    const filteredProducts = computed(() => {\n      const query = searchTerm().toLowerCase().trim();\n      if (!query) return products();\n\n      return products().filter(\n        (product) =>\n          product.name.toLowerCase().includes(query) ||\n          product.description.toLowerCase().includes(query),\n      );\n    });\n    return { filteredProducts };\n  }),\n  // Methods\n  withMethods((store, httpService = inject(ProductHttpService)) => ({\n    loadProducts: rxMethod<void>(\n      pipe(\n        tap(() => patchState(store, { error: null, isLoading: true })),\n        switchMap(() =>\n          httpService.getProducts().pipe(\n            tap((products) => {\n              patchState(store, { products, isLoading: false });\n            }),\n            catchError((err: HttpErrorResponse) => {\n              const errMsg = getErrorMessage(err, 'Error al cargar productos');\n              patchState(store, { error: errMsg, isLoading: false });\n              return of(null);\n            }),\n          ),\n        ),\n      ),\n    ),\n    // Filter functionality\n    setSearchTerm(searchTerm: string) {\n      patchState(store, { searchTerm });\n    },\n  })),\n)"
                 }
             ],
             "src/app/domains/products/feature/p-products-list-page/p-products-list-page.component.ts": [
@@ -3105,7 +3919,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Routes",
-                    "defaultValue": "[\n  {\n    path: '',\n    redirectTo: 'products',\n    pathMatch: 'full',\n  },\n  {\n    path: 'products',\n    loadChildren: () => \"import('./domains/products/products.routes').then((m) => m.PRODUCTS_ROUTES)\",\n  },\n  {\n    path: '**',\n    redirectTo: 'products',\n  },\n]"
+                    "defaultValue": "[\n  {\n    path: '',\n    redirectTo: 'products',\n    pathMatch: 'full',\n  },\n  {\n    path: 'products',\n    loadChildren: () => \"import('./domains/products/products.routes').then((m) => m.PRODUCTS_ROUTES)\",\n    providers: [\n      {\n        provide: ProductRepository,\n        useClass: ProductHttpRepository,\n      },\n    ],\n  },\n  {\n    path: '**',\n    redirectTo: 'products',\n  },\n]"
                 }
             ]
         },
@@ -3292,7 +4106,7 @@
         ]
     },
     "coverage": {
-        "count": 11,
+        "count": 7,
         "status": "low",
         "files": [
             {
@@ -3335,63 +4149,6 @@
                 "status": "low"
             },
             {
-                "filePath": "src/app/domains/products/business/mappers/product.mapper.ts",
-                "type": "class",
-                "linktype": "classe",
-                "name": "ProductMapper",
-                "coveragePercent": 0,
-                "coverageCount": "0/4",
-                "status": "low"
-            },
-            {
-                "filePath": "src/app/domains/products/business/models/product-model.ts",
-                "type": "interface",
-                "linktype": "interface",
-                "name": "Product",
-                "coveragePercent": 0,
-                "coverageCount": "0/7",
-                "status": "low"
-            },
-            {
-                "filePath": "src/app/domains/products/business/state/product.store.ts",
-                "type": "interface",
-                "linktype": "interface",
-                "name": "ProductState",
-                "coveragePercent": 40,
-                "coverageCount": "2/5",
-                "status": "medium"
-            },
-            {
-                "filePath": "src/app/domains/products/business/state/product.store.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "getErrorMessage",
-                "coveragePercent": 100,
-                "coverageCount": "1/1",
-                "status": "very-good"
-            },
-            {
-                "filePath": "src/app/domains/products/business/state/product.store.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "initialState",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/app/domains/products/business/state/product.store.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "ProductStore",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
                 "filePath": "src/app/domains/products/data-access/dtos/product.dto.ts",
                 "type": "interface",
                 "linktype": "interface",
@@ -3419,12 +4176,116 @@
                 "status": "low"
             },
             {
-                "filePath": "src/app/domains/products/data-access/services/product-http.service.ts",
+                "filePath": "src/app/domains/products/data-access/dtos/product.dto.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "ProductsApiSuccessDTO",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/domains/products/data-access/repositories/product-http.repository.ts",
                 "type": "injectable",
                 "linktype": "injectable",
-                "name": "ProductHttpService",
+                "name": "ProductHttpRepository",
+                "coveragePercent": 10,
+                "coverageCount": "1/10",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/domains/products/domain/mappers/product.mapper.ts",
+                "type": "class",
+                "linktype": "classe",
+                "name": "ProductMapper",
                 "coveragePercent": 0,
-                "coverageCount": "0/9",
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/domains/products/domain/models/product-model.ts",
+                "type": "class",
+                "linktype": "classe",
+                "name": "ProductErrors",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/domains/products/domain/models/product-model.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "Product",
+                "coveragePercent": 0,
+                "coverageCount": "0/7",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/domains/products/domain/repositories/product.repository.ts",
+                "type": "class",
+                "linktype": "classe",
+                "name": "ProductRepository",
+                "coveragePercent": 0,
+                "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/domains/products/domain/state/product.store.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "ProductState",
+                "coveragePercent": 42,
+                "coverageCount": "3/7",
+                "status": "medium"
+            },
+            {
+                "filePath": "src/app/domains/products/domain/state/product.store.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DEFAULT_TOTAL_PAGES",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/domains/products/domain/state/product.store.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "INITIAL_PAGE",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/domains/products/domain/state/product.store.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "initialState",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/domains/products/domain/state/product.store.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "PAGE_SIZE",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/domains/products/domain/state/product.store.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "ProductStore",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {
@@ -3442,7 +4303,7 @@
                 "linktype": "component",
                 "name": "PProductsListPageComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/4",
+                "coverageCount": "0/10",
                 "status": "low"
             },
             {
@@ -3466,12 +4327,21 @@
                 "status": "low"
             },
             {
+                "filePath": "src/app/shared/components/c-alert/c-alert.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "CAlertComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/shared/components/c-button/c-button.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "CButtonComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/7",
+                "coverageCount": "0/8",
                 "status": "low"
             },
             {
@@ -3521,6 +4391,15 @@
                 "status": "low"
             },
             {
+                "filePath": "src/app/shared/components/c-modal/c-modal.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "CModalComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/10",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/shared/components/c-pagination/c-pagination.component.ts",
                 "type": "component",
                 "linktype": "component",
@@ -3530,12 +4409,21 @@
                 "status": "low"
             },
             {
+                "filePath": "src/app/shared/components/c-skeleton/c-skeleton.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "CSkeletonComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/shared/components/c-table/c-table.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "CTableComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/10",
+                "coverageCount": "0/11",
                 "status": "low"
             },
             {

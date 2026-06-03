@@ -1,0 +1,60 @@
+@use 'design-system' as ds;
+
+.c-alert {
+  padding: ds.$alert-padding ds.$spacing-lg;
+  border-radius: ds.$alert-radius;
+  max-width: 400px;
+  min-width: 320px;
+  box-shadow: ds.$shadow-sm;
+  cursor: pointer;
+  animation: slideIn ds.$transition-duration-base cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transition: ds.$transition-base;
+  @include ds.typography('sm', 'normal', 'normal');
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: ds.$shadow-md;
+  }
+
+  &--floating {
+    position: fixed;
+    top: ds.$spacing-lg;
+    right: ds.$spacing-lg;
+    z-index: ds.$z-index-popover;
+  }
+
+  &--success {
+    background-color: ds.$alert-bg-success;
+    color: ds.$alert-text-success;
+    border: 1px solid ds.$alert-border-success;
+  }
+
+  &--error {
+    background-color: ds.$alert-bg-error;
+    color: ds.$alert-text-error;
+    border: 1px solid ds.$alert-border-error;
+  }
+
+  &--info {
+    background-color: ds.$alert-bg-info;
+    color: ds.$alert-text-info;
+    border: 1px solid ds.$alert-border-info;
+  }
+
+  &--warning {
+    background-color: ds.$alert-bg-warning;
+    color: ds.$alert-text-warning;
+    border: 1px solid ds.$alert-border-warning;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

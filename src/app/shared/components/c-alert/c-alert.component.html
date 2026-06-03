@@ -1,0 +1,6 @@
+<div
+  [class]="'c-alert c-alert--' + type() + (isFloating() ? ' c-alert--floating' : '')"
+  (click)="onDismissHandler()"
+>
+  {{ message() }}
+</div>
