@@ -1,0 +1,45 @@
+<div class="c-pagination">
+  <!-- 1. Results count on the left -->
+  <span class="c-pagination__count">
+    {{ totalResults() }} {{ totalResults() === 1 ? 'Resultado' : 'Resultados' }}
+  </span>
+
+  <!-- 2. Page navigation in the center (only displayed if totalPages > 1) -->
+  @if (totalPages() > 1) {
+    <div class="c-pagination-nav">
+      <c-button
+        variant="icon"
+        [isDisabled]="currentPage() === 1"
+        (onClick)="onPageChange(currentPage() - 1)"
+        aria-label="Página anterior"
+      >
+        <ng-icon name="matNavigateBefore" />
+      </c-button>
+
+      <span class="c-pagination-nav__info"> Pág. {{ currentPage() }} de {{ totalPages() }} </span>
+
+      <c-button
+        variant="icon"
+        [isDisabled]="currentPage() === totalPages()"
+        (onClick)="onPageChange(currentPage() + 1)"
+        aria-label="Página siguiente"
+      >
+        <ng-icon name="matNavigateNext" />
+      </c-button>
+    </div>
+  }
+
+  <!-- 3. Records per page selector on the right -->
+  <div class="c-pagination__select-wrapper">
+    <select
+      class="c-pagination-select"
+      [value]="pageSize()"
+      (change)="onPageSizeChange($event)"
+      aria-label="Cantidad de registros por página"
+    >
+      <option [value]="5">5</option>
+      <option [value]="10">10</option>
+      <option [value]="20">20</option>
+    </select>
+  </div>
+</div>

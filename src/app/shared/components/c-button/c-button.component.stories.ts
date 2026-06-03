@@ -50,3 +50,40 @@ export const SecondaryDisabled: Story = {
     isDisabled: true,
   },
 };
+
+export const Icon: Story = {
+  args: {
+    variant: 'icon',
+    ariaLabel: 'Favorito',
+  },
+  render: (args) => ({
+    props: {
+      ...args,
+      window,
+    },
+    template: `
+      <c-button [variant]="variant" [isDisabled]="isDisabled" [isLoading]="isLoading" [aria-label]="ariaLabel" (onClick)="window.alert('click!')">
+        <span style="font-size: 1.25rem;">★</span>
+      </c-button>
+    `,
+  }),
+};
+
+export const IconDisabled: Story = {
+  args: {
+    variant: 'icon',
+    ariaLabel: 'Favorito',
+    isDisabled: true,
+  },
+  render: (args) => ({
+    props: {
+      ...args,
+      window,
+    },
+    template: `
+      <c-button [variant]="variant" [isDisabled]="isDisabled" [isLoading]="isLoading" [aria-label]="ariaLabel" (onClick)="window.alert('click!')">
+        <span style="font-size: 1.25rem;">★</span>
+      </c-button>
+    `,
+  }),
+};

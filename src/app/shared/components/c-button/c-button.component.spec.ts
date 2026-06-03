@@ -22,6 +22,26 @@ describe('CButtonComponent', () => {
     expect(button.classList.contains('c-button--secondary')).toBe(true);
   });
 
+  it('should change to icon variant when specified', async () => {
+    await render(CButtonComponent, {
+      inputs: {
+        variant: 'icon',
+      },
+    });
+
+    const button = screen.getByRole('button');
+    expect(button.classList.contains('c-button--icon')).toBe(true);
+  });
+
+  it('should apply the aria-label attribute to the native button', async () => {
+    await render(`<c-button aria-label="Página anterior"></c-button>`, {
+      imports: [CButtonComponent],
+    });
+
+    const button = screen.getByRole('button', { name: /página anterior/i });
+    expect(button.getAttribute('aria-label')).toBe('Página anterior');
+  });
+
   it('should be disabled when isDisabled input is true', async () => {
     await render(CButtonComponent, {
       inputs: {

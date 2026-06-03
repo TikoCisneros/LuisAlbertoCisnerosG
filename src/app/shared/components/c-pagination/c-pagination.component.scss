@@ -1,0 +1,58 @@
+@use 'design-system' as ds;
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.c-pagination {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background: ds.$bg-surface;
+  padding: ds.$spacing-md ds.$spacing-lg;
+  border: 0.2px solid ds.$border-color;
+
+  @include ds.respond-to('md') {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  &__count {
+    font-size: 0.85rem;
+    color: ds.$text-muted;
+    font-weight: 500;
+  }
+}
+
+.c-pagination-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  &__info {
+    font-size: 0.85rem;
+    color: ds.$text-body-gray;
+    font-weight: 600;
+  }
+}
+
+.c-pagination-select {
+  padding: 0.5rem 1.5rem 0.5rem 0.75rem;
+  border: 1px solid ds.$border-color;
+  border-radius: ds.$radius-md;
+  font-size: 0.85rem;
+  background-color: ds.$clr-white;
+  color: ds.$text-body-gray;
+  cursor: pointer;
+  outline: none;
+  font-weight: 600;
+  transition: ds.$transition-base;
+
+  &:focus {
+    border-color: ds.$theme-secondary;
+    box-shadow: 0 0 0 2px rgba(15, 38, 92, 0.1);
+  }
+}

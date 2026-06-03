@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 
-type ButtonVariant = 'primary' | 'secondary';
+type ButtonVariant = 'primary' | 'secondary' | 'icon';
 
 @Component({
   selector: 'c-button',
@@ -13,6 +13,7 @@ export class CButtonComponent {
   variant = input<ButtonVariant>('primary');
   isDisabled = input<boolean>(false);
   isLoading = input<boolean>(false);
+  ariaLabel = input<string | null>(null, { alias: 'aria-label' });
   onClick = output<MouseEvent>();
 
   clickHandler(event: MouseEvent): void {

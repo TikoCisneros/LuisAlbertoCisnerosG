@@ -1,6 +1,7 @@
 <button
   [class]="'c-button c-button--' + variant()"
   [disabled]="isDisabled()"
+  [attr.aria-label]="ariaLabel()"
   (click)="clickHandler($event)"
 >
   @if (isLoading()) {

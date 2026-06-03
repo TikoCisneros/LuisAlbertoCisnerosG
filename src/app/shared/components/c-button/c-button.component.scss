@@ -40,6 +40,34 @@
     }
   }
 
+  &--icon {
+    min-width: auto;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border: 1px solid ds.$border-color;
+    border-radius: ds.$radius-md;
+    background-color: ds.$clr-white;
+    color: ds.$text-body-gray;
+    transition: ds.$transition-base;
+
+    &:hover:not(:disabled) {
+      background-color: ds.$bg-button-secondary-hover;
+      color: ds.$theme-secondary;
+      border-color: ds.$theme-secondary;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      background-color: ds.$bg-button-secondary;
+    }
+
+    ::ng-deep ng-icon {
+      display: inline-flex;
+      font-size: 1.25rem;
+    }
+  }
+
   &__spinner {
     width: 16px;
     height: 16px;
