@@ -53,6 +53,18 @@ describe('CButtonComponent', () => {
     expect(button.hasAttribute('disabled')).toBe(true);
   });
 
+  it('should apply full-width classes when isFullWidth input is true', async () => {
+    const { container } = await render(`<c-button [isFullWidth]="true"></c-button>`, {
+      imports: [CButtonComponent],
+    });
+
+    const button = screen.getByRole('button');
+    expect(button.classList.contains('c-button--full-width')).toBe(true);
+
+    const host = container.querySelector('c-button');
+    expect(host?.classList.contains('c-button-host--full-width')).toBe(true);
+  });
+
   it('should trigger onClick output when clicked', async () => {
     const clickHandler = vi.fn();
 

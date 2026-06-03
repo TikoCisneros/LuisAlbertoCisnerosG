@@ -87,3 +87,19 @@ export const IconDisabled: Story = {
     `,
   }),
 };
+
+export const FullWidth: Story = {
+  args: {
+    variant: 'primary',
+    isFullWidth: true,
+  },
+  render: (args) => ({
+    props: {
+      ...args,
+      window,
+    },
+    template: `
+      <c-button [variant]="variant" [isFullWidth]="isFullWidth" (onClick)="window.alert('click!')">¡Haz clic aquí!</c-button>
+    `,
+  }),
+};

@@ -1,6 +1,7 @@
 <button
   [class]="'c-button c-button--' + variant()"
-  [disabled]="isDisabled()"
+  [class.c-button--full-width]="isFullWidth()"
+  [disabled]="isDisabled() || isLoading()"
   [attr.aria-label]="ariaLabel()"
   (click)="clickHandler($event)"
 >

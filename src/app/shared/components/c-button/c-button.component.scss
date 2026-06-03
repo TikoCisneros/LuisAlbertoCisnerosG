@@ -1,20 +1,32 @@
 @use 'design-system' as ds;
 
 :host {
-  display: block;
+  display: inline-block;
+
+  &.c-button-host--full-width {
+    display: block;
+    width: 100%;
+  }
 }
 
 .c-button {
   display: inline-flex;
-  padding: ds.$spacing-sm ds.$spacing-lg;
+  padding: 0.75rem ds.$spacing-lg;
   border: 1px solid transparent;
   border-radius: ds.$radius-md;
   font-size: 0.9rem;
+  font-weight: 600;
   cursor: pointer;
   justify-content: center;
   align-items: center;
   min-width: 9rem;
   width: auto;
+  outline: none;
+
+  &--full-width {
+    width: 100%;
+    min-width: auto;
+  }
 
   &:disabled {
     opacity: 0.6;
