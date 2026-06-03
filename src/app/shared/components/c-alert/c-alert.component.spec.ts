@@ -46,4 +46,16 @@ describe('CAlertComponent', () => {
 
     expect(dismissSpy).toHaveBeenCalledTimes(1);
   });
+
+  it('should apply the floating class when isFloating is set to true', async () => {
+    const { fixture } = await render(CAlertComponent, {
+      inputs: {
+        message: 'Floating alert',
+        isFloating: true,
+      },
+    });
+
+    const alert = screen.getByText('Floating alert');
+    expect(alert.classList.contains('c-alert--floating')).toBeTruthy();
+  });
 });

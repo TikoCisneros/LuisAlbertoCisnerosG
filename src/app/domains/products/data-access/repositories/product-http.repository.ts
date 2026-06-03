@@ -7,6 +7,7 @@ import {
   ProductDTO,
   ProductsApiErrorsDTO,
   ProductsApiResponseDTO,
+  ProductsApiSuccessDTO,
 } from '@domains/products/data-access/dtos/product.dto';
 import { ProductMapper } from '@domains/products/domain/mappers/product.mapper';
 import { ProductRepository } from '@domains/products/domain/repositories/product.repository';
@@ -45,10 +46,11 @@ export class ProductHttpRepository implements ProductRepository {
   }
 
   deleteProduct(productId: string): Observable<string> {
-    return this.http.delete(`${this.productURL}/${productId}`, { responseType: 'text' }).pipe(
+    return this.http.delete<ProductsApiSuccessDTO>(`${this.productURL}/${productId}`).pipe(
+      map((res) => res.message),
       catchError((err: HttpErrorResponse) => {
         return throwError(() => new ProductErrors('DELETE_FAILED', this.extractErrorMessage(err)));
-      }),
+      })
     );
   }
 

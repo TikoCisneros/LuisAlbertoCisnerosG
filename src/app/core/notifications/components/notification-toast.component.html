@@ -1,0 +1,10 @@
+<div class="c-notification-container">
+  @for (notification of notifications(); track notification.id) {
+    <c-alert
+      [message]="notification.message"
+      [type]="notification.type"
+      (onDismiss)="onDismiss(notification.id)"
+    >
+    </c-alert>
+  }
+</div>

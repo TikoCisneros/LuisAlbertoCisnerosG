@@ -1,0 +1,18 @@
+@use 'design-system' as ds;
+
+.c-notification-container {
+  position: fixed;
+  top: ds.$spacing-lg;
+  right: ds.$spacing-lg;
+  z-index: ds.$z-index-popover;
+
+  display: flex;
+  flex-direction: column;
+  gap: ds.$spacing-sm;
+
+  pointer-events: none;
+
+  c-alert {
+    pointer-events: auto;
+  }
+}

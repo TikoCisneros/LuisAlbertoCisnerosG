@@ -160,12 +160,12 @@ describe('ProductHttpRepository', () => {
       const targetId = 'PROD-100';
 
       service.deleteProduct(targetId).subscribe((res) => {
-        expect(res).toBe('true');
+        expect(res).toBe('Product removed successfully');
       });
 
       const req = httpMock.expectOne(`${mockBaseUrl}/products/${targetId}`);
       expect(req.request.method).toBe('DELETE');
-      req.flush('true');
+      req.flush({ message: 'Product removed successfully' });
     });
 
     it('should throw ProductErrors on DELETE request failure', () => {
