@@ -8,6 +8,7 @@ import { ProductsApiErrorsDTO } from '@domains/products/data-access/dtos/product
 import { ProductHttpService } from '@domains/products/data-access/services/product-http.service';
 
 const INITIAL_PAGE = 1 as const;
+const DEFAULT_TOTAL_PAGES = 1 as const;
 const PAGE_SIZE = 5 as const;
 export interface ProductState {
   products: Product[];
@@ -56,13 +57,13 @@ export const ProductStore = signalStore(
   // For pagination
   withComputed(({ filteredProducts, currentPage, pageSize }) => {
     const paginatedProducts = computed(() => {
-      const startIndex = (currentPage() - 1) * pageSize();
+      const startIndex = (currentPage() - DEFAULT_TOTAL_PAGES) * pageSize();
       return filteredProducts().slice(startIndex, startIndex + pageSize());
     });
     const totalResults = computed(() => filteredProducts().length);
 
     const totalPages = computed(() => {
-      return Math.ceil(totalResults() / pageSize()) || INITIAL_PAGE;
+      return Math.ceil(totalResults() / pageSize()) || DEFAULT_TOTAL_PAGES;
     });
     return { paginatedProducts, totalResults, totalPages };
   }),
@@ -91,7 +92,7 @@ export const ProductStore = signalStore(
     },
     // Pagination functionality
     setPageSize(pageSize: number): void {
-      patchState(store, { pageSize, currentPage: 1 }); // Return to page 1 when changing size
+      patchState(store, { pageSize, currentPage: INITIAL_PAGE });
     },
     setCurrentPage(currentPage: number): void {
       if (currentPage >= INITIAL_PAGE && currentPage <= store.totalPages()) {

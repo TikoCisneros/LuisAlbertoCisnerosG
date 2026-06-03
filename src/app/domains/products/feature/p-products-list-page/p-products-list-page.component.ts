@@ -6,6 +6,7 @@ import { Product } from '@domains/products/business/models/product-model';
 import { CTableComponent } from '@shared/components/c-table/c-table.component';
 import { ProductStore } from '@domains/products/business/state/product.store';
 import { ProductHttpService } from '@domains/products/data-access/services/product-http.service';
+import { CPaginationComponent } from '@shared/components/c-pagination/c-pagination.component';
 
 const PRODUCT_TABLE_COLUMNS: TableColumn<Product>[] = [
   { key: 'logoURL', header: 'Logo', type: 'image' },
@@ -18,7 +19,7 @@ const PRODUCT_TABLE_COLUMNS: TableColumn<Product>[] = [
 @Component({
   selector: 'p-products-list-page',
   standalone: true,
-  imports: [CInputSearchComponent, CButtonComponent, CTableComponent],
+  imports: [CInputSearchComponent, CButtonComponent, CTableComponent, CPaginationComponent],
   providers: [ProductStore, ProductHttpService],
   templateUrl: './p-products-list-page.component.html',
   styleUrl: './p-products-list-page.component.scss',

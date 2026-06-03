@@ -27,7 +27,7 @@ describe('CPaginationComponent', () => {
         currentPage: 2,
       },
       on: {
-        pageChange: pageChangeSpy,
+        onPageChange: pageChangeSpy,
       },
     });
 
@@ -77,7 +77,7 @@ describe('CPaginationComponent', () => {
         currentPage: 1,
       },
       on: {
-        pageSizeChange: pageSizeChangeSpy,
+        onPageSizeChange: pageSizeChangeSpy,
       },
     });
 

@@ -16,21 +16,21 @@ export class CPaginationComponent {
   pageSize = input.required<number>();
   currentPage = input.required<number>();
 
-  pageChange = output<number>();
-  pageSizeChange = output<number>();
+  onPageChange = output<number>();
+  onPageSizeChange = output<number>();
 
   totalPages = computed(() => {
     return Math.ceil(this.totalResults() / this.pageSize()) || 1;
   });
 
-  onPageChange(page: number): void {
+  onPageChangeHandler(page: number) {
     if (page >= 1 && page <= this.totalPages()) {
-      this.pageChange.emit(page);
+      this.onPageChange.emit(page);
     }
   }
 
-  onPageSizeChange(event: Event): void {
+  onPageSizeChangeHandler(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
-    this.pageSizeChange.emit(Number(selectElement.value));
+    this.onPageSizeChange.emit(Number(selectElement.value));
   }
 }

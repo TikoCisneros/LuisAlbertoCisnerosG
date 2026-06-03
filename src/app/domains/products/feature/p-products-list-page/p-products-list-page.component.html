@@ -11,8 +11,20 @@
     <c-button>Agregar</c-button>
   </div>
   <div class="p-product-list-table">
+    <c-table
+      [data]="store.paginatedProducts()"
+      [columns]="tableColumns"
+      [showActions]="true"
+      [isLoading]="store.isLoading()"
+    ></c-table>
     @if (!store.isLoading()) {
-      <c-table [data]="store.filteredProducts()" [columns]="tableColumns" [showActions]="true"></c-table>
+      <c-pagination
+        [totalResults]="store.totalResults()"
+        [pageSize]="store.pageSize()"
+        [currentPage]="store.currentPage()"
+        (onPageChange)="store.setCurrentPage($event)"
+        (onPageSizeChange)="store.setPageSize($event)"
+      ></c-pagination>
     }
   </div>
 </div>

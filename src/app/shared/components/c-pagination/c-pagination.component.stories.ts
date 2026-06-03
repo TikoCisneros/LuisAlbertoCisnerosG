@@ -11,19 +11,19 @@ const meta: Meta<CPaginationComponent> = {
     },
     template: `
       <div style="padding: 20px; background-color: var(--bg-primary, #ffffff); border-radius: 8px;">
-        <c-pagination 
-          [totalResults]="totalResults" 
-          [pageSize]="pageSize" 
+        <c-pagination
+          [totalResults]="totalResults"
+          [pageSize]="pageSize"
           [currentPage]="currentPage"
-          (pageChange)="pageChange($event)"
-          (pageSizeChange)="pageSizeChange($event)"
+          (onPageChange)="pageChange($event)"
+          (onPageSizeChange)="pageSizeChange($event)"
         ></c-pagination>
       </div>
     `,
   }),
   argTypes: {
-    pageChange: { action: 'pageChange' },
-    pageSizeChange: { action: 'pageSizeChange' },
+    onPageChange: { action: 'pageChange' },
+    onPageSizeChange: { action: 'pageSizeChange' },
   },
 };
 

@@ -10,7 +10,7 @@
       <c-button
         variant="icon"
         [isDisabled]="currentPage() === 1"
-        (onClick)="onPageChange(currentPage() - 1)"
+        (onClick)="onPageChangeHandler(currentPage() - 1)"
         aria-label="Página anterior"
       >
         <ng-icon name="matNavigateBefore" />
@@ -21,7 +21,7 @@
       <c-button
         variant="icon"
         [isDisabled]="currentPage() === totalPages()"
-        (onClick)="onPageChange(currentPage() + 1)"
+        (onClick)="onPageChangeHandler(currentPage() + 1)"
         aria-label="Página siguiente"
       >
         <ng-icon name="matNavigateNext" />
@@ -30,16 +30,18 @@
   }
 
   <!-- 3. Records per page selector on the right -->
-  <div class="c-pagination__select-wrapper">
-    <select
-      class="c-pagination-select"
-      [value]="pageSize()"
-      (change)="onPageSizeChange($event)"
-      aria-label="Cantidad de registros por página"
-    >
-      <option [value]="5">5</option>
-      <option [value]="10">10</option>
-      <option [value]="20">20</option>
-    </select>
-  </div>
+  @if (totalPages() > 1) {
+    <div class="c-pagination__select-wrapper">
+      <select
+        class="c-pagination-select"
+        [value]="pageSize()"
+        (change)="onPageSizeChangeHandler($event)"
+        aria-label="Cantidad de registros por página"
+      >
+        <option [value]="5">5</option>
+        <option [value]="10">10</option>
+        <option [value]="20">20</option>
+      </select>
+    </div>
+  }
 </div>
