@@ -6,7 +6,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { ProductHttpService } from './product-http.service';
 import { BASE_URL } from '@core/services/api-url.token';
 import { ProductDTO } from '@domains/products/data-access/dtos/product.dto';
-import { Product } from '@domains/products/bussiness/models/product-model';
+import { Product } from '@domains/products/business/models/product-model';
 
 describe('Pruebas de ProductHttpService', () => {
   let service: ProductHttpService;
