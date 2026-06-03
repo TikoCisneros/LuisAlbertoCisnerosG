@@ -7,9 +7,14 @@ export interface Product {
   readonly revisionDate: Date;
 }
 
+export interface ProductResponse {
+  readonly message: string;
+  readonly data: Product;
+}
+
 export class ProductErrors extends Error {
   constructor(
-    public readonly code: 'FETCH_FAILED' | 'CREATE_FAILED' | 'DELETE_FAILED',
+    public readonly code: 'FETCH_FAILED' | 'CREATE_FAILED' | 'DELETE_FAILED' | 'UPDATE_FAILED',
     message: string,
   ) {
     super(message);

@@ -5,6 +5,7 @@ import { pipe, switchMap, tap, catchError, of } from 'rxjs';
 import { Product, ProductErrors } from '../models/product-model';
 import { ProductRepository } from '@domains/products/domain/repositories/product.repository';
 import { NotificationService } from '@core/notifications/services/notification.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 const INITIAL_PAGE = 1 as const;
 const DEFAULT_TOTAL_PAGES = 1 as const;
@@ -12,22 +13,22 @@ const PAGE_SIZE = 5 as const;
 export interface ProductState {
   products: Product[];
   isLoading: boolean;
-  /** Stores error messages in screen */
-  error: string | null;
   /** Search section */
   searchTerm: string;
   /** Pagination section */
   currentPage: number;
   pageSize: number;
+  /** Verification section */
+  existId: boolean;
 }
 
 const initialState: ProductState = {
   products: [],
   isLoading: false,
-  error: null,
   searchTerm: '',
   currentPage: INITIAL_PAGE,
   pageSize: PAGE_SIZE,
+  existId: false,
 };
 
 function errorParser(error: unknown, fallback: string) {
@@ -74,7 +75,7 @@ export const ProductStore = signalStore(
     ) => ({
       loadProducts: rxMethod<void>(
         pipe(
-          tap(() => patchState(store, { error: null, isLoading: true })),
+          tap(() => patchState(store, { isLoading: true })),
           switchMap(() =>
             productRepository.getProducts().pipe(
               tap((products) => {
@@ -82,7 +83,7 @@ export const ProductStore = signalStore(
               }),
               catchError((err) => {
                 const errMsg = errorParser(err, 'Error inesperado al cargar productos');
-                patchState(store, { isLoading: false, error: errMsg });
+                patchState(store, { isLoading: false });
                 notificationService.notify('error', errMsg);
                 return of(null);
               }),
@@ -92,7 +93,7 @@ export const ProductStore = signalStore(
       ),
       deleteProduct: rxMethod<string>(
         pipe(
-          tap(() => patchState(store, { error: null, isLoading: true })),
+          tap(() => patchState(store, { isLoading: true })),
           switchMap((productId) =>
             productRepository.deleteProduct(productId).pipe(
               tap((msj) => {
@@ -104,6 +105,70 @@ export const ProductStore = signalStore(
               }),
               catchError((err) => {
                 const errMsg = errorParser(err, 'Error inesperado al eliminar productos');
+                patchState(store, { isLoading: false });
+                notificationService.notify('error', errMsg);
+                return of(null);
+              }),
+            ),
+          ),
+        ),
+      ),
+      addProduct: rxMethod<Product>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true })),
+          switchMap((newProduct) =>
+            productRepository.createProduct(newProduct).pipe(
+              tap(({ message, data: createdProduct }) => {
+                patchState(store, {
+                  products: [...store.products(), createdProduct],
+                  isLoading: false,
+                });
+                notificationService.notify('success', message);
+              }),
+              catchError((err) => {
+                const errMsg = errorParser(err, 'Error inesperado al crear producto');
+                patchState(store, { isLoading: false });
+                notificationService.notify('error', errMsg);
+                return of(null);
+              }),
+            ),
+          ),
+        ),
+      ),
+      verifyProductId: rxMethod<string>(
+        pipe(
+          tap(() => patchState(store, { existId: false, isLoading: true })),
+          switchMap((productId) =>
+            productRepository.verifyProductIDExists(productId).pipe(
+              tap((existId) => {
+                patchState(store, { existId, isLoading: false });
+              }),
+              catchError((err: HttpErrorResponse) => {
+                const errMsg = errorParser(err, 'Error inesperado al verificar producto');
+                patchState(store, { isLoading: false });
+                notificationService.notify('error', errMsg);
+                return of(null);
+              }),
+            ),
+          ),
+        ),
+      ),
+      updateProduct: rxMethod<Product>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true })),
+          switchMap((updatedProduct) =>
+            productRepository.updateProduct(updatedProduct).pipe(
+              tap(({ message, data: responseProduct }) => {
+                patchState(store, {
+                  products: store
+                    .products()
+                    .map((p) => (p.id === responseProduct.id ? responseProduct : p)),
+                  isLoading: false,
+                });
+                notificationService.notify('success', message);
+              }),
+              catchError((err) => {
+                const errMsg = errorParser(err, 'Error inesperado al actualizar producto');
                 patchState(store, { isLoading: false });
                 notificationService.notify('error', errMsg);
                 return of(null);

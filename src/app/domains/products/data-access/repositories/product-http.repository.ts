@@ -2,7 +2,11 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError, map, of, throwError } from 'rxjs';
 import { BASE_URL } from '@core/services/api-url.token';
-import { Product, ProductErrors } from '@domains/products/domain/models/product-model';
+import {
+  Product,
+  ProductErrors,
+  ProductResponse,
+} from '@domains/products/domain/models/product-model';
 import {
   ProductDTO,
   ProductsApiErrorsDTO,
@@ -33,16 +37,39 @@ export class ProductHttpRepository implements ProductRepository {
       }),
     );
   }
-  createProduct(product: Product): Observable<Product> {
+  createProduct(product: Product): Observable<ProductResponse> {
     return this.http
-      .post<ProductDTO>(this.productURL, ProductMapper.domainToDto(product))
-      .pipe(map((dto) => ProductMapper.dtoToDomain(dto)));
+      .post<ProductsApiSuccessDTO>(this.productURL, ProductMapper.domainToDto(product))
+      .pipe(
+        map(({ message, data }) => ({
+          message,
+          data: ProductMapper.dtoToDomain(data!),
+        })),
+        catchError((err: HttpErrorResponse) => {
+          return throwError(
+            () => new ProductErrors('CREATE_FAILED', this.extractErrorMessage(err)),
+          );
+        }),
+      );
   }
 
-  updateProduct(product: Product): Observable<Product> {
+  updateProduct(product: Product): Observable<ProductResponse> {
     return this.http
-      .put<ProductDTO>(`${this.productURL}/${product.id}`, ProductMapper.domainToDto(product))
-      .pipe(map((dto) => ProductMapper.dtoToDomain(dto)));
+      .put<ProductsApiSuccessDTO>(
+        `${this.productURL}/${product.id}`,
+        ProductMapper.domainToDto(product),
+      )
+      .pipe(
+        map(({ message, data }) => ({
+          message,
+          data: ProductMapper.dtoToDomain(data!),
+        })),
+        catchError((err: HttpErrorResponse) => {
+          return throwError(
+            () => new ProductErrors('UPDATE_FAILED', this.extractErrorMessage(err)),
+          );
+        }),
+      );
   }
 
   deleteProduct(productId: string): Observable<string> {
@@ -50,7 +77,7 @@ export class ProductHttpRepository implements ProductRepository {
       map((res) => res.message),
       catchError((err: HttpErrorResponse) => {
         return throwError(() => new ProductErrors('DELETE_FAILED', this.extractErrorMessage(err)));
-      })
+      }),
     );
   }
 
