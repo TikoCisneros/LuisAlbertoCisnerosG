@@ -5,15 +5,20 @@ import {
   Component,
   inject,
   input,
-  effect,
   output,
   OnInit,
   DestroyRef,
 } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AsyncValidatorFn,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Product } from '@domains/products/domain/models/product-model';
 import { addOneYear, getTodayMidnight, toInputDateFormat } from '@shared/utils/date.utils';
-import { futureOrTodayValidator } from './date.validators';
+import { futureOrTodayValidator } from '@domains/products/validators/date.validator';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -32,6 +37,7 @@ export class ProductFormComponent implements OnInit {
   isEditMode = input<boolean>(false);
   initialValues = input<Product | null>(null);
   isLoading = input<boolean>(false);
+  idValidator = input<AsyncValidatorFn | null>(null);
 
   // Output events
   onSubmit = output<Product>();
@@ -52,6 +58,8 @@ export class ProductFormComponent implements OnInit {
     }
     // Listen releaseDate changes
     this.setupDateSync();
+    // Add ID validator
+    this.setupIdValidator();
   }
 
   private fillForm(product: Product) {
@@ -81,6 +89,13 @@ export class ProductFormComponent implements OnInit {
             revisionControl.setValue(addOneYear(value), { emitEvent: false });
           }
         });
+    }
+  }
+
+  private setupIdValidator() {
+    const validator = this.idValidator();
+    if (validator) {
+      this.productForm.get('id')?.setAsyncValidators(validator);
     }
   }
 }

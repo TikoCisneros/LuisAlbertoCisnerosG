@@ -18,8 +18,6 @@ export interface ProductState {
   /** Pagination section */
   currentPage: number;
   pageSize: number;
-  /** Verification section */
-  existId: boolean;
 }
 
 const initialState: ProductState = {
@@ -28,7 +26,6 @@ const initialState: ProductState = {
   searchTerm: '',
   currentPage: INITIAL_PAGE,
   pageSize: PAGE_SIZE,
-  existId: false,
 };
 
 function errorParser(error: unknown, fallback: string) {
@@ -127,24 +124,6 @@ export const ProductStore = signalStore(
               }),
               catchError((err) => {
                 const errMsg = errorParser(err, 'Error inesperado al crear producto');
-                patchState(store, { isLoading: false });
-                notificationService.notify('error', errMsg);
-                return of(null);
-              }),
-            ),
-          ),
-        ),
-      ),
-      verifyProductId: rxMethod<string>(
-        pipe(
-          tap(() => patchState(store, { existId: false, isLoading: true })),
-          switchMap((productId) =>
-            productRepository.verifyProductIDExists(productId).pipe(
-              tap((existId) => {
-                patchState(store, { existId, isLoading: false });
-              }),
-              catchError((err: HttpErrorResponse) => {
-                const errMsg = errorParser(err, 'Error inesperado al verificar producto');
                 patchState(store, { isLoading: false });
                 notificationService.notify('error', errMsg);
                 return of(null);
