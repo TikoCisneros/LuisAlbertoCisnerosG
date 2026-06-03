@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { Product } from '@domains/products/domain/models/product-model';
+import { Product, ProductErrors } from '@domains/products/domain/models/product-model';
 import { ProductStore } from './product.store';
 import { ProductRepository } from '@domains/products/domain/repositories/product.repository';
 import { Mocked } from 'vitest';
@@ -103,11 +103,9 @@ describe('ProductStore', () => {
       expect(store.products()).toEqual([mockProduct]);
     });
     it('should fail loading products', () => {
-      const errorResponse = new HttpErrorResponse({
-        error: { name: 'InternalError', message: 'Server error' },
-        status: 500,
-      });
-      mockHttpService.getProducts?.mockReturnValue(throwError(() => errorResponse));
+      mockHttpService.getProducts?.mockReturnValue(
+        throwError(() => new ProductErrors('FETCH_FAILED', 'Server error')),
+      );
       const store = TestBed.inject(ProductStore);
       // Load products
       store.loadProducts();

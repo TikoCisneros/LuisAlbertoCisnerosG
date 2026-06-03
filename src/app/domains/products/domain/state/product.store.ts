@@ -2,9 +2,7 @@ import { computed, inject } from '@angular/core';
 import { signalStore, withState, withMethods, patchState, withComputed } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap, catchError, of } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Product } from '../models/product-model';
-import { ProductsApiErrorsDTO } from '@domains/products/data-access/dtos/product.dto';
+import { Product, ProductErrors } from '../models/product-model';
 import { ProductRepository } from '@domains/products/domain/repositories/product.repository';
 
 const INITIAL_PAGE = 1 as const;
@@ -29,13 +27,6 @@ const initialState: ProductState = {
   searchTerm: '',
   currentPage: INITIAL_PAGE,
   pageSize: PAGE_SIZE,
-};
-
-/**
- * Helper function used to extract the error message, from the HttpErrorResponse.
- */
-const getErrorMessage = (err: HttpErrorResponse, fallback: string): string => {
-  return (err.error as ProductsApiErrorsDTO)?.message || fallback;
 };
 
 export const ProductStore = signalStore(
@@ -77,9 +68,8 @@ export const ProductStore = signalStore(
             tap((products) => {
               patchState(store, { products, isLoading: false });
             }),
-            catchError((err: HttpErrorResponse) => {
-              const errMsg = getErrorMessage(err, 'Error al cargar productos');
-              patchState(store, { error: errMsg, isLoading: false });
+            catchError((err) => {
+              patchState(store, { error: err.message, isLoading: false });
               return of(null);
             }),
           ),
@@ -97,9 +87,8 @@ export const ProductStore = signalStore(
                 isLoading: false,
               });
             }),
-            catchError((err: HttpErrorResponse) => {
-              const errMsg = getErrorMessage(err, 'Error al eliminar producto');
-              patchState(store, { error: errMsg, isLoading: false });
+            catchError((err) => {
+              patchState(store, { error: err.message, isLoading: false });
               return of(null);
             }),
           ),

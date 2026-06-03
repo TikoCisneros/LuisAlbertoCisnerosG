@@ -6,7 +6,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { ProductHttpRepository } from './product-http.repository';
 import { BASE_URL } from '@core/services/api-url.token';
 import { ProductDTO } from '@domains/products/data-access/dtos/product.dto';
-import { Product } from '@domains/products/domain/models/product-model';
+import { Product, ProductErrors } from '@domains/products/domain/models/product-model';
 
 describe('ProductHttpRepository', () => {
   let service: ProductHttpRepository;
@@ -66,6 +66,28 @@ describe('ProductHttpRepository', () => {
       const req = httpMock.expectOne(`${mockBaseUrl}/products`);
       expect(req.request.method).toBe('GET');
       req.flush({ data: [mockDto] }); // Mock the enveloped API response
+    });
+
+    it('should throw ProductErrors with extracted message on API error response', () => {
+      let errorAsserted = false;
+      service.getProducts().subscribe({
+        next: () => {
+          throw new Error('Debería haber fallado');
+        },
+        error: (error) => {
+          expect(error).toBeInstanceOf(ProductErrors);
+          expect(error.code).toBe('FETCH_FAILED');
+          expect(error.message).toBe('Not product found with that identifier');
+          errorAsserted = true;
+        },
+      });
+
+      const req = httpMock.expectOne(`${mockBaseUrl}/products`);
+      req.flush(
+        { name: 'NotFoundError', message: 'Not product found with that identifier' },
+        { status: 404, statusText: 'Not Found' },
+      );
+      expect(errorAsserted).toBe(true);
     });
   });
 
@@ -144,6 +166,27 @@ describe('ProductHttpRepository', () => {
       const req = httpMock.expectOne(`${mockBaseUrl}/products/${targetId}`);
       expect(req.request.method).toBe('DELETE');
       req.flush('true');
+    });
+
+    it('should throw ProductErrors on DELETE request failure', () => {
+      let errorAsserted = false;
+      const targetId = 'PROD-100';
+      service.deleteProduct(targetId).subscribe({
+        next: () => {
+          throw new Error('Error');
+        },
+        error: (error) => {
+          expect(error).toBeInstanceOf(ProductErrors);
+          expect(error.code).toBe('DELETE_FAILED');
+          expect(error.message).toContain('Http failure response');
+          errorAsserted = true;
+        },
+      });
+
+      const req = httpMock.expectOne(`${mockBaseUrl}/products/${targetId}`);
+      expect(req.request.method).toBe('DELETE');
+      req.flush(null, { status: 500, statusText: 'Internal Server Error' });
+      expect(errorAsserted).toBe(true);
     });
   });
 
