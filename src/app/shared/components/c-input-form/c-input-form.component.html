@@ -1,0 +1,19 @@
+<div class="c-input-form-group">
+  @if (label()) {
+    <label [attr.for]="id()" class="c-input-form-label">{{ label() }}</label>
+  }
+  <input
+    [id]="id()"
+    [type]="type()"
+    [placeholder]="placeholder()"
+    [value]="value()"
+    [disabled]="isDisabled()"
+    (input)="onInputHandler($event)"
+    (blur)="onTouchedHandler()"
+    class="c-input-form-control"
+    [class.c-input-form-control--invalid]="isInvalid()"
+  />
+  @if (isInvalid() && errorMessage()) {
+    <span class="c-input-form-error">{{ errorMessage() }}</span>
+  }
+</div>

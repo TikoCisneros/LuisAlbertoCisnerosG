@@ -1,0 +1,78 @@
+@use 'design-system' as ds;
+
+:host {
+  display: inline-block;
+  width: 100%;
+}
+
+.c-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.c-input {
+  width: 100%;
+  padding: 0.65rem 2.5rem 0.65rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: ds.$text-main;
+  background-color: ds.$bg-surface;
+  border: 1px solid ds.$border-color;
+  border-radius: ds.$radius-lg;
+  outline: none;
+  transition: ds.$transition-base;
+
+  &::placeholder {
+    color: ds.$text-muted;
+    font-weight: 400;
+  }
+
+  &:hover:not(:disabled) {
+    border-color: ds.$clr-slate-300;
+  }
+
+  &:focus:not(:disabled) {
+    border-color: ds.$theme-secondary;
+    box-shadow: 0 0 0 2px rgba(15, 38, 92, 0.1);
+  }
+
+  &__clear-btn {
+    position: absolute;
+    right: 0.5rem;
+    background: transparent;
+    border: none;
+    border-radius: ds.$radius-full;
+    color: ds.$text-muted;
+    width: 1.75rem;
+    height: 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: ds.$transition-base;
+
+    svg {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    &:hover {
+      color: ds.$text-main;
+      background-color: ds.$clr-slate-100;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(15, 38, 92, 0.1);
+    }
+  }
+
+  &:disabled {
+    background-color: ds.$clr-slate-50;
+    color: ds.$text-muted;
+    cursor: not-allowed;
+  }
+}
+

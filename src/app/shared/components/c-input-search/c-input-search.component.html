@@ -1,0 +1,14 @@
+<div class="c-input-wrapper">
+  <input
+    type="text"
+    [placeholder]="placeholder()"
+    [value]="value()"
+    class="c-input"
+    (input)="onInputHandler($event)"
+  />
+  @if (value()) {
+    <button type="button" class="c-input__clear-btn" (click)="clear()" aria-label="Clear search">
+      <ng-icon name="matClose" />
+    </button>
+  }
+</div>

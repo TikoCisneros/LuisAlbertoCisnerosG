@@ -793,6 +793,480 @@
             "templateData": "<header class=\"c-header\">\n  <div class=\"c-header__container\">\n    @if (backUrl()) {\n      <a class=\"c-header__back-btn\" [routerLink]=\"backUrl()\" aria-label=\"Volver\">\n        <ng-icon name=\"matArrowBack\" class=\"c-header__back-icon\" />\n      </a>\n    }\n    <div class=\"c-header__logo\">\n      <ng-icon name=\"matPayments\" class=\"c-header__icon\" />\n      <span class=\"c-header__text\">BANCO</span>\n    </div>\n  </div>\n</header>\n"
         },
         {
+            "name": "CInputFormComponent",
+            "id": "component-CInputFormComponent-edd0effa3adac90690f12839aa6fda7c9a9981828bf0b522ada696a448ccb0c9972ee84fb5a166128bcd8f81be091fe649e71517d398eecadee8cf987dbc87b7",
+            "file": "src/app/shared/components/c-input-form/c-input-form.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [
+                {
+                    "name": ")"
+                }
+            ],
+            "selector": "c-input-form",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./c-input-form.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "errorMessage",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 25,
+                    "required": false
+                },
+                {
+                    "name": "id",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 22,
+                    "required": false
+                },
+                {
+                    "name": "isInvalid",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 24,
+                    "required": false
+                },
+                {
+                    "name": "label",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 23,
+                    "required": false
+                },
+                {
+                    "name": "placeholder",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 20,
+                    "required": false
+                },
+                {
+                    "name": "type",
+                    "defaultValue": "'text'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "\"text\" | \"date\"",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 21,
+                    "required": false
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "isDisabled",
+                    "defaultValue": "signal<boolean>(false)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 29
+                },
+                {
+                    "name": "onChangeHandler",
+                    "defaultValue": "() => {...}",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "function",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 32
+                },
+                {
+                    "name": "onTouchedHandler",
+                    "defaultValue": "() => {...}",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "function",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 33
+                },
+                {
+                    "name": "value",
+                    "defaultValue": "signal<string>('')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 28
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "onInputHandler",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 34,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "registerOnChange",
+                    "args": [
+                        {
+                            "name": "fn",
+                            "type": "function",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "function": [
+                                {
+                                    "name": "value",
+                                    "type": "string",
+                                    "optional": false,
+                                    "dotDotDotToken": false,
+                                    "deprecated": false,
+                                    "deprecationMessage": ""
+                                }
+                            ]
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 45,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "fn",
+                            "type": "function",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "function": [
+                                {
+                                    "name": "value",
+                                    "type": "string",
+                                    "optional": false,
+                                    "dotDotDotToken": false,
+                                    "deprecated": false,
+                                    "deprecationMessage": ""
+                                }
+                            ],
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "registerOnTouched",
+                    "args": [
+                        {
+                            "name": "fn",
+                            "type": "function",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "function": []
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 49,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "fn",
+                            "type": "function",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "function": [],
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "setDisabledState",
+                    "args": [
+                        {
+                            "name": "isDisabled",
+                            "type": "boolean",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 53,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "isDisabled",
+                            "type": "boolean",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "writeValue",
+                    "args": [
+                        {
+                            "name": "value",
+                            "type": "string | null | undefined",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 41,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "value",
+                            "type": "string | null | undefined",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, input, signal, forwardRef, ChangeDetectionStrategy } from '@angular/core';\nimport { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';\n\n@Component({\n  selector: 'c-input-form',\n  standalone: true,\n  providers: [\n    {\n      provide: NG_VALUE_ACCESSOR,\n      useExisting: forwardRef(() => CInputFormComponent),\n      multi: true,\n    },\n  ],\n  templateUrl: './c-input-form.component.html',\n  styleUrl: './c-input-form.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class CInputFormComponent implements ControlValueAccessor {\n  // Configuración del input\n  placeholder = input<string>('');\n  type = input<'text' | 'date'>('text');\n  id = input<string>('');\n  label = input<string>('');\n  isInvalid = input<boolean>(false);\n  errorMessage = input<string>('');\n\n  // Estado interno\n  value = signal<string>('');\n  isDisabled = signal<boolean>(false);\n\n  // Funciones callback de ControlValueAccessor\n  onChangeHandler: (value: string) => void = () => {};\n  onTouchedHandler: () => void = () => {};\n  onInputHandler(event: Event): void {\n    const inputEl = event.target as HTMLInputElement;\n    this.value.set(inputEl.value);\n    this.onChangeHandler(inputEl.value);\n  }\n\n  // ControlValueAccessor interface implementation\n  writeValue(value: string | null | undefined): void {\n    this.value.set(value || '');\n  }\n\n  registerOnChange(fn: (value: string) => void): void {\n    this.onChangeHandler = fn;\n  }\n\n  registerOnTouched(fn: () => void): void {\n    this.onTouchedHandler = fn;\n  }\n\n  setDisabledState(isDisabled: boolean): void {\n    this.isDisabled.set(isDisabled);\n  }\n}\n",
+            "styleUrl": "./c-input-form.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "implements": [
+                "ControlValueAccessor"
+            ],
+            "templateData": "<div class=\"c-input-form-group\">\n  @if (label()) {\n    <label [attr.for]=\"id()\" class=\"c-input-form-label\">{{ label() }}</label>\n  }\n  <input\n    [id]=\"id()\"\n    [type]=\"type()\"\n    [placeholder]=\"placeholder()\"\n    [value]=\"value()\"\n    [disabled]=\"isDisabled()\"\n    (input)=\"onInputHandler($event)\"\n    (blur)=\"onTouchedHandler()\"\n    class=\"c-input-form-control\"\n    [class.c-input-form-control--invalid]=\"isInvalid()\"\n  />\n  @if (isInvalid() && errorMessage()) {\n    <span class=\"c-input-form-error\">{{ errorMessage() }}</span>\n  }\n</div>\n"
+        },
+        {
+            "name": "CInputSearchComponent",
+            "id": "component-CInputSearchComponent-89959723102c17166f1a337fa4c47397fa342ca5cb24db8ae32190375f7957cca175a49c22fe8e13ebae2c5795cdb350c5c29cc506a90045ac394b7181888161",
+            "file": "src/app/shared/components/c-input-search/c-input-search.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "c-input-search",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./c-input-search.component.html"
+            ],
+            "viewProviders": [
+                {
+                    "name": "provideIcons({ matClose })"
+                }
+            ],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "placeholder",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 15,
+                    "required": false
+                },
+                {
+                    "name": "value",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 16,
+                    "required": false
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "onValueChange",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 18,
+                    "required": false
+                }
+            ],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "clear",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 25,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "onInputHandler",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 20,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "NgIcon"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';\nimport { NgIcon, provideIcons } from '@ng-icons/core';\nimport { matClose } from '@ng-icons/material-icons/baseline';\n\n@Component({\n  selector: 'c-input-search',\n  standalone: true,\n  imports: [NgIcon],\n  viewProviders: [provideIcons({ matClose })],\n  templateUrl: './c-input-search.component.html',\n  styleUrl: './c-input-search.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class CInputSearchComponent {\n  placeholder = input<string>('');\n  value = input<string>('');\n\n  onValueChange = output<string>();\n\n  onInputHandler(event: Event): void {\n    const inputElement = event.target as HTMLInputElement;\n    this.onValueChange.emit(inputElement.value);\n  }\n\n  clear(): void {\n    this.onValueChange.emit('');\n  }\n}\n",
+            "styleUrl": "./c-input-search.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<div class=\"c-input-wrapper\">\n  <input\n    type=\"text\"\n    [placeholder]=\"placeholder()\"\n    [value]=\"value()\"\n    class=\"c-input\"\n    (input)=\"onInputHandler($event)\"\n  />\n  @if (value()) {\n    <button type=\"button\" class=\"c-input__clear-btn\" (click)=\"clear()\" aria-label=\"Clear search\">\n      <ng-icon name=\"matClose\" />\n    </button>\n  }\n</div>\n"
+        },
+        {
             "name": "CLogoComponent",
             "id": "component-CLogoComponent-98fa9163a1a5473325d3054a0f0ddf1526993791a6d70b38b2b501232aff6215be7da4dc3d846b49188224e2211aedc152a8055fb9671218359aa6c3df442aa9",
             "file": "src/app/shared/components/c-logo/c-logo.component.ts",
@@ -891,7 +1365,7 @@
         },
         {
             "name": "CTableActionsComponent",
-            "id": "component-CTableActionsComponent-8fc724c07ddb671d5fe04496886cfa9ab1cad1a75ba60ada1531331290f1eaedc1f615ec80bb8a97be564308a842153d181ed6f58724db98ffde8cc26572efc6",
+            "id": "component-CTableActionsComponent-7b182ab743adeb9b7a345305030bb5affefd332efd7c94ac4460e18d8398d2133f1892e491e23379549c0af159f0c0b8f0354b5daf270e25a9071da478aa1c6e",
             "file": "src/app/shared/components/c-table/components/c-table-actions/c-table-actions.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -925,7 +1399,7 @@
             ],
             "outputsClass": [
                 {
-                    "name": "delete",
+                    "name": "onDelete",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "any",
@@ -936,7 +1410,7 @@
                     "required": false
                 },
                 {
-                    "name": "edit",
+                    "name": "onEdit",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "any",
@@ -976,7 +1450,7 @@
             ],
             "methodsClass": [
                 {
-                    "name": "onDelete",
+                    "name": "onDeleteHandler",
                     "args": [],
                     "optional": false,
                     "returnType": "void",
@@ -1027,7 +1501,7 @@
                     ]
                 },
                 {
-                    "name": "onEdit",
+                    "name": "onEditHandler",
                     "args": [],
                     "optional": false,
                     "returnType": "void",
@@ -1102,17 +1576,17 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, HostListener, ElementRef, inject, input, output, signal } from '@angular/core';\nimport { NgIcon, provideIcons } from '@ng-icons/core';\nimport { matMoreVert } from '@ng-icons/material-icons/baseline';\n\n@Component({\n  selector: 'c-table-actions',\n  standalone: true,\n  imports: [NgIcon],\n  viewProviders: [provideIcons({ matMoreVert })],\n  templateUrl: './c-table-actions.component.html',\n  styleUrl: './c-table-actions.component.scss',\n})\nexport class CTableActionsComponent {\n  item = input.required<any>();\n\n  edit = output<any>();\n  delete = output<any>();\n\n  isOpen = signal<boolean>(false);\n  private elementRef = inject(ElementRef);\n\n  toggleDropdown(event: MouseEvent): void {\n    event.stopPropagation();\n    this.isOpen.update((open) => !open);\n  }\n\n  onEdit(): void {\n    this.edit.emit(this.item());\n    this.isOpen.set(false);\n  }\n\n  onDelete(): void {\n    this.delete.emit(this.item());\n    this.isOpen.set(false);\n  }\n\n  @HostListener('document:click', ['$event'])\n  onDocumentClick(event: MouseEvent): void {\n    if (!this.elementRef.nativeElement.contains(event.target)) {\n      this.isOpen.set(false);\n    }\n  }\n}\n",
+            "sourceCode": "import { Component, HostListener, ElementRef, inject, input, output, signal } from '@angular/core';\nimport { NgIcon, provideIcons } from '@ng-icons/core';\nimport { matMoreVert } from '@ng-icons/material-icons/baseline';\n\n@Component({\n  selector: 'c-table-actions',\n  standalone: true,\n  imports: [NgIcon],\n  viewProviders: [provideIcons({ matMoreVert })],\n  templateUrl: './c-table-actions.component.html',\n  styleUrl: './c-table-actions.component.scss',\n})\nexport class CTableActionsComponent {\n  item = input.required<any>();\n\n  onEdit = output<any>();\n  onDelete = output<any>();\n\n  isOpen = signal<boolean>(false);\n  private elementRef = inject(ElementRef);\n\n  toggleDropdown(event: MouseEvent): void {\n    event.stopPropagation();\n    this.isOpen.update((open) => !open);\n  }\n\n  onEditHandler(): void {\n    this.onEdit.emit(this.item());\n    this.isOpen.set(false);\n  }\n\n  onDeleteHandler(): void {\n    this.onDelete.emit(this.item());\n    this.isOpen.set(false);\n  }\n\n  @HostListener('document:click', ['$event'])\n  onDocumentClick(event: MouseEvent): void {\n    if (!this.elementRef.nativeElement.contains(event.target)) {\n      this.isOpen.set(false);\n    }\n  }\n}\n",
             "styleUrl": "./c-table-actions.component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
             "extends": [],
-            "templateData": "<button class=\"c-table-action-btn\" (click)=\"toggleDropdown($event)\" aria-label=\"Acciones\">\n  <ng-icon name=\"matMoreVert\" />\n</button>\n\n@if (isOpen()) {\n  <div class=\"c-table-dropdown\">\n    <button class=\"c-table-dropdown__item\" (click)=\"onEdit()\">Editar</button>\n    <button class=\"c-table-dropdown__item c-table-dropdown__item--danger\" (click)=\"onDelete()\">\n      Eliminar\n    </button>\n  </div>\n}\n"
+            "templateData": "<button class=\"c-table-action-btn\" (click)=\"toggleDropdown($event)\" aria-label=\"Acciones\">\n  <ng-icon name=\"matMoreVert\" />\n</button>\n\n@if (isOpen()) {\n  <div class=\"c-table-dropdown\">\n    <button class=\"c-table-dropdown__item\" (click)=\"onEditHandler()\">Editar</button>\n    <button\n      class=\"c-table-dropdown__item c-table-dropdown__item--danger\"\n      (click)=\"onDeleteHandler()\"\n    >\n      Eliminar\n    </button>\n  </div>\n}\n"
         },
         {
             "name": "CTableComponent",
-            "id": "component-CTableComponent-c3d59d1c7710386dede69e3b12d969934b89ac796dd1d037397c7ca5227fc025b17ab5acae3acca1a83bc043dec5f10033d6746816fd7fe773edaee2fbac3021",
+            "id": "component-CTableComponent-ada7884864f110e2aed725e58ab63c6ef0a72e47b4a81eea67146ba972d4c224bd3f8fe4d5158192893d0eb72a20f9be79c07b245d08e8c9a85d4f745ac3bdd6",
             "file": "src/app/shared/components/c-table/c-table.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1165,7 +1639,7 @@
             ],
             "outputsClass": [
                 {
-                    "name": "delete",
+                    "name": "onDelete",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "T",
@@ -1176,7 +1650,7 @@
                     "required": false
                 },
                 {
-                    "name": "edit",
+                    "name": "onEdit",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "T",
@@ -1190,7 +1664,7 @@
             "propertiesClass": [],
             "methodsClass": [
                 {
-                    "name": "onDelete",
+                    "name": "onDeleteHandler",
                     "args": [
                         {
                             "name": "item",
@@ -1222,7 +1696,7 @@
                     ]
                 },
                 {
-                    "name": "onEdit",
+                    "name": "onEditHandler",
                     "args": [
                         {
                             "name": "item",
@@ -1359,13 +1833,13 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, input, output } from '@angular/core';\nimport { DatePipe } from '@angular/common';\nimport { TableColumn } from './c-table.interface';\nimport { CLogoComponent } from '../c-logo/c-logo.component';\nimport { CTableActionsComponent } from './components/c-table-actions/c-table-actions.component';\n\n@Component({\n  selector: 'c-table',\n  standalone: true,\n  imports: [DatePipe, CLogoComponent, CTableActionsComponent],\n  templateUrl: './c-table.component.html',\n  styleUrl: './c-table.component.scss',\n})\nexport class CTableComponent<T> {\n  // Configuraciones\n  data = input.required<T[]>();\n  columns = input.required<TableColumn<T>[]>();\n  showActions = input<boolean>(false);\n\n  // Eventos\n  edit = output<T>();\n  delete = output<T>();\n\n  resolveValue(item: any, key: string): any {\n    return item[key];\n  }\n\n  trackByFn(item: T): unknown {\n    return (item as any)?.['id'] || item;\n  }\n\n  onEdit(item: T) {\n    this.edit.emit(item);\n  }\n\n  onDelete(item: T) {\n    this.delete.emit(item);\n  }\n}\n",
+            "sourceCode": "import { Component, input, output } from '@angular/core';\nimport { DatePipe } from '@angular/common';\nimport { TableColumn } from './c-table.interface';\nimport { CLogoComponent } from '../c-logo/c-logo.component';\nimport { CTableActionsComponent } from './components/c-table-actions/c-table-actions.component';\n\n@Component({\n  selector: 'c-table',\n  standalone: true,\n  imports: [DatePipe, CLogoComponent, CTableActionsComponent],\n  templateUrl: './c-table.component.html',\n  styleUrl: './c-table.component.scss',\n})\nexport class CTableComponent<T> {\n  // Configuraciones\n  data = input.required<T[]>();\n  columns = input.required<TableColumn<T>[]>();\n  showActions = input<boolean>(false);\n\n  // Eventos\n  onEdit = output<T>();\n  onDelete = output<T>();\n\n  resolveValue(item: any, key: string): any {\n    return item[key];\n  }\n\n  trackByFn(item: T): unknown {\n    return (item as any)?.['id'] || item;\n  }\n\n  onEditHandler(item: T) {\n    this.onEdit.emit(item);\n  }\n\n  onDeleteHandler(item: T) {\n    this.onDelete.emit(item);\n  }\n}\n",
             "styleUrl": "./c-table.component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
             "extends": [],
-            "templateData": "<div class=\"c-table-container\">\n  <table class=\"c-table\">\n    <thead>\n      <tr class=\"c-table__row c-table__row--header\">\n        @for (col of columns(); track col.key) {\n          <th class=\"c-table__cell c-table__cell--header\">\n            {{ col.header }}\n          </th>\n        }\n        @if (showActions()) {\n          <th class=\"c-table__cell c-table__cell--header\"></th>\n        }\n      </tr>\n    </thead>\n    <tbody>\n      @for (item of data(); track trackByFn(item)) {\n        <tr class=\"c-table__row\">\n          @for (col of columns(); track col.key) {\n            <td class=\"c-table__cell\">\n              <!-- Case 1: image -->\n              @if (col.type === 'image') {\n                <c-logo\n                  [src]=\"resolveValue(item, col.key)\"\n                  [fallbackName]=\"resolveValue(item, 'name') || resolveValue(item, 'id') || ''\"\n                ></c-logo>\n              }\n\n              <!-- Case 2: Date -->\n              @else if (col.type === 'date') {\n                {{ resolveValue(item, col.key) | date: col.dateFormat || 'dd/MM/yyyy' }}\n              }\n\n              <!-- Case 3: Default text -->\n              @else {\n                <span [class.c-table__cell--bold]=\"col.key === 'name'\">\n                  {{ resolveValue(item, col.key) }}\n                </span>\n              }\n            </td>\n          }\n\n          <!-- Actions column (⋮) -->\n          @if (showActions()) {\n            <td class=\"c-table__cell c-table__cell--actions\">\n              <c-table-actions\n                [item]=\"item\"\n                (edit)=\"onEdit($event)\"\n                (delete)=\"onDelete($event)\"\n              ></c-table-actions>\n            </td>\n          }\n        </tr>\n      } @empty {\n        <tr class=\"c-table__row\">\n          <td\n            [attr.colspan]=\"columns().length + (showActions() ? 1 : 0)\"\n            class=\"c-table__cell c-table__cell--empty\"\n          >\n            No se encontraron registros.\n          </td>\n        </tr>\n      }\n    </tbody>\n  </table>\n</div>\n"
+            "templateData": "<div class=\"c-table-container\">\n  <table class=\"c-table\">\n    <thead>\n      <tr class=\"c-table__row c-table__row--header\">\n        @for (col of columns(); track col.key) {\n          <th class=\"c-table__cell c-table__cell--header\">\n            {{ col.header }}\n          </th>\n        }\n        @if (showActions()) {\n          <th class=\"c-table__cell c-table__cell--header\"></th>\n        }\n      </tr>\n    </thead>\n    <tbody>\n      @for (item of data(); track trackByFn(item)) {\n        <tr class=\"c-table__row\">\n          @for (col of columns(); track col.key) {\n            <td class=\"c-table__cell\">\n              <!-- Case 1: image -->\n              @if (col.type === 'image') {\n                <c-logo\n                  [src]=\"resolveValue(item, col.key)\"\n                  [fallbackName]=\"resolveValue(item, 'name') || resolveValue(item, 'id') || ''\"\n                ></c-logo>\n              }\n\n              <!-- Case 2: Date -->\n              @else if (col.type === 'date') {\n                {{ resolveValue(item, col.key) | date: col.dateFormat || 'dd/MM/yyyy' }}\n              }\n\n              <!-- Case 3: Default text -->\n              @else {\n                <span [class.c-table__cell--bold]=\"col.key === 'name'\">\n                  {{ resolveValue(item, col.key) }}\n                </span>\n              }\n            </td>\n          }\n\n          <!-- Actions column (⋮) -->\n          @if (showActions()) {\n            <td class=\"c-table__cell c-table__cell--actions\">\n              <c-table-actions\n                [item]=\"item\"\n                (onEdit)=\"onEditHandler($event)\"\n                (onDelete)=\"onDeleteHandler($event)\"\n              ></c-table-actions>\n            </td>\n          }\n        </tr>\n      } @empty {\n        <tr class=\"c-table__row\">\n          <td\n            [attr.colspan]=\"columns().length + (showActions() ? 1 : 0)\"\n            class=\"c-table__cell c-table__cell--empty\"\n          >\n            No se encontraron registros.\n          </td>\n        </tr>\n      }\n    </tbody>\n  </table>\n</div>\n"
         },
         {
             "name": "HeaderComponent",
@@ -2156,7 +2630,7 @@
         ]
     },
     "coverage": {
-        "count": 11,
+        "count": 10,
         "status": "low",
         "files": [
             {
@@ -2287,6 +2761,24 @@
                 "name": "CHeaderComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/shared/components/c-input-form/c-input-form.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "CInputFormComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/16",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/shared/components/c-input-search/c-input-search.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "CInputSearchComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/6",
                 "status": "low"
             },
             {
