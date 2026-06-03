@@ -54,14 +54,15 @@ const meta: Meta<CTableComponent<Product>> = {
         [data]="data"
         [columns]="columns"
         [showActions]="showActions"
-        (edit)="edit($event)"
-        (delete)="delete($event)"
+        [isLoading]="isLoading"
+        (onEdit)="onEdit($event)"
+        (onDelete)="onDelete($event)"
       ></c-table>
     `,
   }),
   argTypes: {
-    onEdit: { action: 'edit' },
-    onDelete: { action: 'delete' },
+    onEdit: { action: 'onEdit' },
+    onDelete: { action: 'onDelete' },
   },
 };
 
@@ -74,6 +75,7 @@ export const Default: Story = {
     columns: mockColumns,
     data: mockData,
     showActions: false,
+    isLoading: false,
   },
 };
 
@@ -82,6 +84,7 @@ export const WithActions: Story = {
     columns: mockColumns,
     data: mockData,
     showActions: true,
+    isLoading: false,
   },
 };
 
@@ -90,5 +93,15 @@ export const Empty: Story = {
     columns: mockColumns,
     data: [],
     showActions: false,
+    isLoading: false,
+  },
+};
+
+export const Loading: Story = {
+  args: {
+    columns: mockColumns,
+    data: [],
+    showActions: true,
+    isLoading: true,
   },
 };

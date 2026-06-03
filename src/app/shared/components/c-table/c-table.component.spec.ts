@@ -82,4 +82,24 @@ describe('CTableComponent', () => {
     await user.click(deleteBtn);
     expect(deleteSpy).toHaveBeenCalledWith(mockData[0]);
   });
+
+  it('should render 3 skeleton rows and no actions when isLoading is true', async () => {
+    const { container } = await render(CTableComponent, {
+      inputs: {
+        columns: mockColumns,
+        data: mockData,
+        isLoading: true,
+        showActions: true,
+      },
+    });
+
+    const loadingRows = container.querySelectorAll('.c-table__row--loading');
+    expect(loadingRows.length).toBe(3);
+
+    const skeletons = container.querySelectorAll('c-skeleton');
+    expect(skeletons.length).toBeGreaterThan(0);
+
+    const toggleBtn = screen.queryByRole('button', { name: 'Acciones' });
+    expect(toggleBtn).toBeNull();
+  });
 });

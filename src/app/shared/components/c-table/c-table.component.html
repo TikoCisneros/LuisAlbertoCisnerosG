@@ -13,52 +13,73 @@
       </tr>
     </thead>
     <tbody>
-      @for (item of data(); track trackByFn(item)) {
-        <tr class="c-table__row">
-          @for (col of columns(); track col.key) {
-            <td class="c-table__cell">
-              <!-- Case 1: image -->
-              @if (col.type === 'image') {
-                <c-logo
-                  [src]="resolveValue(item, col.key)"
-                  [fallbackName]="resolveValue(item, 'name') || resolveValue(item, 'id') || ''"
-                ></c-logo>
-              }
+      @if (isLoading()) {
+        @for (row of [1, 2, 3]; track row) {
+          <tr class="c-table__row c-table__row--loading">
+            @for (col of columns(); track col.key) {
+              <td class="c-table__cell">
+                @if (col.type === 'image') {
+                  <div class="c-table__skeleton-avatar">
+                    <c-skeleton width="40px" height="40px"></c-skeleton>
+                  </div>
+                } @else {
+                  <c-skeleton width="80%" height="1rem"></c-skeleton>
+                }
+              </td>
+            }
+            @if (showActions()) {
+              <td class="c-table__cell"></td>
+            }
+          </tr>
+        }
+      } @else {
+        @for (item of data(); track trackByFn(item)) {
+          <tr class="c-table__row">
+            @for (col of columns(); track col.key) {
+              <td class="c-table__cell">
+                <!-- Case 1: image -->
+                @if (col.type === 'image') {
+                  <c-logo
+                    [src]="resolveValue(item, col.key)"
+                    [fallbackName]="resolveValue(item, 'name') || resolveValue(item, 'id') || ''"
+                  ></c-logo>
+                }
 
-              <!-- Case 2: Date -->
-              @else if (col.type === 'date') {
-                {{ resolveValue(item, col.key) | date: col.dateFormat || 'dd/MM/yyyy' }}
-              }
+                <!-- Case 2: Date -->
+                @else if (col.type === 'date') {
+                  {{ resolveValue(item, col.key) | date: col.dateFormat || 'dd/MM/yyyy' }}
+                }
 
-              <!-- Case 3: Default text -->
-              @else {
-                <span [class.c-table__cell--bold]="col.key === 'name'">
-                  {{ resolveValue(item, col.key) }}
-                </span>
-              }
+                <!-- Case 3: Default text -->
+                @else {
+                  <span [class.c-table__cell--bold]="col.key === 'name'">
+                    {{ resolveValue(item, col.key) }}
+                  </span>
+                }
+              </td>
+            }
+
+            <!-- Actions column (⋮) -->
+            @if (showActions()) {
+              <td class="c-table__cell c-table__cell--actions">
+                <c-table-actions
+                  [item]="item"
+                  (onEdit)="onEditHandler($event)"
+                  (onDelete)="onDeleteHandler($event)"
+                ></c-table-actions>
+              </td>
+            }
+          </tr>
+        } @empty {
+          <tr class="c-table__row">
+            <td
+              [attr.colspan]="columns().length + (showActions() ? 1 : 0)"
+              class="c-table__cell c-table__cell--empty"
+            >
+              No se encontraron registros.
             </td>
-          }
-
-          <!-- Actions column (⋮) -->
-          @if (showActions()) {
-            <td class="c-table__cell c-table__cell--actions">
-              <c-table-actions
-                [item]="item"
-                (onEdit)="onEditHandler($event)"
-                (onDelete)="onDeleteHandler($event)"
-              ></c-table-actions>
-            </td>
-          }
-        </tr>
-      } @empty {
-        <tr class="c-table__row">
-          <td
-            [attr.colspan]="columns().length + (showActions() ? 1 : 0)"
-            class="c-table__cell c-table__cell--empty"
-          >
-            No se encontraron registros.
-          </td>
-        </tr>
+          </tr>
+        }
       }
     </tbody>
   </table>

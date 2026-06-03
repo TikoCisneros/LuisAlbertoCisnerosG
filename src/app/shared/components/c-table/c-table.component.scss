@@ -54,4 +54,13 @@
       color: ds.$text-muted;
     }
   }
+
+  &__skeleton-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: ds.$radius-full;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+  }
 }
