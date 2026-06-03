@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-import { Product } from '@domains/products/business/models/product-model';
+import { Product } from '@domains/products/domain/models/product-model';
 import { ProductStore } from './product.store';
-import { ProductHttpService } from '@domains/products/data-access/services/product-http.service';
+import { ProductHttpRepository } from '@domains/products/data-access/repositories/product-http.repository';
 import { Mocked } from 'vitest';
 import { of, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 describe('ProductStore', () => {
-  let mockHttpService: Partial<Mocked<ProductHttpService>>;
+  let mockHttpService: Partial<Mocked<ProductHttpRepository>>;
 
   const mockProduct: Product = {
     id: 'PROD-100',
@@ -81,7 +81,7 @@ describe('ProductStore', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [ProductStore, { provide: ProductHttpService, useValue: mockHttpService }],
+      providers: [ProductStore, { provide: ProductHttpRepository, useValue: mockHttpService }],
     });
   });
 

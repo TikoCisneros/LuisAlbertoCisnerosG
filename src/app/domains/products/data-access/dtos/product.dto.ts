@@ -15,3 +15,8 @@ export interface ProductsApiErrorsDTO {
   readonly name: string;
   readonly message: string;
 }
+
+export interface ProductsApiSuccessDTO {
+  readonly message: string;
+  readonly data?: ProductDTO;
+}

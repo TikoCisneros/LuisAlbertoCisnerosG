@@ -5,7 +5,7 @@ import { pipe, switchMap, tap, catchError, of } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Product } from '../models/product-model';
 import { ProductsApiErrorsDTO } from '@domains/products/data-access/dtos/product.dto';
-import { ProductHttpService } from '@domains/products/data-access/services/product-http.service';
+import { ProductHttpRepository } from '@domains/products/data-access/repositories/product-http.repository';
 
 const INITIAL_PAGE = 1 as const;
 const DEFAULT_TOTAL_PAGES = 1 as const;
@@ -68,7 +68,7 @@ export const ProductStore = signalStore(
     return { paginatedProducts, totalResults, totalPages };
   }),
   // Methods
-  withMethods((store, httpService = inject(ProductHttpService)) => ({
+  withMethods((store, httpService = inject(ProductHttpRepository)) => ({
     loadProducts: rxMethod<void>(
       pipe(
         tap(() => patchState(store, { error: null, isLoading: true })),
@@ -79,6 +79,26 @@ export const ProductStore = signalStore(
             }),
             catchError((err: HttpErrorResponse) => {
               const errMsg = getErrorMessage(err, 'Error al cargar productos');
+              patchState(store, { error: errMsg, isLoading: false });
+              return of(null);
+            }),
+          ),
+        ),
+      ),
+    ),
+    deleteProduct: rxMethod<string>(
+      pipe(
+        tap(() => patchState(store, { error: null, isLoading: true })),
+        switchMap((productId) =>
+          httpService.deleteProduct(productId).pipe(
+            tap(() => {
+              patchState(store, {
+                products: store.products().filter((p) => p.id !== productId),
+                isLoading: false,
+              });
+            }),
+            catchError((err: HttpErrorResponse) => {
+              const errMsg = getErrorMessage(err, 'Error al eliminar producto');
               patchState(store, { error: errMsg, isLoading: false });
               return of(null);
             }),

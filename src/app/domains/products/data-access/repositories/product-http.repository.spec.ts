@@ -3,13 +3,13 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 
-import { ProductHttpService } from './product-http.service';
+import { ProductHttpRepository } from './product-http.repository';
 import { BASE_URL } from '@core/services/api-url.token';
 import { ProductDTO } from '@domains/products/data-access/dtos/product.dto';
-import { Product } from '@domains/products/business/models/product-model';
+import { Product } from '@domains/products/domain/models/product-model';
 
-describe('Pruebas de ProductHttpService', () => {
-  let service: ProductHttpService;
+describe('ProductHttpRepository', () => {
+  let service: ProductHttpRepository;
   let httpMock: HttpTestingController;
   const mockBaseUrl = 'http://localhost:3002';
 
@@ -35,14 +35,14 @@ describe('Pruebas de ProductHttpService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        ProductHttpService,
+        ProductHttpRepository,
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: mockBaseUrl },
       ],
     });
 
-    service = TestBed.inject(ProductHttpService);
+    service = TestBed.inject(ProductHttpRepository);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -51,12 +51,12 @@ describe('Pruebas de ProductHttpService', () => {
     httpMock.verify();
   });
 
-  it('debería crearse correctamente el servicio', () => {
+  it('should be set up correctly', () => {
     expect(service).toBeTruthy();
   });
 
   describe('getProducts', () => {
-    it('debería enviar una petición GET y mapear los DTOs a productos de dominio', (done) => {
+    it('should send a GET request and map the DTOs to domain objects', () => {
       service.getProducts().subscribe((products) => {
         expect(products.length).toBe(1);
         expect(products[0].id).toBe(mockProduct.id);
@@ -70,7 +70,7 @@ describe('Pruebas de ProductHttpService', () => {
   });
 
   describe('createProduct', () => {
-    it('debería enviar una petición POST con el DTO en el cuerpo y retornar el producto mapeado', () => {
+    it('should send a POST request with the DTO in the body and return the mapped product', () => {
       service.createProduct(mockProduct).subscribe((responseProduct) => {
         expect(responseProduct.id).toBe(mockProduct.id);
         expect(responseProduct.name).toBe(mockProduct.name);
@@ -92,7 +92,7 @@ describe('Pruebas de ProductHttpService', () => {
       req.flush(mockDto);
     });
 
-    it('debería propagar un error BadRequest 400 cuando la validación de la API falla', () => {
+    it('should return a 400 Bad Request error when API validation fails', () => {
       const errorResponse = {
         name: 'BadRequestError',
         message: "Invalid body, check 'errors' property for more info.",
@@ -120,7 +120,7 @@ describe('Pruebas de ProductHttpService', () => {
   });
 
   describe('updateProduct', () => {
-    it('debería enviar una petición PUT con el DTO en el cuerpo y retornar el producto modificado', () => {
+    it('should send a PUT request with the DTO in the body and return the modified product', () => {
       service.updateProduct(mockProduct).subscribe((responseProduct) => {
         expect(responseProduct.id).toBe(mockProduct.id);
       });
@@ -134,7 +134,7 @@ describe('Pruebas de ProductHttpService', () => {
   });
 
   describe('deleteProduct', () => {
-    it('debería enviar una petición DELETE al endpoint con el ID del producto', () => {
+    it('should send a DELETE request to the endpoint with the product ID', () => {
       const targetId = 'PROD-100';
 
       service.deleteProduct(targetId).subscribe((res) => {
@@ -148,7 +148,7 @@ describe('Pruebas de ProductHttpService', () => {
   });
 
   describe('verifyProductIDExists', () => {
-    it('debería verificar si un ID de producto ya existe retornando un valor booleano', () => {
+    it('should check whether a product ID already exists by returning a Boolean value', () => {
       const testId = 'PROD-100';
 
       service.verifyProductIDExists(testId).subscribe((exists) => {

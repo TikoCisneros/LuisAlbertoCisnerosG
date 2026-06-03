@@ -1,4 +1,4 @@
-import { Product } from '@domains/products/business/models/product-model';
+import { Product } from '@domains/products/domain/models/product-model';
 import { ProductDTO } from '@domains/products/data-access/dtos/product.dto';
 import { parseDate, formatDate } from '@shared/utils/date.utils';
 

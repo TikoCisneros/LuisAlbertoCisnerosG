@@ -1,6 +1,6 @@
 import { ProductMapper } from './product.mapper';
 import { ProductDTO } from '@domains/products/data-access/dtos/product.dto';
-import { Product } from '@domains/products/business/models/product-model';
+import { Product } from '@domains/products/domain/models/product-model';
 
 describe('ProductMapper', () => {
   it('should correctly map DTO to Domain model', () => {

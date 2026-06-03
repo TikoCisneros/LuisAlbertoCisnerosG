@@ -16,6 +16,7 @@
       [columns]="tableColumns"
       [showActions]="true"
       [isLoading]="store.isLoading()"
+      (onDelete)="onDeleteProduct($event)"
     ></c-table>
     @if (!store.isLoading()) {
       <c-pagination
@@ -28,3 +29,12 @@
     }
   </div>
 </div>
+<c-modal
+  [isOpen]="!!productToDelete()"
+  [bodyText]="'¿Estás seguro de eliminar el producto ' + productToDelete()?.name + '?'"
+  [confirmText]="'Eliminar'"
+  [cancelText]="'Cancelar'"
+  [isLoading]="store.isLoading()"
+  (onConfirm)="onDeleteProductConfirm()"
+  (onCancel)="onCloseModal()"
+></c-modal>
