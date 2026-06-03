@@ -38,4 +38,8 @@ export class ProductMapper {
       revision_date: formatDate(revisionDate),
     };
   }
+
+  static dtosToDomainList(dtos: ProductDTO[]): Product[] {
+    return dtos.map((dto) => this.dtoToDomain(dto));
+  }
 }
