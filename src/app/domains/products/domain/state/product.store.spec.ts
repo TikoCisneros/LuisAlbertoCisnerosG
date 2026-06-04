@@ -4,7 +4,6 @@ import { ProductStore } from './product.store';
 import { ProductRepository } from '@domains/products/domain/repositories/product.repository';
 import { Mocked } from 'vitest';
 import { of, throwError } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
 import { GetProductsUseCase } from '../../application/use-cases/get-products.use-case';
 import { CreateProductUseCase } from '../../application/use-cases/create-product.use-case';
 import { UpdateProductUseCase } from '../../application/use-cases/update-product.use-case';
@@ -101,44 +100,44 @@ describe('ProductStore', () => {
     vi.useRealTimers();
   });
 
-  describe('loadProducts', () => {
-    it('should load products successfully', () => {
+  describe('When loading products', () => {
+    it('should successfully fetch the list and update the store products', () => {
       mockHttpService.getProducts?.mockReturnValue(of([mockProduct]));
       const store = TestBed.inject(ProductStore);
-      // Initial State
+
       expect(store.products()).toEqual([]);
       expect(store.isLoading()).toBeFalsy();
 
-      // Load products
       store.loadProducts();
       expect(store.products()).toEqual([mockProduct]);
     });
-    it('should fail loading products', () => {
+
+    it('should keep the list empty and transition out of loading when the fetch fails', () => {
       mockHttpService.getProducts?.mockReturnValue(
         throwError(() => new ProductErrors('FETCH_FAILED', 'Server error')),
       );
       const store = TestBed.inject(ProductStore);
-      // Load products
+
       store.loadProducts();
       expect(store.products()).toEqual([]);
     });
   });
 
-  describe('Filter functionality', () => {
+  describe('When searching products', () => {
     beforeEach(() => {
       mockHttpService.getProducts?.mockReturnValue(of(mockProducts));
     });
 
-    it('should initialize with empty searchTerm', () => {
+    it('should start with an empty search term by default', () => {
       const store = TestBed.inject(ProductStore);
       store.loadProducts();
       expect(store.searchTerm()).toBe('');
     });
 
-    it('should filter products by name or description', () => {
+    it('should correctly filter the list based on match in product name or description', () => {
       const store = TestBed.inject(ProductStore);
       store.loadProducts();
-      // Search matches 'Budget' in description of Beta Watch and Gamma Band
+
       store.setSearchTerm('Budget');
       expect(store.filteredProducts()).toHaveLength(2);
       expect(store.filteredProducts().map((p: any) => p.name)).toEqual([
@@ -146,18 +145,17 @@ describe('ProductStore', () => {
         'Gamma Band',
       ]);
 
-      // Search matches nothing
       store.setSearchTerm('xyz');
       expect(store.filteredProducts()).toEqual([]);
     });
   });
 
-  describe('Pagination functionality', () => {
+  describe('When using pagination', () => {
     beforeEach(() => {
       mockHttpService.getProducts?.mockReturnValue(of(mockProducts));
     });
 
-    it('should initialize with default pagination state', () => {
+    it('should initialize with standard default values for pagination state', () => {
       const store = TestBed.inject(ProductStore);
       store.loadProducts();
       expect(store.currentPage()).toBe(1);
@@ -166,21 +164,20 @@ describe('ProductStore', () => {
       expect(store.totalPages()).toBe(2);
     });
 
-    it('should paginate results according to currentPage and pageSize', () => {
+    it('should slice the products list to show only the active page items', () => {
       const store = TestBed.inject(ProductStore);
       store.loadProducts();
-      // Page 1 with pageSize 5: should return first 5 products
+
       expect(store.paginatedProducts()).toHaveLength(5);
       expect(store.paginatedProducts()[0].id).toBe('1');
       expect(store.paginatedProducts()[4].id).toBe('5');
 
-      // Page 2: should return the remaining 1 product
       store.setCurrentPage(2);
       expect(store.paginatedProducts()).toHaveLength(1);
       expect(store.paginatedProducts()[0].id).toBe('6');
     });
 
-    it('should reset currentPage to 1 when changing pageSize', () => {
+    it('should automatically reset the current page back to 1 if page size changes', () => {
       const store = TestBed.inject(ProductStore);
       store.loadProducts();
 
@@ -190,23 +187,112 @@ describe('ProductStore', () => {
       store.setPageSize(2);
       expect(store.pageSize()).toBe(2);
       expect(store.currentPage()).toBe(1);
-      expect(store.totalPages()).toBe(3); // 6 products / 2 size = 3 pages
+      expect(store.totalPages()).toBe(3);
     });
 
-    it('should allow changing page only within valid boundaries', () => {
+    it('should ignore page changes that go out of valid bounds', () => {
       const store = TestBed.inject(ProductStore);
       store.loadProducts();
-      // Total pages is 2. Setting page to 2 should succeed.
+
       store.setCurrentPage(2);
       expect(store.currentPage()).toBe(2);
 
-      // Setting page to 3 (out of bounds) should be ignored.
       store.setCurrentPage(3);
       expect(store.currentPage()).toBe(2);
 
-      // Setting page to 0 (out of bounds) should be ignored.
       store.setCurrentPage(0);
       expect(store.currentPage()).toBe(2);
     });
   });
+
+  describe('When modifying products', () => {
+    it('should add the new product to the list on a successful API creation call', () => {
+      const newProduct: Product = { ...mockProduct, id: 'PROD-200', name: 'New Product' };
+      mockHttpService.createProduct?.mockReturnValue(
+        of({ message: 'Product created successfully', data: newProduct }),
+      );
+
+      const store = TestBed.inject(ProductStore);
+      
+      expect(store.products()).toEqual([]);
+
+      store.addProduct(newProduct);
+
+      expect(store.products()).toContainEqual(newProduct);
+      expect(store.isLoading()).toBe(false);
+      expect(store.hasError()).toBe(false);
+    });
+
+    it('should transition into error state if the creation API fails', () => {
+      mockHttpService.createProduct?.mockReturnValue(
+        throwError(() => new ProductErrors('CREATE_FAILED', 'Server error')),
+      );
+
+      const store = TestBed.inject(ProductStore);
+      store.addProduct(mockProduct);
+
+      expect(store.isLoading()).toBe(false);
+      expect(store.hasError()).toBe(true);
+    });
+
+    it('should update the properties of the modified product in the local list', () => {
+      const modifiedProduct: Product = { ...mockProduct, name: 'Modified Name' };
+      mockHttpService.getProducts?.mockReturnValue(of([mockProduct]));
+      mockHttpService.updateProduct?.mockReturnValue(
+        of({ message: 'Updated successfully', data: modifiedProduct }),
+      );
+
+      const store = TestBed.inject(ProductStore);
+      store.loadProducts();
+
+      expect(store.products()[0].name).toBe('Smart TV v2');
+
+      store.updateProduct(modifiedProduct);
+
+      expect(store.products()[0].name).toBe('Modified Name');
+      expect(store.isLoading()).toBe(false);
+      expect(store.hasError()).toBe(false);
+    });
+
+    it('should set error state if the update API fails', () => {
+      mockHttpService.updateProduct?.mockReturnValue(
+        throwError(() => new ProductErrors('UPDATE_FAILED', 'Error updating product')),
+      );
+
+      const store = TestBed.inject(ProductStore);
+      store.updateProduct(mockProduct);
+
+      expect(store.isLoading()).toBe(false);
+      expect(store.hasError()).toBe(true);
+    });
+
+    it('should successfully remove a product from the list upon a successful deletion API call', () => {
+      mockHttpService.getProducts?.mockReturnValue(of([mockProduct]));
+      mockHttpService.deleteProduct?.mockReturnValue(of('Product deleted successfully'));
+
+      const store = TestBed.inject(ProductStore);
+      store.loadProducts();
+
+      expect(store.products()).toHaveLength(1);
+
+      store.deleteProduct(mockProduct.id);
+
+      expect(store.products()).toHaveLength(0);
+      expect(store.isLoading()).toBe(false);
+      expect(store.hasError()).toBe(false);
+    });
+
+    it('should report an error state when the deletion API fails', () => {
+      mockHttpService.deleteProduct?.mockReturnValue(
+        throwError(() => new ProductErrors('DELETE_FAILED', 'Error deleting product')),
+      );
+
+      const store = TestBed.inject(ProductStore);
+      store.deleteProduct(mockProduct.id);
+
+      expect(store.isLoading()).toBe(false);
+      expect(store.hasError()).toBe(true);
+    });
+  });
 });
+

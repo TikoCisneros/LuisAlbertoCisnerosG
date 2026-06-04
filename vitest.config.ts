@@ -12,6 +12,7 @@ export default defineConfig({
         'src/app/**/*.dto.ts',
         'src/app/**/*.routes.ts',
         'src/app/**/*.model.ts',
+        'src/app/**/*.stories.ts', // Excluir archivos de Storybook de la cobertura
         'src/main.ts',
       ],
     },
