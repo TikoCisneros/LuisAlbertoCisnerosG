@@ -28,7 +28,6 @@ const PRODUCT_TABLE_COLUMNS: TableColumn<Product>[] = [
     CPaginationComponent,
     CModalComponent,
   ],
-  providers: [ProductStore, ProductHttpRepository],
   templateUrl: './p-products-list-page.component.html',
   styleUrl: './p-products-list-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

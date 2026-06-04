@@ -19,7 +19,6 @@ import { ProductHttpRepository } from '@domains/products/data-access/repositorie
   selector: 'p-product-operation-page',
   standalone: true,
   imports: [ProductFormComponent],
-  providers: [ProductStore, ProductHttpRepository],
   templateUrl: './p-product-operation-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
