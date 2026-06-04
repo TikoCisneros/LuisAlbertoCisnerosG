@@ -8,7 +8,7 @@
       ></c-input-search>
     </div>
 
-    <c-button (onClick)="onAddProduct()">Agregar</c-button>
+    <c-button (onClick)="onUpsertProduct()">Agregar</c-button>
   </div>
   <div class="p-product-list-table">
     <c-table
@@ -17,6 +17,7 @@
       [showActions]="true"
       [isLoading]="store.isLoading()"
       (onDelete)="onDeleteProduct($event)"
+      (onEdit)="onUpsertProduct($event)"
     ></c-table>
     @if (!store.isLoading()) {
       <c-pagination

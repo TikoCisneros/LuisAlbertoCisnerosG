@@ -72,7 +72,11 @@ export class PProductsListPageComponent implements OnInit {
     this.isDeleting.set(false);
   }
 
-  onAddProduct() {
+  onUpsertProduct(product?: Product) {
+    if (product) {
+      this._router.navigate(['/products/edit', product.id]);
+      return;
+    }
     this._router.navigate(['/products/add']);
   }
 }

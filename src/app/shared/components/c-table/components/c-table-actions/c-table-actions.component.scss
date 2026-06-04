@@ -37,6 +37,14 @@
   flex-direction: column;
   overflow: hidden;
 
+  // Ubicar en el centro
+  @media (max-width: 768px) {
+    top: 50%;
+    right: 100%;
+    transform: translateY(-50%);
+    margin-right: 8px;
+  }
+
   &__item {
     background: none;
     border: none;

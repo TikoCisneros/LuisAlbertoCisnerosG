@@ -76,7 +76,7 @@
       <c-button
         variant="primary"
         type="submit"
-        [isDisabled]="productForm.invalid || isLoading()"
+        [isDisabled]="productForm.invalid || !hasValuesChanges || isLoading()"
         [isLoading]="isLoading()"
         (onClick)="onSubmitHandler()"
         >Enviar</c-button

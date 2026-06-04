@@ -2,12 +2,17 @@
 
 .c-table-container {
   width: 100%;
-  overflow-x: auto;
   background: ds.$bg-surface;
   border-radius: ds.$radius-md;
   box-shadow: ds.$shadow-sm;
   border: 1px solid ds.$border-color;
-  -webkit-overflow-scrolling: touch;
+  overflow: visible;
+
+  // scroll
+  @media (max-width: 768px) {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 .c-table {

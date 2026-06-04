@@ -8,6 +8,7 @@ import {
   output,
   OnInit,
   DestroyRef,
+  effect,
 } from '@angular/core';
 import {
   AsyncValidatorFn,
@@ -51,15 +52,36 @@ export class ProductFormComponent implements OnInit {
     revisionDate: [{ value: '', disabled: true }, [Validators.required]],
   });
 
+  constructor() {
+    effect(() => {
+      const product = this.initialValues();
+      if (product) {
+        this.fillForm(product);
+      }
+    });
+  }
+
   ngOnInit(): void {
-    const product = this.initialValues();
-    if (product) {
-      this.fillForm(product);
-    }
     // Listen releaseDate changes
     this.setupDateSync();
     // Add ID validator
     this.setupIdValidator();
+  }
+
+  // Para la edición
+  get hasValuesChanges(): boolean {
+    const original = this.initialValues();
+    if (!original) {
+      return true;
+    }
+
+    const current = this.productForm.getRawValue();
+    return (
+      current.name !== original.name ||
+      current.description !== original.description ||
+      current.logoURL !== original.logoURL ||
+      current.releaseDate !== toInputDateFormat(original.releaseDate)
+    );
   }
 
   resetForm() {

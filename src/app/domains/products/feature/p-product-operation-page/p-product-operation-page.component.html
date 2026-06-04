@@ -1,5 +1,7 @@
 <product-form
-  [idValidator]="idValidator"
+  [isEditMode]="isEditMode()"
+  [initialValues]="productToEdit()"
+  [idValidator]="isEditMode() ? null : idValidator"
   [isLoading]="store.isLoading()"
-  (onSubmit)="onAddProduct($event)"
+  (onSubmit)="onSubmitProduct($event)"
 />
