@@ -40,6 +40,27 @@ src/app/
 
 ---
 
+## 🌍 Entornos y Configuración
+
+Si es necesario conectar la app a un propio backend o cambiar la URL del servidor, solo tienes que modificar el archivo `src/environments/environment.ts`:
+
+```typescript
+export const environment = {
+  BASE_URL: '/api', // Pon aquí la URL de tu API (ej. 'http://localhost:3000/api')
+  production: false,
+};
+```
+
+### 🔀 Un pequeño secreto sobre `/api` (Proxy y CORS)
+
+Si te preguntas por qué por defecto usamos `/api` en lugar de una URL completa, la respuesta es simple: **¡Evitar sufrir con los CORS!**.
+
+Para evitar bloqueos de seguridad en tu navegador mientras desarrollas en local, la app tiene un proxy (`proxy.conf.json`). Básicamente, Angular hace la magia de interceptar todo lo que vaya a `/api` y lo envía por debajo a `http://localhost:3002/bp`. 
+
+Para subir esto a producción o usar una API externa directa sin proxy, solo cambia la variable `BASE_URL` por tu ruta absoluta y listo.
+
+---
+
 ## 🚀 ¡Pruébala!
 
 Para empezar, asegúrate de tener Node.js instalado. Clona el repositorio y baja las dependencias:
