@@ -6,6 +6,10 @@ import { Product, ProductErrors } from '../models/product-model';
 import { ProductRepository } from '@domains/products/domain/repositories/product.repository';
 import { NotificationService } from '@core/notifications/services/notification.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { GetProductsUseCase } from '@domains/products/application/use-cases/get-products.use-case';
+import { CreateProductUseCase } from '@domains/products/application/use-cases/create-product.use-case';
+import { UpdateProductUseCase } from '@domains/products/application/use-cases/update-product.use-case';
+import { DeleteProductUseCase } from '@domains/products/application/use-cases/delete-product.use-case';
 
 const INITIAL_PAGE = 1 as const;
 const DEFAULT_TOTAL_PAGES = 1 as const;
@@ -70,14 +74,17 @@ export const ProductStore = signalStore(
   withMethods(
     (
       store,
-      productRepository = inject(ProductRepository),
+      getProductsUseCase = inject(GetProductsUseCase),
+      createProductUseCase = inject(CreateProductUseCase),
+      updateProductUseCase = inject(UpdateProductUseCase),
+      deleteProductUseCase = inject(DeleteProductUseCase),
       notificationService = inject(NotificationService),
     ) => ({
       loadProducts: rxMethod<void>(
         pipe(
           tap(() => patchState(store, { isLoading: true })),
           switchMap(() =>
-            productRepository.getProducts().pipe(
+            getProductsUseCase.execute().pipe(
               tap((products) => {
                 patchState(store, { products, isLoading: false, hasError: false });
               }),
@@ -95,7 +102,7 @@ export const ProductStore = signalStore(
         pipe(
           tap(() => patchState(store, { isLoading: true })),
           switchMap((productId) =>
-            productRepository.deleteProduct(productId).pipe(
+            deleteProductUseCase.execute(productId).pipe(
               tap((msj) => {
                 patchState(store, {
                   products: store.products().filter((p) => p.id !== productId),
@@ -118,7 +125,7 @@ export const ProductStore = signalStore(
         pipe(
           tap(() => patchState(store, { isLoading: true })),
           switchMap((newProduct) =>
-            productRepository.createProduct(newProduct).pipe(
+            createProductUseCase.execute(newProduct).pipe(
               tap(({ message, data: createdProduct }) => {
                 patchState(store, {
                   products: [...store.products(), createdProduct],
@@ -141,7 +148,7 @@ export const ProductStore = signalStore(
         pipe(
           tap(() => patchState(store, { isLoading: true })),
           switchMap((updatedProduct) =>
-            productRepository.updateProduct(updatedProduct).pipe(
+            updateProductUseCase.execute(updatedProduct).pipe(
               tap(({ message, data: responseProduct }) => {
                 patchState(store, {
                   products: store

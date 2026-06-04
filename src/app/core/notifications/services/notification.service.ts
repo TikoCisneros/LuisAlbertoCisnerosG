@@ -25,7 +25,6 @@ export class NotificationService {
       message,
     };
 
-    console.log(notification);
     this._notifications.update((current) => [...current, notification]);
 
     setTimeout(() => this.hideNotification(notification.id), NOTIFICATION_SHOW_TIME);

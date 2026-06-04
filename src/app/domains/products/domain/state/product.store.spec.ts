@@ -5,6 +5,11 @@ import { ProductRepository } from '@domains/products/domain/repositories/product
 import { Mocked } from 'vitest';
 import { of, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { GetProductsUseCase } from '../../application/use-cases/get-products.use-case';
+import { CreateProductUseCase } from '../../application/use-cases/create-product.use-case';
+import { UpdateProductUseCase } from '../../application/use-cases/update-product.use-case';
+import { DeleteProductUseCase } from '../../application/use-cases/delete-product.use-case';
+
 describe('ProductStore', () => {
   let mockHttpService: Partial<Mocked<ProductRepository>>;
 
@@ -81,7 +86,14 @@ describe('ProductStore', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [ProductStore, { provide: ProductRepository, useValue: mockHttpService }],
+      providers: [
+        ProductStore,
+        { provide: ProductRepository, useValue: mockHttpService },
+        GetProductsUseCase,
+        CreateProductUseCase,
+        UpdateProductUseCase,
+        DeleteProductUseCase,
+      ],
     });
   });
 
