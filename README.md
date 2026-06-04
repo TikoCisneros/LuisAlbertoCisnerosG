@@ -1,59 +1,68 @@
-# LuisAlbertoCisnerosG
+# 📦 Portal de Gestión de Productos Financieros
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.13.
+¡Hola! 👋 Bienvenido a este proyecto. 
 
-## Development server
+El proyecto es una aplicación web moderna construida con el framework **Angular**, para gestionar productos financieros de forma rápida y sencilla (CRUD).
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
+## 🏗️ ¿Cómo está construido?
+
+El código fue pensando para ser fácil de leer, mantener y escalar a futuro. 
+
+Se implementó:
+
+* Clean Architecture & DDD (Domain-Driven Design)
+* Componentes Smart / Dumb
+* Estado Reactivo con Signals
+* Systema de diseño basado en SASS
+
+### 📂 Estructura de Carpetas
+
+```text
+src/app/
+├── core/         # Configuraciones globales de la app (servicios e interceptores).
+├── shared/       # Todo lo que reutilizamos (botones, tablas, modales y utilidades).
+└── domains/      # ¡El corazón de la app! Dividido por contextos de negocio.
+    └── products/
+        ├── data-access/  # Donde nos conectamos con el servidor (APIs y Mappers).
+        ├── domain/       # Nuestras reglas de negocio puras y el estado reactivo (SignalStore).
+        ├── feature/      # Las páginas "inteligentes" que controlan la lógica.
+        └── ui/           # Los componentes "tontos" que solo se dedican a mostrarse bonitos.
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🛠️ Tecnologías Principales
 
-## Code scaffolding
+* **Framework:** Angular 21 (Standalone components y mucha reactividad con Signals).
+* **Estilos:** CSS puro potenciado con **Sass**, usando metodología **BEM** y un sistema de diseño.
+* **Testing:** Usamos **Vitest** y **Angular Testing Library** enfocándonos siempre en el usuario final.
+* **Documentación UI:** **Storybook** para construir y visualizar los componentes de forma aislada.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+---
 
+## 🚀 ¡Pruébala!
+
+Para empezar, asegúrate de tener Node.js instalado. Clona el repositorio y baja las dependencias:
 ```bash
-ng generate component component-name
+npm install
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
+Para encender la aplicación y verla en `http://localhost:4200/`, ejecuta:
 ```bash
-ng generate --help
+npm run start
 ```
 
-## Building
-
-To build the project run:
-
+¿Quieres revisar que todo esté funcionando perfecto? Corre los tests unitarios:
 ```bash
-ng build
+npm run test
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
+¿Quieres revisar la cobertura de las pruebas? Corre los tests unitarios con coverage:
 ```bash
-ng test
+npm run test:coverage
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
+Si te da curiosidad ver nuestro catálogo de componentes, ejecuta:
 ```bash
-ng e2e
+npm run storybook
 ```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
