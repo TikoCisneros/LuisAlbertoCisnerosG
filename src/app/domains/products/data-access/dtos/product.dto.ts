@@ -11,9 +11,14 @@ export interface ProductsApiResponseDTO {
   readonly data: ProductDTO[];
 }
 
+export interface ApiValidationErrorDetailDTO {
+  readonly property: string;
+  readonly constraints: Record<string, string>;
+}
 export interface ProductsApiErrorsDTO {
   readonly name: string;
   readonly message: string;
+  readonly errors?: ApiValidationErrorDetailDTO[];
 }
 
 export interface ProductsApiSuccessDTO {
